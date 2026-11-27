@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html lang="es"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Planning de Equipo</title>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Control de operarios</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Operarios">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="theme-color" content="#1a2d68">
-<meta name="description" content="Reparte a tu equipo en los puestos cada día.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Planning">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap">
-<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <style>
-
 /* Concepto: parte de turno. Una tarjeta azul con la fecha y la acción principal, una cuadrícula de estaciones con su código, y una barra inferior con el botón Enviar en el centro. */
 :root{--bg:#edf0f6;--sf:#fff;--sf2:#f3f5fa;--ink:#0e1a33;--mu:#5a6884;--ln:#dde3ee;--nv:#1a2d68;--nv2:#2a47a0;--ac:#2a47a0;--acb:#24409a;--acs:#e2e8fb;--yl:#f0b72f;--yli:#2a2000;--ok:#146c38;--oks:#dff2e6;--wa:#9a4d00;--was:#fff0d2;--er:#b42318;--ers:#fde5e2;--avl:90%;--avf:28%;--sh:0 1px 2px rgba(14,26,51,.05),0 8px 22px rgba(14,26,51,.07);--r:20px;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1120;--sf:#131b2f;--sf2:#1a2440;--ink:#edf1fb;--mu:#93a0bc;--ln:#25314f;--nv:#13224f;--nv2:#233c8a;--ac:#8fa8f2;--acb:#3558c9;--acs:#1b2956;--yl:#f0b72f;--yli:#2a2000;--ok:#4cc38a;--oks:#12301f;--wa:#f2b45a;--was:#33270f;--er:#f08a7e;--ers:#3a1a1c;--avl:28%;--avf:84%;--sh:none;color-scheme:dark}}
@@ -70,6 +64,8 @@ main.d1{padding-bottom:116px;padding-top:6px}main.d0{padding-bottom:100px}
 .st{display:flex;flex-direction:column;gap:7px;width:100%;min-height:112px;padding:12px;border-radius:20px;background:var(--sf);border:1.5px solid var(--ln);box-shadow:var(--sh);text-align:left}
 .st.nil{background:transparent;border-style:dashed;box-shadow:none}
 .st.w{border-color:var(--wa)}
+.st,[data-a=opPost]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.st.lp{transform:scale(.97);border-color:var(--ac)}
 .st:active,.li:active,.tile:active{background:var(--sf2)}
 .st .h{display:flex;align-items:center;justify-content:space-between;gap:6px}.st .h span:last-child{display:flex;gap:4px}
 .cd{font-weight:800;font-size:12px;letter-spacing:.07em;background:var(--nv2);color:#fff;border-radius:8px;padding:3px 8px}
@@ -115,6 +111,10 @@ summary::-webkit-details-marker{display:none}details[open] summary{margin-bottom
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
 .cal div{aspect-ratio:1;display:grid;place-items:center;border-radius:11px;background:var(--sf2);font-weight:600;cursor:pointer}
 .cal .no{background:var(--ln);color:var(--mu)}.cal .h{background:none;aspect-ratio:auto;font-size:12px;color:var(--mu);cursor:default}.cal .td{outline:2px solid var(--yl)}.cal .dot{background:none;cursor:default}
+.tw{overflow-x:auto}.cq{border-collapse:separate;border-spacing:0;min-width:100%}.cq th,.cq td{padding:8px 6px;border-bottom:1px solid var(--ln);text-align:center;font-size:12.5px;font-weight:600;min-width:88px;vertical-align:middle}
+.cq thead th{position:sticky;top:0;background:var(--sf);z-index:1}.cq thead th i{display:block;font-style:normal;font-size:11px;color:var(--mu)}.cq thead th b{font-size:16px}.cq th.td b{color:var(--ac)}
+.cq th.nm{position:sticky;left:0;z-index:2;background:var(--sf);min-width:104px;max-width:104px;text-align:left;border-right:1px solid var(--ln);padding:6px 8px}.cq th.nm button{font-weight:800;font-size:13px;color:var(--ink);line-height:1.2}
+.cq td.p{background:var(--acs)}.cq td.wa{background:var(--was);color:var(--wa)}.cq td.er{background:var(--ers);color:var(--er)}.cq td.ap{background:var(--oks);color:var(--ok)}.cq td.tu{background:var(--sf2);color:var(--mu)}.cq td.off,.cq td.n{color:var(--mu);opacity:.7}.cq td.x{background:var(--sf2)}
 .pre{white-space:pre-wrap;margin:0;font:500 14px/1.55 Manrope,system-ui,sans-serif}
 /* barra inferior */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--sf);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -138,30 +138,35 @@ summary::-webkit-details-marker{display:none}details[open] summary{margin-bottom
 .toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:99px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s;z-index:60;white-space:nowrap;display:flex;gap:14px;align-items:center}
 .toast.show{opacity:1;pointer-events:auto}.tu{color:inherit;text-decoration:underline;font-weight:800;min-height:28px;padding:0 4px}
 @media (prefers-reduced-motion:reduce){.shp{animation:none}.toast{transition:none}.btn:active,.chip:active,.rb:active{transform:none}}
+body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}input,textarea,select,[contenteditable],.sel,.wa,pre,.msgbox{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+
+/* asistente de inicio */
+main.wzm{padding-bottom:20px}
 .wz{padding-top:14px;padding-bottom:40px;display:flex;flex-direction:column;gap:16px}
-.wh{display:flex;align-items:center;gap:12px;padding-top:16px}.wh .pb{background:var(--ln)}.wh .pb i{background:var(--acb)}.wh b{font-size:13px;color:var(--mu);white-space:nowrap}
+.wzh{display:flex;align-items:center;gap:12px;padding-top:16px}.wzh .pb{background:var(--ln)}.wzh .pb i{background:var(--acb)}.wzh b{font-size:13px;color:var(--mu);white-space:nowrap}
 .wz h1{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
 .wz .lead{font-size:16px;color:var(--mu);margin:0}
 .hero{display:flex;flex-direction:column;gap:14px;background:linear-gradient(150deg,var(--nv),var(--nv2));color:#fff;border-radius:28px;padding:22px}.hero h1{color:#fff}.hero p{margin:0;opacity:.88}
 .mark{width:54px;height:54px;border-radius:16px;background:var(--yl);color:var(--yli);display:grid;place-items:center}.mark .ic{width:30px;height:30px}
-.q{display:flex;flex-direction:column;gap:6px;background:var(--acs);border-radius:18px;padding:14px 16px}.q b{font-size:17px}.q span{color:var(--mu);font-size:14px}
 .cta{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;padding-top:6px}
-.chip.x{background:var(--ers);border-color:transparent;color:var(--er)}
-.sw{display:flex;align-items:center;gap:10px}
-.ln{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 0}.ln>span{flex:1;font-weight:700}
-
-main.wzm{padding-bottom:20px}
+.wz .pg{padding-top:0}
 </style>
-</head><body>
 <div id="hd"></div>
 <main id="main"></main>
-<nav id="tabs" class="tabs" aria-label="Secciones" hidden></nav>
+<nav id="tabs" class="tabs" aria-label="Secciones"></nav>
 <div id="shr"></div>
 <div id="toast" class="toast" role="status"></div>
 <script>
+const ILU_BASE=["Julia Navas","Silvia","Javi Navarro","Pepi","Laura","Javi Castellano","Cantarero","Andrea","Pascual","Loli","Loles","Juanjo","Alicia","Rafa","Julia Neves","Nacho"];let OPS;let BASE=[],POSTS=[],SHORT=[],ESP=[],WH=[],LAURA=[],LIST={};
+const ILU_POSTS=["Portones","Soporte LH + Palancas","Soporte RH + Manguitos","Faros","Door","Wheel RH + 2 tacos","Wheel LH + Parasoles","Tapas + Pasos + cowgrill","Corchos","Espejos RH + BTA RH","Espejos LH + BTA LH","BTA + gatos + premontaje.bat"];
+const IP=ILU_POSTS;
+const ILU_SHORT=["Portones","Soporte LH","Soporte RH","Faros","Door","Wheel RH","Wheel LH","Cowgrill","Corchos","Espejos RH","Espejos LH","BTA"];
+const ILU_LIST={[IP[9]]:["Julia Navas","Andrea","Pepi","Loles","Alicia"],[IP[10]]:["Julia Navas","Andrea","Pepi","Loles","Alicia"],"Faros":["Nacho","Javi Castellano","Juanjo","Javi Navarro"],"Door":["Nacho","Juanjo","Julia Neves","Javi Castellano"],[IP[1]]:["Javi Navarro","Julia Navas","Pepi"]};
+/* Calendario laboral (fotos Oct, Nov, Dic 2026). false = no laborable entre semana. Sáb/Dom son no laborables por defecto. */
+const ILU_CAL={"2026-10-09":false,"2026-10-12":false,"2026-12-08":false,"2026-12-22":false,"2026-12-23":false,"2026-12-24":false,"2026-12-25":false,"2026-12-28":false,"2026-12-29":false,"2026-12-30":false,"2026-12-31":false};
 const $=i=>document.getElementById(i);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let TODAY=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const TODAY=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const addD=(d,n)=>{const x=new Date(d+"T12:00:00Z");x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)};
 const mon=d=>{const x=new Date(d+"T12:00:00Z");return addD(d,-((x.getUTCDay()+6)%7))};
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
@@ -172,336 +177,458 @@ const hue=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))%360;return h};
 const av=(n,k="")=>`<span class="av ${k}" style="--h:${hue(n)}">${esc(ini(n))}</span>`;
 const IC={today:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4M9 15l2 2 4-4"/>',team:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 5a3.5 3.5 0 010 6.5M18 14c2 .6 3.3 2.4 3.5 6"/>',erte:'<path d="M20 11a8 8 0 00-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0014.5 4.5L20 16M20 20v-4h-4"/>',more:'<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',chev:'<path d="M9 6l6 6-6 6"/>',back:'<path d="M15 6l-6 6 6 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',check:'<path d="M5 12l4 4 10-10"/>',lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',warn:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',send:'<path d="M4 12l16-8-6 16-3-7z"/>',search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/>',up:'<path d="M6 14l6-6 6 6"/>',down:'<path d="M6 10l6 6 6-6"/>',cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',spark:'<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/>',save:'<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c.5-4.5 3.5-7 8-7s7.5 2.5 8 7"/>'};
 const ic=(n,c="")=>`<svg class="ic ${c}" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
-const sp=v=>v.split("|");
-const BADN=["__proto__","constructor","prototype","hasOwnProperty","toString","valueOf"];
-const nm=v=>String(v||"").replace(/[|]/g,"").replace(/\s+/g," ").trim();
-const badName=n=>BADN.includes(n);
+const LOGO='<svg class="logo" width="118" height="27" viewBox="0 0 132 30" role="img" aria-label="Ilunion"><circle cx="13" cy="15" r="11" fill="none" stroke="#fff" stroke-width="3"/><circle cx="13" cy="15" r="4.5" fill="#f0b72f"/><text x="32" y="23" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" letter-spacing="1.5" fill="#fff">ILUNION</text></svg>';
+function defAllowed(o,p){if(!S.ilu)return true;if(LIST[p]&&!LIST[p].includes(o))return false;if(o==="Laura")return LAURA.includes(p);if((o==="Loles"||o==="Loli")&&WH.includes(p))return false;return true}
 /* ---------- estado ---------- */
-const D0=()=>({v:2,step:0,qi:0,done:false,area:"",lider:"",posts:[],split:[],order:[],ops:{},rules:{sep:[],fav:[],max:[],norep:true,rot:2,nota:""},days:{},conf:{},tu:{eq:"",ref:"",m:true},date:TODAY,_t:0});
-let S;try{S=JSON.parse(localStorage.getItem("planeq")||"null")}catch(e){}
-if(!S)S=D0();
-function normState(){const d=D0();Object.keys(d).forEach(k=>{if(S[k]===undefined)S[k]=d[k]});const r=S.rules;["sep","fav","max"].forEach(k=>{if(!Array.isArray(r[k]))r[k]=[]});if(![1,2,3].includes(r.rot))r.rot=2;if(typeof r.norep!=="boolean")r.norep=true;r.nota=r.nota||"";if(!S.tu||typeof S.tu!=="object")S.tu={eq:"",ref:"",m:true};
-S.order=S.order.filter(o=>S.ops[o]);S.split=S.split.filter(p=>S.posts.includes(p));
-S.order.forEach(o=>{const c=S.ops[o];c.posts=(c.posts||[]).filter(p=>S.posts.includes(p));c.bajas=c.bajas||[];c.ap=c.ap||[];c.falta=c.falta||[]})}
-normState();
-let CL={st:"local",db:null,p:"",ready:false,tm:0,busy:false,dirty:false};
-const save=()=>{S._t=Date.now();try{localStorage.setItem("planeq",JSON.stringify(S))}catch(e){}cloudSave()};
+let S;try{S=JSON.parse(localStorage.getItem("ctrlop")||"null")}catch(e){}
+if(!S)S={shift:"T",date:TODAY,ops:{},days:{},conf:{}};
+if(S.wzDone===undefined)S.wzDone=Object.keys(S.days||{}).length>0;S.wz=S.wz||0;
+S.conf=S.conf||{};S.extra=S.extra||[];S.ertes=S.ertes||{};S.cal=S.cal||{};S.sub=S.sub||"rot";
+S.rot=S.rot&&S.rot.length?S.rot:!S.ilu&&S.team?[]:["Julia Navas","Rafa","Laura","Andrea","Javi Castellano","Loles","Juanjo","Pepi","Javi Navarro","Silvia","Loli","Pascual","Nacho","Alicia","Julia Neves","Cantarero"];
+const RULES0=()=>!S.ilu?{sep:[],fav:[],max:[],pref:[],rot:2}:({sep:[{a:"Loles",b:"Julia Navas"},{a:"Andrea",b:"Julia Navas"}],fav:[{o:"Javi Navarro",p:IP[1],pct:90}],max:[{o:"Javi Navarro",p:"Faros",n:1}],pref:[{o:"Andrea",p:IP[9]},{o:"Julia Navas",p:IP[9]}],rot:2});
+const mkOPS=()=>[...BASE,...S.extra,...Object.keys(S.ops||{}).filter(o=>S.ops[o].guest&&((S.gd||{})[S.date]||[]).includes(o))];
+const TEAM=()=>[...BASE,...S.extra];
+const orig=o=>{const k=Object.keys(S.ren||{}).find(k=>S.ren[k]===o);return k||o};
+function normState(){
+if(!Array.isArray(S.team)){const old=Object.keys(S.ops||{}).length>0||Object.keys(S.days||{}).length>0;S.ilu=old;S.team=old?[...ILU_BASE]:[];S.posts=old?[...ILU_POSTS]:[];S.short=old?[...ILU_SHORT]:[]}
+if(!Array.isArray(S.posts))S.posts=[];if(!Array.isArray(S.short)||S.short.length!==S.posts.length)S.short=S.posts.map((p,i)=>(S.short&&S.short[i])||p);if(!Array.isArray(S.sepP))S.sepP=[];S.area=S.area||"";
+BASE=S.team;POSTS=S.posts;SHORT=S.short;
+if(S.ilu){ESP=[IP[9],IP[10]];WH=[IP[5],IP[6]];LAURA=[IP[11],IP[7],IP[0]];LIST=ILU_LIST}else{S.sepP=S.sepP.filter(p=>POSTS.includes(p));ESP=S.sepP;WH=[];LAURA=[];LIST={}}
+S.ren=S.ren||{};Object.entries(S.ren).forEach(([a,b])=>{const i=BASE.indexOf(a);if(i>=0)BASE[i]=b});if(!S.rules)S.rules=RULES0();["sep","fav","max","pref"].forEach(k=>{if(!Array.isArray(S.rules[k]))S.rules[k]=[]});if(![1,2,3].includes(S.rules.rot))S.rules.rot=2;S.ops=S.ops||{};S.days=S.days||{};S.conf=S.conf||{};S.extra=S.extra||[];S.ertes=S.ertes||{};S.cal=S.cal||{};S.sub=S.sub||"rot";S.shift=S.shift||"T";S.date=S.date||TODAY;S.rot=S.rot&&S.rot.length?S.rot:[];S.gd=S.gd||{};OPS=mkOPS();
+OPS.forEach(o=>{const c=S.ops[o]||(S.ops[o]={st:"ok",turno:S.ilu&&(o==="Alicia"||o==="Julia Neves")?"M":""});
+if(c.st==="erte"){if(c.since)for(let d=c.since,i=0;d<=TODAY&&i<120;d=addD(d,1),i++){const E=S.ertes[d]||(S.ertes[d]={n:[],v:[]});if(!E.n.includes(o))E.n.push(o)}c.st="ok"}
+if(!c.posts)c.posts=POSTS.filter(p=>defAllowed(o,p));c.ap=c.ap||[];c.falta=c.falta||[];c.base=c.base||0;c.basev=c.basev||0;c.bajas=c.bajas||[];if(c.st==="baja"){c.bajas.push({from:TODAY,to:null});c.st="ok"}})}normState();
+if(!S._init){S._init=1;if(S.ilu&&S.ops.Cantarero&&!S.ops.Cantarero.bajas.length)S.ops.Cantarero.bajas.push({from:TODAY,to:null})}
+let CL={st:"local",db:null,ready:false,tm:0,busy:false,dirty:false};
+const save=()=>{S._t=Date.now();try{localStorage.setItem("ctrlop",JSON.stringify(S))}catch(e){}cloudSave()};
 function cloudSave(){if(!CL.ready||!CL.db)return;CL.dirty=true;clearTimeout(CL.tm);CL.tm=setTimeout(cloudFlush,700)}
 async function cloudFlush(){if(CL.busy){CL.tm=setTimeout(cloudFlush,500);return}CL.busy=true;CL.dirty=false;
-try{const j=JSON.stringify(S),n=Math.ceil(j.length/120000)||1;for(let i=0;i<n;i++)await CL.db.doc(CL.p+"e"+i).set({s:j.slice(i*120000,(i+1)*120000)});await CL.db.doc(CL.p+"m").set({n,t:S._t||Date.now()});CL.st="ok"}catch(e){CL.st="err"}
+try{const j=JSON.stringify(S),n=Math.ceil(j.length/120000)||1;for(let i=0;i<n;i++)await CL.db.doc("estado/p"+i).set({s:j.slice(i*120000,(i+1)*120000)});await CL.db.doc("estado/meta").set({n,t:S._t||Date.now()});CL.st="ok"}catch(e){CL.st="err"}
 CL.busy=false;if(CL.dirty)cloudSave();else if(MORE==="bk")render()}
-async function cloudInit(){try{if(!window.claude||!claude.use)return;const db=await claude.use("db"),u=await claude.use("user");if(!db||!u)return;const id=await u.id();CL.db=db;CL.p="data/users/"+id+"/";
-const m=await db.doc(CL.p+"m").get();
-if(m.exists&&m.data().t>(S._t||0)){let j="";for(let i=0;i<m.data().n;i++){const d=await db.doc(CL.p+"e"+i).get();j+=d.exists?d.data().s:""}const x=JSON.parse(j);if(x&&x.ops&&x.posts){S=x;normState();try{localStorage.setItem("planeq",JSON.stringify(S))}catch(e){}CL.st="ok";CL.ready=true;render();return}}
-CL.ready=true;if(!m.exists||m.data().t<(S._t||0))await cloudFlush();else CL.st="ok";render()}catch(e){CL.st="err"}}
-let TAB="hoy",SHEET=null,MORE=null,LAST="",TT=0,UNDO=null,QF="",CDP=null;
-let IM={k:"",mode:"",busy:false,items:[],err:"",tx:""},SMP=false;
-let W={name:"",posts:[],edit:null,err:"",bm:"",f:{}};
+async function cloudInit(){try{if(!window.claude||!claude.use)return;const db=await claude.use("db");if(!db)return;CL.db=db;
+const m=await db.doc("estado/meta").get();
+if(m.exists&&m.data().t>(S._t||0)){let j="";for(let i=0;i<m.data().n;i++){const d=await db.doc("estado/p"+i).get();j+=d.exists?d.data().s:""}const x=JSON.parse(j);if(x&&x.ops&&x.days){S=x;normState();RF.d=S.date;RF.prop=null;try{localStorage.setItem("ctrlop",JSON.stringify(S))}catch(e){}CL.st="ok";CL.ready=true;render();return}}
+CL.ready=true;CL.st="local";if(!m.exists||m.data().t<(S._t||0))await cloudFlush();else CL.st="ok";render()}catch(e){CL.st="err"}}
+let TAB="v1",SHEET=null,MORE=null,QF="",LAST="",CAL_RES=null,TT=0;
+let RF={d:S.date,n:0,vols:[],prop:null,msg:""};
+let ADD={name:"",turno:"",posts:null,err:""};
+let REF={name:"",posts:[],err:""};
+let UNDO=null,BK={tx:"",cf:false};
 const snap=()=>{UNDO={d:S.date,days:JSON.parse(JSON.stringify(S.days[S.date]||{}))}};
 const day=d=>S.days[d]||(S.days[d]={});
-const P=()=>S.posts,OPS=()=>S.order;
 const allowed=(o,p)=>S.ops[o].posts.includes(p);
 const isAP=(o,d=S.date)=>S.ops[o].ap.includes(d);
-const isBaja=(o,d=S.date)=>S.ops[o].bajas.some(b=>d>=b.from&&(!b.to||d<=b.to));
+const inE=(o,d=S.date)=>!!(S.ertes[d]&&S.ertes[d].n.includes(o));
 const falt=(o,d=S.date)=>S.ops[o].falta.filter(f=>f.d===d);
-const avail=(o,d=S.date)=>!isBaja(o,d)&&!isAP(o,d);
-const why=o=>isBaja(o)?"De baja":isAP(o)?"Asuntos propios":"No disponible";
-const isSplit=p=>S.split.includes(p);
-const need=()=>P().length+S.split.length;
-function weekCount(o,p,d){let n=0,m=mon(d);for(let i=0;i<7;i++){const k=addD(m,i);if(k===d)continue;const a=S.days[k];if(a&&a[p]&&(a[p].op===o||a[p].partner===o))n++}return n}
-function recent(o,p,d){let n=0;for(let i=1;i<=28;i++){const a=S.days[addD(d,-i)];if(a&&a[p]&&(a[p].op===o||a[p].partner===o))n++}return n}
+const isBaja=(o,d=S.date)=>(S.ops[o].bajas||[]).some(b=>d>=b.from&&(!b.to||d<=b.to));
+const avail=(o,d=S.date)=>{const c=S.ops[o];if(c.guest&&!((S.gd||{})[d]||[]).includes(o))return false;return !isBaja(o,d)&&!isAP(o,d)&&!inE(o,d)&&(!c.turno||c.turno===S.shift)};
+const why=o=>isBaja(o)?"De baja":isAP(o)?"Asuntos propios":inE(o)?"ERTE":"Otro turno";
+const working=d=>S.cal[d]!==undefined?S.cal[d]:(S.ilu&&ILU_CAL[d]!==undefined)?ILU_CAL[d]:![0,6].includes(new Date(d+"T12:00:00Z").getUTCDay());
+function eDays(o){let n=0,v=0;for(const d in S.ertes){if(d>=TODAY||!working(d))continue;const e=S.ertes[d];if(e.n.includes(o)){n++;if(e.v.includes(o))v++}}const c=S.ops[o];return{n:n+c.base,v:v+c.basev}}
+function normRot(){const T=TEAM();S.rot=[...S.rot.filter((o,i)=>T.includes(o)&&S.rot.indexOf(o)===i),...T.filter(o=>!S.rot.includes(o))]}
+const setDate=d=>{S.date=d;RF.d=d;RF.prop=null;OPS=mkOPS()};
+function weekCount(o,p,d){let n=0,m=mon(d);for(let i=0;i<7;i++){const k=addD(m,i);if(k===d)continue;const a=S.days[k];if(a&&a[p]&&a[p].op===o)n++}return n}
+function recent(o,p,d){let n=0;for(let i=1;i<=28;i++){const a=S.days[addD(d,-i)];if(a&&a[p]&&a[p].op===o)n++}return n}
 const favOK=(o,p)=>S.rules.fav.some(f=>f.o===o&&f.p===p);
-function soft(o,key,cur){let s=0;const p=key.split("#")[0];
-S.rules.sep.forEach(r=>{const x=r.a===o?r.b:r.b===o?r.a:null;if(!x||!r.posts.includes(p))return;if(Object.entries(cur).some(([k,v])=>v===x&&r.posts.includes(k.split("#")[0])))s+=40});return s}
+function soft(o,p,cur){let s=0;const has=n=>ESP.some(e=>cur[e]===n);
+if(ESP.includes(p))S.rules.sep.forEach(r=>{const x=r.a===o?r.b:r.b===o?r.a:null;if(x&&has(x))s+=40});
+S.rules.pref.forEach(f=>{if(f.o===o&&f.p===p)s-=3});return s}
+const SPL=(p,o)=>WH.includes(p)&&(orig(o)==="Rafa"||orig(o)==="Silvia");
+const usedSet=()=>{const t=day(S.date);return new Set(POSTS.filter(p=>t[p]).flatMap(p=>[t[p].op,t[p].partner].filter(Boolean)))};
+const p4=(o,p)=>(S.ops[o].p4||[]).includes(p);
 function generate(){if(S.conf[S.date])return;const d=S.date,t=day(d),prev=S.days[addD(d,-1)]||{};
-const keep={};P().forEach(p=>{if(t[p]&&t[p].manual)keep[p]=t[p]});let best=null,bs=1e9;
-const pre={};S.rules.fav.forEach(f=>{const k=f.p+"#0";if(S.ops[f.o]&&P().includes(f.p)&&!keep[f.p]&&!pre[k]&&avail(f.o)&&allowed(f.o,f.p)&&!P().some(p=>keep[p]&&(keep[p].op===f.o||keep[p].partner===f.o))&&!Object.values(pre).includes(f.o)&&Math.random()*100<f.pct)pre[k]=f.o});
-const RC={},WC={},rc=(o,p)=>{const k=o+"|"+p;return RC[k]!==undefined?RC[k]:(RC[k]=recent(o,p,d))},wc=(o,p)=>{const k=o+"|"+p;return WC[k]!==undefined?WC[k]:(WC[k]=weekCount(o,p,d))};
-const keys=[];P().forEach(p=>{if(keep[p])return;keys.push(p+"#0");if(isSplit(p))keys.push(p+"#1")});
-const wasPrev=(o,p)=>prev[p]&&(prev[p].op===o||prev[p].partner===o);
-for(let it=0;it<250;it++){const cur={},used=new Set();let sc=0;
-P().forEach(p=>{if(keep[p]){cur[p+"#0"]=keep[p].op;used.add(keep[p].op);if(keep[p].partner){cur[p+"#1"]=keep[p].partner;used.add(keep[p].partner)}}});
-Object.entries(pre).forEach(([k,o])=>{cur[k]=o;used.add(o)});
-const todo=keys.filter(k=>!pre[k]);
-const cands=k=>{const p=k.split("#")[0];return OPS().filter(o=>avail(o)&&allowed(o,p)&&!used.has(o)&&!(S.rules.norep&&wasPrev(o,p)&&!favOK(o,p))&&!S.rules.max.some(m=>m.o===o&&m.p===p&&wc(o,p)>=m.n))};
-const ord=todo.map(k=>[k,cands(k).length+Math.random()]).sort((a,b)=>a[1]-b[1]).map(x=>x[0]);
-ord.forEach(k=>{const p=k.split("#")[0];const c=cands(k).map(o=>({o,s:rc(o,p)*(.6+S.rules.rot*.6)+soft(o,k,cur)+Math.random()*1.5})).sort((a,b)=>a.s-b.s)[0];if(c){cur[k]=c.o;used.add(c.o);sc+=c.s}else sc+=100});
+const keep={};POSTS.forEach(p=>{if(t[p]&&t[p].manual)keep[p]=t[p]});let best=null,bs=1e9;
+const pre={};S.rules.fav.forEach(f=>{if(S.ops[f.o]&&!p4(f.o,f.p)&&!keep[f.p]&&!pre[f.p]&&avail(f.o)&&allowed(f.o,f.p)&&!POSTS.some(p=>keep[p]&&(keep[p].op===f.o||keep[p].partner===f.o))&&!Object.values(pre).includes(f.o)&&Math.random()*100<f.pct)pre[f.p]=f.o});
+for(let it=0;it<250;it++){const cur={},used=new Set();let sc=0;POSTS.forEach(p=>{if(keep[p]){cur[p]=keep[p].op;used.add(keep[p].op);if(keep[p].partner)used.add(keep[p].partner)}else if(pre[p]){cur[p]=pre[p];used.add(pre[p])}});
+const todo=POSTS.filter(p=>!keep[p]&&!pre[p]);
+const cands=p=>OPS.filter(o=>avail(o)&&allowed(o,p)&&!p4(o,p)&&!used.has(o)&&!(prev[p]&&(prev[p].op===o||prev[p].partner===o)&&!favOK(o,p))&&!S.rules.max.some(m=>m.o===o&&m.p===p&&weekCount(o,p,d)>=m.n));
+todo.sort((a,b)=>cands(a).length-cands(b).length+(Math.random()-.5));
+todo.forEach(p=>{const c=cands(p).map(o=>({o,s:recent(o,p,d)*(.6+S.rules.rot*.6)+soft(o,p,cur)+Math.random()*1.5})).sort((a,b)=>a.s-b.s)[0];if(c){cur[p]=c.o;used.add(c.o);sc+=c.s}else sc+=100});
 if(sc<bs){bs=sc;best=cur}}
-P().forEach(p=>{if(keep[p])return;const a=best[p+"#0"],b=best[p+"#1"];if(a||b){t[p]={op:a||b};if(a&&b)t[p].partner=b}else delete t[p]})}
+POSTS.forEach(p=>{if(keep[p])return;if(best[p])t[p]={op:best[p]};else delete t[p]});
+const us=usedSet(),ok4=o=>!S.ops[o].solo8,wasP=(p,o)=>prev[p]&&(prev[p].op===o||prev[p].partner===o);
+POSTS.forEach(p=>{const a=t[p];if(!a)return;if(!SPL(p,a.op)&&!a.s){delete a.partner;return}if(a.partner||!ok4(a.op))return;const c=OPS.filter(o=>avail(o)&&allowed(o,p)&&ok4(o)&&!us.has(o)&&!wasP(p,o));if(c.length){a.partner=c[Math.floor(Math.random()*c.length)];us.add(a.partner)}});
+let n4=0;const free=OPS.filter(o=>avail(o)&&ok4(o)&&!us.has(o)).sort((a,b)=>((S.ops[b].p4||[]).length>0)-((S.ops[a].p4||[]).length>0)||Math.random()-.5);
+free.forEach(o=>{const ps=POSTS.filter(p=>{const a=t[p];return a&&!a.partner&&!a.manual&&!SPL(p,a.op)&&ok4(a.op)&&allowed(o,p)&&!wasP(p,o)});if(ps.length){const p=ps[Math.floor(Math.random()*ps.length)];t[p].partner=o;t[p].s=1;us.add(o);n4++}});
+return n4}
 function warnList(){const d=S.date,t=day(d),prev=S.days[addD(d,-1)]||{},w=[],seen={};const add=(p,m)=>w.push({p,m});
-P().forEach(p=>{const a=t[p];if(!a)return;[a.op,a.partner].filter(Boolean).forEach(o=>{if(!S.ops[o])return;if(seen[o])add(p,o+" está en dos puestos");seen[o]=1;
-if(!avail(o,d))add(p,o+" no está disponible ("+why(o)+")");
-if(!allowed(o,p))add(p,o+" no sabe hacer "+p);
-if(S.rules.norep&&prev[p]&&(prev[p].op===o||prev[p].partner===o)&&!favOK(o,p))add(p,o+" repite "+p+" respecto a ayer");
-falt(o).forEach(f=>add(p,o+" falta "+f.h+" h ("+f.m+")"));
-S.rules.max.forEach(m=>{if(m.o===o&&m.p===p&&weekCount(o,p,d)>=m.n)add(p,o+" ya hizo "+p+" "+m.n+" vez"+(m.n>1?"es":"")+" esta semana")})})});
-S.rules.sep.forEach(r=>{const ins=x=>P().some(p=>r.posts.includes(p)&&t[p]&&(t[p].op===x||t[p].partner===x));if(ins(r.a)&&ins(r.b))add(null,"Preferible no juntar a "+r.a+" y "+r.b)});return w}
+if(!working(d))add(null,"Día no laborable según el calendario");
+POSTS.forEach(p=>{const a=t[p];if(!a)return;const o=a.op;if(seen[o])add(p,o+" está en dos puestos");seen[o]=1;
+if(!avail(o))add(p,o+" no está disponible ("+why(o)+")");
+if(S.ilu&&p==="Door"&&orig(o)==="Alicia")add(p,o+" en Door: solo 4 h compartidas con Pepi, Rafa o Silvia");else if(!allowed(o,p))add(p,o+" no puede hacer "+p);
+if(prev[p]&&prev[p].op===o&&!favOK(o,p))add(p,o+" repite "+p+" respecto a ayer");
+falt(o).forEach(f=>add(p,o+" falta "+f.h+" h ("+f.m+")"));if(p4(o,p)&&!a.partner)add(p,o+" solo puede hacer 4 h en "+p+": falta la otra persona");if(a.partner&&S.ops[o].solo8)add(p,o+" prefiere hacer las 8 horas, no 4 h + 4 h");
+S.rules.max.forEach(m=>{if(m.o===o&&m.p===p&&weekCount(o,p,d)>=m.n)add(p,o+" ya hizo "+SHORT[POSTS.indexOf(p)]+" "+m.n+" vez"+(m.n>1?"es":"")+" esta semana")});
+if(a.partner){const q=a.partner;if(seen[q])add(p,q+" está en dos puestos");seen[q]=1;if(!avail(q))add(p,q+" no está disponible ("+why(q)+")");if(prev[p]&&(prev[p].op===q||prev[p].partner===q))add(p,q+" repite "+p+" respecto a ayer")}});
+const e=ESP.map(p=>t[p]&&t[p].op).filter(Boolean);
+S.rules.sep.forEach(r=>{if(e.includes(r.a)&&e.includes(r.b))add(null,"Preferible no juntar a "+r.a+" y "+r.b)});return w}
 const warns=()=>[...new Set(warnList().map(x=>x.m))];
-const usedSet=()=>{const t=day(S.date);return new Set(P().filter(p=>t[p]).flatMap(p=>[t[p].op,t[p].partner].filter(Boolean)))};
 const lst=a=>a.join(", ");
-function msg(){const t=day(S.date);let s="*"+(S.area||"Planning")+" · "+cap(fl(S.date))+"*\n"+(S.tu.eq?tuTxt(S.date)+"\n":"")+(S.lider?"Jefe de equipo: "+S.lider+"\n":"")+"\n";
-P().forEach(p=>{s+="• "+p+": "+(t[p]?t[p].op+(t[p].partner?" / "+t[p].partner+" (4 h + 4 h)":""):"—")+"\n"});
-const b=OPS().filter(o=>isBaja(o));if(b.length)s+="\nBaja: "+lst(b);
-const ap=OPS().filter(o=>isAP(o));if(ap.length)s+="\nAsuntos propios: "+lst(ap);
-const fh=OPS().filter(o=>falt(o).length).map(o=>o+" ("+falt(o).map(f=>f.h+" h "+f.m.toLowerCase()).join(", ")+")");if(fh.length)s+="\nFaltan horas: "+fh.join(", ");return s}
-function purge(o,from,to,lb){let n=0,k=0;Object.keys(S.days).forEach(d=>{if(d<from||(to&&d>to))return;const t=S.days[d];if(S.conf[d]){if(P().some(p=>t[p]&&(t[p].op===o||t[p].partner===o)))k++;return}P().forEach(p=>{const a=t[p];if(!a)return;if(a.op===o){delete t[p];n++}else if(a.partner===o){delete a.partner;n++}})});
-toast((lb||"Baja apuntada")+(n?" · quitado de "+n+" puesto"+(n>1?"s":"")+" ya planificado"+(n>1?"s":""):"")+(k?" · hay "+k+" día(s) confirmado(s) con esa persona, revísalos":""))}
-function dropPerson(o){S.order=S.order.filter(x=>x!==o);delete S.ops[o];S.rules.sep=S.rules.sep.filter(r=>r.a!==o&&r.b!==o);S.rules.fav=S.rules.fav.filter(r=>r.o!==o);S.rules.max=S.rules.max.filter(r=>r.o!==o);Object.values(S.days).forEach(d=>Object.keys(d).forEach(p=>{const a=d[p];if(!a)return;if(a.op===o)delete d[p];else if(a.partner===o)delete a.partner}))}
-function dropPost(p){S.posts=S.posts.filter(x=>x!==p);S.split=S.split.filter(x=>x!==p);Object.values(S.ops).forEach(c=>c.posts=c.posts.filter(x=>x!==p));S.rules.fav=S.rules.fav.filter(r=>r.p!==p);S.rules.max=S.rules.max.filter(r=>r.p!==p);S.rules.sep.forEach(r=>r.posts=r.posts.filter(x=>x!==p));S.rules.sep=S.rules.sep.filter(r=>r.posts.length>=1);Object.values(S.days).forEach(d=>delete d[p])}
-const setDate=d=>{S.date=d};
-/* turnos A/B: cambian cada dos semanas entre mañana y tarde */
-const wkDiff=(a,b)=>Math.round((Date.parse(mon(a)+"T12:00:00Z")-Date.parse(b+"T12:00:00Z"))/6048e5);
-const tuWeek=()=>S.tu.ref?((wkDiff(TODAY,S.tu.ref)%2)+2)%2+1:1;
-const isMan=d=>S.tu.ref?((Math.floor(wkDiff(d,S.tu.ref)/2)%2===0)===S.tu.m):null;
-const tuTxt=d=>S.tu.eq?"Turno "+S.tu.eq+(S.tu.ref?" · "+(isMan(d)?"Mañana":"Tarde"):""):"";
+function msg(){const t=day(S.date),E=S.ertes[S.date];let s="*ILUNION · Planning "+fl(S.date)+" · "+(S.shift==="M"?"Mañana":"Tarde")+"*\n\n";
+POSTS.forEach(p=>{s+="• "+p+": "+(t[p]?(t[p].partner?t[p].op+" ("+HR()[0]+"–"+HR()[1]+") / "+t[p].partner+" ("+HR()[1]+"–"+HR()[2]+")":t[p].op):"—")+"\n"});
+const us0=usedSet(),ap0=OPS.filter(o=>avail(o)&&!us0.has(o));if(ap0.length&&POSTS.some(p=>t[p]))s+="• Apoyo: "+lst(ap0)+"\n";
+if(E&&E.n.length)s+="\nERTE: "+E.n.map(o=>o+(E.v.includes(o)?" (voluntario)":"")).join(", ");
+const b=OPS.filter(o=>isBaja(o));if(b.length)s+="\nBaja: "+lst(b);
+const ap=OPS.filter(o=>isAP(o));if(ap.length)s+="\nAsuntos propios: "+lst(ap);
+const fh=OPS.filter(o=>falt(o).length).map(o=>o+" ("+falt(o).map(f=>f.h+" h "+f.m.toLowerCase()).join(", ")+")");if(fh.length)s+="\nFaltan horas: "+fh.join(", ");return s}
+function lmsg(){const E=S.ertes[RF.d];let s="*ILUNION · Lista de ERTE*\n";if(E&&E.n.length)s+="\nERTE "+fl(RF.d)+": "+E.n.map(o=>o+(E.v.includes(o)?" (voluntario)":"")).join(", ")+"\n";s+="\nOrden de la lista:\n";S.rot.forEach((o,i)=>{s+=(i+1)+". "+o+"\n"});return s}
+function eligible(o,D){const c=S.ops[o];return !isBaja(o,D)&&!isAP(o,D)&&!inE(o,D)&&(!c.turno||c.turno===S.shift)}
+function propose(){const n=Math.max(RF.n,RF.vols.length),out=[...RF.vols],els=S.rot.filter(o=>!out.includes(o)&&eligible(o,RF.d));while(out.length<n&&els.length)out.push(els.shift());return out}
+const mw=m=>{const[y,mo]=m.split("-").map(Number),n=new Date(Date.UTC(y,mo,0)).getUTCDate(),o=[];for(let i=1;i<=n;i++){const d=m+"-"+String(i).padStart(2,"0");if(![0,6].includes(new Date(d+"T12:00:00Z").getUTCDay()))o.push(d)}return o};
+const fm=m=>{const[y,mo]=m.split("-").map(Number);return new Date(Date.UTC(y,mo-1,1,12)).toLocaleDateString("es-ES",{month:"long",year:"numeric",timeZone:"UTC"})};
+const CAL_PROMPT="Las imágenes adjuntas son calendarios laborales de una fábrica (Ford Valencia, «Servicios al personal»). Cada imagen tiene uno o dos meses, con un recuadro resumen debajo de cada mes (Laborales, Sábados/Domingos y Festivos, Vacaciones, J.Ind, Total Días). Para cada mes devuelve los días de lunes a viernes que NO son laborables: festivos (rojo oscuro), vacaciones (amarillo) y J.Ind (turquesa). Los días con círculo (paradas) SÍ son laborables. Ignora sábados, domingos y los días grises de otros meses. El año es 2026 salvo que la imagen indique otro. Usa el número de «Laborales» del resumen para comprobar tu resultado. Responde solo con un array JSON, por ejemplo: [{\"month\":\"2026-12\",\"laborables\":14,\"nolaborables\":[\"2026-12-08\",\"2026-12-25\"]}]";
+async function calRead(files){CAL_RES={st:"busy"};render();
+try{const sample=window.claude?await window.claude.use("sample"):null;const lim=sample?await sample.limits().catch(()=>null):null;if(!sample||!lim||!lim.images)throw{code:"na"};
+const data=await sample.json(CAL_PROMPT,{images:files,cache:false});if(!Array.isArray(data))throw{code:"bad"};const items=[];
+data.forEach(it=>{const m=String(it&&it.month||"");if(!/^\d{4}-\d{2}$/.test(m))return;const wk=mw(m),no=(Array.isArray(it.nolaborables)?it.nolaborables:[]).filter(d=>wk.includes(d));items.push({m,no,n:wk.length-no.length,claim:Number(it.laborables)})});
+if(!items.length)throw{code:"bad"};items.sort((a,b)=>a.m<b.m?-1:1);CAL_RES={st:"done",items}}
+catch(e){const c=e&&e.code;CAL_RES={st:"err",msg:["na","not_granted","images_unavailable","not_declared","sampling_disabled","capability_disabled"].includes(c)?"Esta función no está disponible aquí. Mándame la foto en el chat y la cargo yo.":c==="rate_limited"?"Demasiadas peticiones. Prueba en un rato.":c==="image_rejected"?"No pude leer esa imagen. Prueba con otra foto.":"No pude leer el calendario. Prueba otra vez o mándame la foto en el chat."}}
+render()}
 /* ---------- piezas ---------- */
-const sel=(k,opts,cls="")=>{const v=(W.f[k]!==undefined&&opts.some(o=>String(o[0])===String(W.f[k])))?W.f[k]:opts[0]&&opts[0][0];return`<select data-h="fs" data-k="${k}" ${cls}>${opts.map(([a,b])=>`<option value="${esc(a)}" ${String(a)===String(v)?"selected":""}>${esc(b)}</option>`).join("")}</select>`};
-const fv=(k,opts)=>{const v=W.f[k];return opts.some(o=>String(o[0])===String(v))?v:opts[0]&&opts[0][0]};
-const optP=()=>OPS().map(o=>[o,o]),optQ=()=>P().map(p=>[p,p]);
-const chipsFor=(sel,act)=>P().map(p=>`<button class="chip ${sel.includes(p)?"on":""}" data-a="${act}" data-v="${esc(p)}">${esc(p)}</button>`).join("");
-const line=(txt,btn)=>`<div class="ln"><span>${txt}</span>${btn}</div>`;
-const delb=(a,i)=>`<button class="chip x" data-a="${a}" data-v="${i}">Quitar</button>`;
-const sec=(body)=>`<section class="card pad" style="display:flex;flex-direction:column;gap:12px">${body}</section>`;
-function ruleSec(q){const r=S.rules;
-if(q==="sep"){const ps=W.f.sp||[];return sec((r.sep.length?r.sep.map((x,i)=>line(esc(x.a)+" y "+esc(x.b)+`<br><span class="mu">no juntos en: ${esc(lst(x.posts))}</span>`,delb("rlSepDel",i))).join(""):'<span class="mu">Ninguna por ahora</span>')+
-`<div style="border-top:1px solid var(--ln);padding-top:12px;display:flex;flex-direction:column;gap:10px"><b>Añadir una</b><div class="row">${sel("sa",optP())}${sel("sb",optP2())}</div><span class="mu">¿En qué puestos no deben coincidir?</span><div class="chips">${chipsFor(ps,"fSepP")}</div><div class="row"><button class="btn grow" data-a="fSepAll">Todos</button><button class="btn grow" data-a="rlSepAdd">${ic("plus")} Añadir</button></div></div>`)}
-if(q==="fav")return sec((r.fav.length?r.fav.map((x,i)=>line(esc(x.o)+" · "+esc(x.p)+`<br><span class="mu">${x.pct===100?"Siempre":x.pct+" % de los días"}</span>`,delb("rlFavDel",i))).join(""):'<span class="mu">Ninguna por ahora</span>')+
-`<div style="border-top:1px solid var(--ln);padding-top:12px;display:flex;flex-direction:column;gap:10px"><b>Añadir una</b><div class="row">${sel("fo",optP())}${sel("fp",optQ())}</div>${sel("fq",[[100,"Siempre (100 %)"],[90,"Casi siempre (90 %)"],[70,"A menudo (70 %)"],[50,"La mitad de los días"]])}<button class="btn full" data-a="rlFavAdd">${ic("plus")} Añadir</button></div>`);
-if(q==="split")return sec(`<span class="mu">Marca los puestos que se reparten entre dos personas, 4 h cada una.</span><div class="chips">${chipsFor(S.split,"rlSplit")}</div>`);
-if(q==="max")return sec((r.max.length?r.max.map((x,i)=>line(esc(x.o)+" · "+esc(x.p)+" · máx. "+x.n+" por semana",delb("rlMaxDel",i))).join(""):'<span class="mu">Ninguna por ahora</span>')+
-`<div style="border-top:1px solid var(--ln);padding-top:12px;display:flex;flex-direction:column;gap:10px"><b>Añadir una</b><div class="row">${sel("mo",optP())}${sel("mp",optQ())}</div>${sel("mn",[[1,"Como mucho 1 vez por semana"],[2,"Como mucho 2 veces por semana"],[3,"Como mucho 3 veces por semana"]])}<button class="btn full" data-a="rlMaxAdd">${ic("plus")} Añadir</button></div>`);
-if(q==="norep")return sec(`<div class="seg">${[[true,"Sí, que cambien"],[false,"No importa"]].map(([v,l])=>`<button class="${r.norep===v?"on":""}" data-a="rlNorep" data-v="${v}">${l}</button>`).join("")}</div>`);
-if(q==="rot")return sec(`<span class="mu">Cuánto se evita repetir el mismo puesto a la misma persona en el último mes.</span><div class="seg">${[[1,"Suave"],[2,"Normal"],[3,"Fuerte"]].map(([v,l])=>`<button class="${r.rot===v?"on":""}" data-a="rlRot" data-v="${v}">${l}</button>`).join("")}</div>`);
-if(q==="nota")return sec(`<span class="mu">Escríbela con tus palabras. La app la guarda como nota; si es algo que debo cumplir al repartir, dímelo y lo añado.</span><textarea data-h="nt" placeholder="Ej.: Los lunes no hay nadie en Corchos" style="min-height:110px">${esc(r.nota)}</textarea>`);return""}
-const QS=[["sep","¿Hay alguien que no pueda estar con otra persona?","Si pueden, no coincidirán en los puestos que elijas."],["fav","¿Alguien tiene que estar siempre en un puesto?","Por ejemplo, una persona casi siempre en el mismo puesto."],["split","¿Algún puesto es de 4 y 4 horas?","Se reparte entre dos personas el mismo día: 4 horas cada una."],["max","¿Alguien no puede repetir un puesto más de X veces por semana?","Pon el límite que necesites."],["norep","¿Nadie debe repetir puesto al día siguiente?","La app evitará poner a alguien en el mismo puesto dos días seguidos."],["nota","¿Alguna otra regla?","Cuéntamela y la dejo apuntada."]];
-function tuSec(){const t=S.tu,cm=t.ref?isMan(TODAY):null,wk=tuWeek();
-return`<div class="fl">¿En qué turno estás?<div class="seg">${["A","B"].map(v=>`<button class="${t.eq===v?"on":""}" data-a="tuEq" data-v="${v}">Turno ${v}</button>`).join("")}</div></div><div class="fl">Esta semana estás de<div class="seg">${[[1,"Mañana"],[0,"Tarde"]].map(([v,l])=>`<button class="${cm!==null&&cm===!!v?"on":""}" data-a="tuM" data-v="${v}">${l}</button>`).join("")}</div></div><div class="fl">Cambiáis cada dos semanas. ¿Qué semana es esta?<div class="seg">${[[1,"1.ª semana"],[2,"2.ª semana"]].map(([v,l])=>`<button class="${t.ref&&wk===v?"on":""}" data-a="tuW" data-v="${v}">${l}</button>`).join("")}</div></div>${t.eq&&t.ref?`<p class="hint">Cuando el turno ${t.eq} está de mañana, el ${t.eq==="A"?"B":"A"} está de tarde. La semana que viene estás de ${isMan(addD(TODAY,7))?"mañana":"tarde"}${isMan(addD(TODAY,7))!==cm?" (cambias)":""}.</p>`:""}`}
-/* ---------- importar desde foto o lista ---------- */
-function impSec(k){const L=k==="posts"?"puestos":"personas",on=IM.k===k,n=on?IM.items.filter(x=>x.on).length:0;
-let h=`<span class="mu">¿Tienes los ${L} en una hoja, pizarra o cuadrante? Hazle una foto o pega la lista y la app los saca.</span><div class="row">${SMP?`<label class="btn grow" style="cursor:pointer">${ic("photo")} Foto<input type="file" accept="image/*" data-h="imgf" data-k="${k}" hidden></label>`:""}<button class="btn grow" data-a="imList" data-v="${k}">Pegar lista</button></div>`;
-if(on&&IM.mode==="list"&&!IM.items.length)h+=`<textarea id="imTx" placeholder="${k==="posts"?"Un puesto por línea":"Una persona por línea. Opcional: Nombre: puesto, puesto"}" style="min-height:120px">${esc(IM.tx)}</textarea><button class="btn p full" data-a="imParse" data-v="${k}">Sacar ${L}</button>`;
-if(on&&IM.busy)h+=`<div class="note">${ic("clock")}<span>Leyendo la foto…</span></div>`;
-if(on&&IM.err)h+=`<div class="note wa"><span>${esc(IM.err)}</span></div>`;
-if(on&&IM.items.length)h+=`<span class="mu" style="font-weight:700">He encontrado ${IM.items.length}. Toca para quitar los que no quieras.</span><div class="chips">${IM.items.map((x,i)=>`<button class="chip ${x.on?"on":""}" data-a="imTog" data-v="${i}" ${x.dup?"disabled":""}>${x.on?ic("check"):""}${esc(x.n)}${x.dup?" · ya está":""}${k==="ops"&&x.posts.length?` · ${x.posts.length} puesto${x.posts.length>1?"s":""}`:""}</button>`).join("")}</div>${k==="ops"?`<p class="hint">${P().length?"A quien no se le indiquen puestos se le ponen todos; luego lo cambias en su ficha.":"Aún no hay puestos: añádelos y después marca qué sabe hacer cada persona."}</p>`:""}<div class="row"><button class="btn grow" data-a="imCancel">Cancelar</button><button class="btn p grow" data-a="imAdd" data-v="${k}" ${n?"":"disabled"}>${ic("plus")} Añadir ${n}</button></div>`;
-return sec(`<h4 class="sl" style="margin:0">Desde foto o lista</h4>`+h)}
-function cleanItems(arr,k){const seen=new Set(),out=[],ex=(k==="posts"?P():OPS()).map(x=>x.toLowerCase());
-(Array.isArray(arr)?arr:[]).forEach(x=>{const n=String(typeof x==="string"?x:(x&&x.n)||"").replace(/[|]/g,"").replace(/\s+/g," ").trim();if(!n||n.length>60)return;const l=n.toLowerCase();if(seen.has(l)||badName(n))return;seen.add(l);
-const ps=k==="ops"&&x&&Array.isArray(x.posts)?x.posts.map(p=>P().find(q=>q.toLowerCase()===String(p).trim().toLowerCase())).filter(Boolean):[];
-const dup=ex.includes(l);out.push({n,posts:[...new Set(ps)],on:!dup,dup})});return out}
-function shrink(f){return new Promise(res=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{try{const M=1600,r=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*r);c.height=Math.round(im.height*r);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>res(b||f),"image/jpeg",.85)}catch(e){res(f)}};im.onerror=()=>{URL.revokeObjectURL(u);res(f)};im.src=u})}
-async function readImg(f,k){if(!f)return;IM={k,mode:"",busy:true,items:[],err:"",tx:""};render();
-try{const s=await claude.use("sample");if(!s)throw{code:"not_granted"};const lm=await s.limits();if(!lm||!lm.images)throw{code:"no_img"};
-const b=await shrink(f);
-const pr=k==="posts"?'Esta foto muestra los puestos de trabajo de un área (lista, pizarra, cuadrante o tabla). Saca el nombre de cada puesto tal como aparece, sin repetir. Ignora fechas, horas y nombres de personas. Responde SOLO con JSON, sin texto alrededor: {"items":[{"n":"nombre del puesto"}]}':'Esta foto muestra trabajadores u operarios de un equipo (lista, cuadrante o tabla). Saca el nombre de cada persona tal como aparece, sin repetir.'+(P().length?' Si la foto indica qué puestos sabe hacer o tiene cada persona, ponlos usando solo estos nombres exactos: '+P().join(", ")+'.':'')+' Ignora fechas y horas. Responde SOLO con JSON, sin texto alrededor: {"items":[{"n":"Nombre Apellido","posts":["puesto"]}]}';
-const r=await s(pr,{images:[b],modelTier:"default"});const m=String(r&&r.text||"").match(/\{[\s\S]*\}/);if(!m)throw{code:"parse"};const j=JSON.parse(m[0]);
-IM.items=cleanItems(j.items,k);if(!IM.items.length)IM.err="No he encontrado ningún nombre en la foto. Prueba con otra más nítida o pega la lista."}
-catch(e){const c=e&&e.code;IM.err=c==="not_granted"?"Esta página no tiene permiso para leer fotos. Pega la lista.":c==="rate_limited"?"Has leído muchas fotos seguidas. Espera un poco y vuelve a probar.":c==="no_img"?"Aquí no se pueden leer fotos. Pega la lista.":"No he podido leer la foto. Prueba con otra más nítida o pega la lista."}
-IM.busy=false;render()}
-/* ---------- asistente ---------- */
-function peopleForm(){const ed=W.edit;return sec(`${ed?`<b>Editando a ${esc(ed)}</b>`:""}<label class="fl">Nombre<input type="text" id="wn" value="${esc(W.name)}" placeholder="Nombre y apellido" autocomplete="off" ${ed?"readonly":""}></label><span class="mu" style="font-weight:700">¿Qué puestos sabe hacer? · ${W.posts.length}</span><div class="chips">${chipsFor(W.posts,"wPost")}</div><div class="row"><button class="btn grow" data-a="wAll">Todos</button><button class="btn grow" data-a="wNone">Ninguno</button></div>${W.err?`<div class="note wa"><span>${esc(W.err)}</span></div>`:""}<button class="btn p full" data-a="wSave">${ic("check")} ${ed?"Guardar cambios":"Guardar persona"}</button>${ed?`<button class="btn full" data-a="wCancel">Cancelar</button>`:""}`)}
-function wizHTML(){const n=S.step;const head=`<div class="wh">${n>0?`<button class="ib sm" data-a="wback" aria-label="Atrás">${ic("back")}</button>`:""}<div class="pb" style="flex:1"><i style="width:${Math.round(100*(n+1)/6)}%"></i></div><b>Paso ${n+1} de 6</b></div>`;
-let h=`<div class="in wz">${head}`;
-if(n===0)h+=`<section class="hero"><span class="mark">${ic("team")}</span><h1>Vamos a preparar tu planning</h1><p>Te haré unas preguntas sobre tu trabajo, tu equipo y tus reglas. Después la app reparte a tu gente en los puestos cada día.</p></section>${sec(`<label class="fl">¿Cómo se llama tu área o departamento?<input type="text" id="wa" value="${esc(S.area)}" placeholder="Ej.: Almacén, Línea 2…" autocomplete="off"></label><label class="fl">¿Cómo se llama el jefe de equipo?<input type="text" id="wl" value="${esc(S.lider)}" placeholder="Nombre y apellido" autocomplete="off"></label>${tuSec()}`)}<div class="cta"><button class="btn y full" data-a="wnext">Empezar ${ic("chev")}</button></div>${sec(`<h4 class="sl" style="margin:0">¿Ya usabas la app?</h4><span class="mu">Pega aquí la copia de seguridad que hiciste en la app anterior (Más → Copia de seguridad → Copiar mi copia) y recuperas todo.</span><textarea id="bkTx" placeholder="Pega aquí tu copia" style="min-height:110px">${esc(BK.tx)}</textarea><button class="btn ${BK.cf?"dg":""} full" data-a="bkRestore">${ic("save")} ${BK.cf?"Pulsa otra vez: sustituye todo":"Restaurar mi copia"}</button>`)}`;
-if(n===1)h+=`<h1>Conozcamos tu trabajo</h1><p class="lead">¿Qué puestos hay? Escríbelos uno a uno. Si alguno es de 4 y 4 horas (dos personas el mismo día), toca «4 y 4 h» en ese puesto.</p>${sec(`<label class="fl">Nombre del puesto<input type="text" id="wp" placeholder="Ej.: Portones" autocomplete="off"></label><button class="btn p full" data-a="wAddPost">${ic("plus")} Añadir puesto</button>`)}${impSec("posts")}${P().length?`<section class="card">${P().map((p,i)=>`<div class="li"><span class="cd">${String(i+1).padStart(2,"0")}</span><span class="lt"><b>${esc(p)}</b></span><button class="chip ${isSplit(p)?"on":""}" data-a="rlSplit" data-v="${esc(p)}" aria-pressed="${isSplit(p)}">${isSplit(p)?ic("check"):""}4 y 4 h</button><button class="chip x" data-a="wDelPost" data-v="${esc(p)}">Quitar</button></div>`).join("")}</section>`:""}<div class="cta"><button class="btn p full" data-a="wnext" ${P().length?"":"disabled"}>Siguiente: tu equipo ${ic("chev")}</button></div>`;
-if(n===2)h+=`<h1>Conozcamos tu equipo</h1><p class="lead">Añade a cada persona y elige qué puestos sabe hacer.</p>${peopleForm()}${impSec("ops")}${OPS().length?`<h4 class="sl" style="margin:4px 0 -6px">Tu equipo · ${OPS().length}</h4><section class="card">${OPS().map(o=>`<div class="li">${av(o)}<button class="lt" data-a="wEdit" data-v="${esc(o)}"><b>${esc(o)}</b><small>${S.ops[o].posts.length} de ${P().length} puestos · tocar para cambiar</small></button><button class="chip x" data-a="wDelOp" data-v="${esc(o)}">Quitar</button></div>`).join("")}</section>`:""}<div class="cta"><button class="btn p full" data-a="wnext" ${OPS().length?"":"disabled"}>Siguiente: bajas ${ic("chev")}</button></div>`;
-if(n===3)h+=`<h1>¿Alguien está de baja?</h1><p class="lead">Toca a quien esté de baja. Se queda de baja hasta que lo quites en Equipo, donde también puedes poner fechas de vuelta.</p>${sec(`<div class="chips">${OPS().map(o=>`<button class="chip ${S.ops[o].bajas.some(b=>!b.to)?"on":""}" data-a="wBaja" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`)}<div class="cta"><button class="btn p full" data-a="wnext">${OPS().some(o=>S.ops[o].bajas.length)?"Siguiente":"No hay nadie de baja"} ${ic("chev")}</button></div>`;
-if(n===4){const nb=OPS().filter(o=>isBaja(o,TODAY)).length;h+=`<section class="hero"><span class="mark">${ic("check")}</span><h1>¿Todo listo?</h1><p>${P().length} puestos · ${OPS().length} personas${nb?" · "+nb+" de baja":""}.<br>Puedes cambiar cualquier cosa después. Ahora te pregunto por tus reglas.</p></section><div class="cta"><button class="btn y full" data-a="wnext">${ic("check")} Todo listo</button></div>`}
-if(n===5){const q=QS[Math.min(S.qi,QS.length-1)],last=S.qi>=QS.length-1;h+=`<div class="q"><span>Regla ${S.qi+1} de ${QS.length}</span><b>${q[1]}</b><span>${q[2]}</span></div>${ruleSec(q[0])}<div class="cta">${S.qi>0?`<button class="btn" data-a="qprev">${ic("back")}</button>`:""}<button class="btn ${last?"y":"p"} grow" data-a="qnext">${last?"Terminar y empezar":"Siguiente"} ${ic(last?"check":"chev")}</button></div>`}
-return h+"</div>"}
-/* ---------- app ---------- */
-function stripCard(){const L=["L","M","X","J","V","S","D"];return`<section class="card strip" aria-label="Semana"><div class="sc">${[0,1,2,3,4,5,6].map(i=>addD(mon(S.date),i)).map((d,i)=>`<button class="dc ${d===S.date?"sel":""} ${d===TODAY?"td":""}" data-a="day" data-v="${d}"><i>${L[i]}</i><b>${+d.slice(8)}</b>${TAB==="equipo"?`<i style="font-weight:800">${OPS().filter(o=>avail(o,d)).length}</i>`:""}${TAB==="hoy"&&S.conf[d]?"<u></u>":""}</button>`).join("")}</div></section>`}
-function hdHTML(){if(TAB==="hoy")return"";
-const T={equipo:"Equipo",reglas:"Reglas",mas:MORE==="posts"?"Puestos del área":MORE==="ap"?"Asuntos propios":MORE==="bk"?"Copia de seguridad":MORE==="imp"?"Desde foto o lista":"Más"}[TAB];
-const left=TAB==="mas"&&MORE?`<button class="ib" data-a="more" data-v="" aria-label="Volver">${ic("back")}</button>`:"";
-const right=TAB==="equipo"?`<button class="ib" data-a="addop" aria-label="Añadir persona">${ic("plus")}</button>`:"";
+function statusPill(o){const c=S.ops[o];if(isBaja(o))return'<span class="pill er">De baja</span>';if(isAP(o))return'<span class="pill wa">Asuntos propios</span>';if(inE(o))return'<span class="pill wa">ERTE</span>';const f=falt(o).reduce((a,x)=>a+x.h,0);if(f)return`<span class="pill wa">Faltan ${f} h</span>`;if(c.turno&&c.turno!==S.shift)return'<span class="pill">Otro turno</span>';return'<span class="pill ok">Disponible</span>'}
+const turnoTxt=c=>c.turno==="M"?"Solo mañana":c.turno==="T"?"Solo tarde":"Cualquier turno";
+function outGroups(){const g={erte:[],baja:[],ap:[],fal:[],turno:[]};OPS.forEach(o=>{const c=S.ops[o];if(isBaja(o))g.baja.push(o);else if(isAP(o))g.ap.push(o);else if(inE(o))g.erte.push(o);else if(c.turno&&c.turno!==S.shift)g.turno.push(o);if(!isBaja(o)&&falt(o).length)g.fal.push(o)});return g}
+function shiftSeg(){return`<div class="seg dk"><button class="${S.shift==="M"?"on":""}" data-a="sh" data-v="M">Mañana</button><button class="${S.shift==="T"?"on":""}" data-a="sh" data-v="T">Tarde</button></div>`}
+const fdl=d=>cap(new Date(d+"T12:00:00Z").toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"short",timeZone:"UTC"}));
+function stripCard(){const L=["L","M","X","J","V","S","D"];return`<section class="card strip" aria-label="Semana"><div class="sc">${[0,1,2,3,4,5,6].map(i=>addD(mon(S.date),i)).map((d,i)=>`<button class="dc ${d===S.date?"sel":""} ${d===TODAY?"td":""} ${working(d)?"":"off"}" data-a="day" data-v="${d}"><i>${L[i]}</i><b>${+d.slice(8)}</b>${TAB==="v2"&&working(d)?`<i style="font-weight:800">${OPS.filter(o=>avail(o,d)).length}</i>`:""}${TAB==="v1"&&S.conf[d]?"<u></u>":""}</button>`).join("")}</div></section>`}
+function hdHTML(){
+if(TAB==="v1")return"";
+const T={v2:"Equipo",v3:"ERTE",v5:MORE==="ap"?"Asuntos propios":MORE==="cal"?"Calendario laboral":MORE==="cuad"?"Cuadrante semanal":MORE==="rl"?"Reglas del reparto":MORE==="pu"?"Puestos por persona":MORE==="bk"?"Copia de seguridad":"Más"}[TAB];
+const left=TAB==="v5"&&MORE?`<button class="ib" data-a="more" data-v="" aria-label="Volver">${ic("back")}</button>`:"";
+const right=TAB==="v2"?`<button class="ib" data-a="addop" aria-label="Añadir operario">${ic("plus")}</button>`:"";
 return`<div class="in"><div class="pt"><div class="row">${left}<h1>${T}</h1></div>${right}</div></div>`}
-function tabsHTML(){const NW=warns().length,cf=!!S.conf[S.date];const T=([k,i,l])=>`<button class="tb ${TAB===k?"on":""}" data-a="tab" data-v="${k}">${ic(i)}<span>${l}</span>${k==="hoy"&&NW?`<span class="bd">${NW}</span>`:""}</button>`;
-return'<div class="in">'+T(["hoy","today","Hoy"])+T(["equipo","team","Equipo"])+`<button class="fab ${cf?"ok":""}" data-a="send" aria-label="Revisar y enviar"><i>${ic("send")}</i><span>Enviar</span></button>`+T(["reglas","spark","Reglas"])+T(["mas","more","Más"])+"</div>"}
-function vHoy(){const cf=!!S.conf[S.date],t=day(S.date),used=usedSet(),cov=P().filter(p=>t[p]).length,wl=warnList(),wm={};wl.forEach(x=>{if(x.p)(wm[x.p]=wm[x.p]||[]).push(x.m)});
-const free=OPS().filter(o=>avail(o)&&!used.has(o)),nAv=OPS().filter(o=>avail(o)).length,NP=P().length,nd=need();
+const fld=d=>cap(fl(d));
+function tabsHTML(){const NW=warns().length,cf=!!S.conf[S.date];const T=([k,i,l])=>`<button class="tb ${TAB===k?"on":""}" data-a="tab" data-v="${k}">${ic(i)}<span>${l}</span>${k==="v1"&&NW?`<span class="bd">${NW}</span>`:""}</button>`;
+return'<div class="in">'+T(["v1","today","Hoy"])+T(["v2","team","Equipo"])+`<button class="fab ${cf?"ok":""}" data-a="send" aria-label="Revisar y enviar"><i>${ic("send")}</i><span>Enviar</span></button>`+T(["v3","erte","ERTE"])+T(["v5","more","Más"])+"</div>"}
+function dockHTML(){return""}
+/* ---------- vista Hoy ---------- */
+function vHoy(){const cf=!!S.conf[S.date],t=day(S.date),used=usedSet(),cov=POSTS.filter(p=>t[p]).length,wl=warnList(),wm={};wl.forEach(x=>{if(x.p)(wm[x.p]=wm[x.p]||[]).push(x.m)});
+const free=OPS.filter(o=>avail(o)&&!used.has(o)),nAv=OPS.filter(o=>avail(o)).length,g=outGroups();
+const chips=[["erte","ERTE"],["baja","Baja"],["ap","Asuntos propios"],["fal","Faltan horas"],["turno","Otro turno"]].filter(([k])=>g[k].length).map(([k,l])=>`<button class="pill wa" data-a="out">${l} · ${g[k].length}</button>`).join("");
+const sub=[S.date===TODAY?"Hoy":"",!working(S.date)?"No laborable":"",cf?"Confirmado":""].filter(Boolean).join(" · ")||(S.shift==="M"?"Turno de mañana":"Turno de tarde");
 const dn=new Date(S.date+"T12:00:00Z").toLocaleDateString("es-ES",{weekday:"long",timeZone:"UTC"}),dm=new Date(S.date+"T12:00:00Z").toLocaleDateString("es-ES",{day:"numeric",month:"long",timeZone:"UTC"});
-const sub=[S.date===TODAY?"Hoy":"",cf?"Confirmado":""].filter(Boolean).join(" · ");
 let h='<div class="in pg">';
-h+=`<section class="ban"><div class="top"><span class="row" style="gap:10px"><span class="mark" style="width:38px;height:38px;border-radius:12px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${IC.team}</svg></span><span style="display:flex;flex-direction:column;line-height:1.2"><b style="font-size:17px">${esc(S.area||"Planning")}</b>${S.lider?`<span style="font-size:13px;opacity:.85">Jefe de equipo: ${esc(S.lider)}</span>`:""}</span></span>${S.tu.eq?`<span class="pill" style="background:var(--yl);color:var(--yli);border-color:transparent;font-size:13px">${esc(tuTxt(S.date))}</span>`:""}</div><div class="dt"><button class="ib g" data-a="dd" data-v="-1" aria-label="Día anterior">${ic("back")}</button><div class="dd"><b>${esc(cap(dn))}</b><span>${esc(dm)}${sub?" · "+sub:""}</span></div><button class="ib g" data-a="dd" data-v="1" aria-label="Día siguiente">${ic("chev")}</button></div><div class="pr"><div class="pb"><i style="width:${NP?Math.round(100*cov/NP):0}%"></i></div><b>${cov}/${NP}</b></div><div class="bst"><span><b>${cov}</b> de ${NP} puestos cubiertos</span><span><b>${nAv}</b> disponibles de ${OPS().length}</span></div>${nAv<nd?`<div class="bal">${ic("warn")}<span>Faltan ${nd-nAv} persona${nd-nAv>1?"s":""}: hay ${nAv} disponibles para ${nd} plazas</span></div>`:""}${cov&&cov<NP?`<div class="bal">${ic("warn")}<span>Sin cubrir: ${P().filter(x=>!t[x]).join(", ")}</span></div>`:""}${cf?`<div class="cfl">${ic("lock")}<span>Día confirmado</span><button class="btn gh" style="min-height:36px" data-a="unconf">Editar</button></div>`:`<div class="row"><button class="btn y grow" data-a="gen">${ic("spark")} Generar planning</button><button class="btn gh" data-a="clr">Limpiar</button></div>`}</section>`;
+h+=`<section class="ban"><div class="top">${S.ilu?LOGO:`<b style="font-size:17px;color:#fff">${esc(S.area||"Mi equipo")}</b>`}${shiftSeg()}</div><div class="dt"><button class="ib g" data-a="dd" data-v="-1" aria-label="Día anterior">${ic("back")}</button><div class="dd"><b>${esc(cap(dn))}</b><span>${esc(dm)} · ${sub}</span></div><button class="ib g" data-a="dd" data-v="1" aria-label="Día siguiente">${ic("chev")}</button></div><div class="pr"><div class="pb"><i style="width:${Math.round(100*cov/POSTS.length)}%"></i></div><b>${cov}/${POSTS.length}</b></div><div class="bst"><span><b>${cov}</b> de ${POSTS.length} puestos cubiertos</span><span><b>${nAv}</b> disponibles de ${OPS.length}</span></div>${nAv<POSTS.length?`<div class="bal">${ic("warn")}<span>Faltan ${POSTS.length-nAv} persona${POSTS.length-nAv>1?"s":""}: hay ${nAv} disponibles para ${POSTS.length} puestos</span></div>`:""}${cov&&cov<POSTS.length?`<div class="bal">${ic("warn")}<span>Sin cubrir: ${POSTS.filter(x=>!t[x]).map(x=>SHORT[POSTS.indexOf(x)]).join(", ")}</span></div>`:""}${(nAv<POSTS.length||(cov&&cov<POSTS.length))?`<button class="btn gh full" data-a="refu">${ic("plus")} Añadir operario de otro turno o sitio</button>`:""}${cf?`<div class="cfl">${ic("lock")}<span>Día confirmado</span><button class="btn gh" style="min-height:36px" data-a="unconf">Editar</button></div>`:`<div class="row"><button class="btn y grow" data-a="gen">${ic("spark")} Generar planning</button><button class="btn gh" data-a="clr">Limpiar</button></div>`}</section>`;
 h+=stripCard();
+h+=`<button class="note" data-a="cuad">${ic("today")}<span>Ver cuadrante de la semana</span>${ic("chev")}</button>`;
 if(!cov&&!cf)h+='<p class="hint">Toca «Generar planning» y la app propone el día. Después toca cualquier puesto para cambiar a la persona.</p>';
 if(wl.length)h+=`<button class="note wa" data-a="avisos">${ic("warn")}<span>${wl.length} aviso${wl.length>1?"s":""} en el planning</span>${ic("chev")}</button>`;
-h+='<div class="grid">'+P().map((p,i)=>{const a=t[p];const nm=a?esc(a.op)+(a.partner?" / "+esc(a.partner):""):"Sin asignar";
-return`<button class="st ${a?"":"nil"} ${wm[p]?"w":""}" data-a="post" data-v="${i}"><span class="h"><span class="cd">${String(i+1).padStart(2,"0")}</span><span>${a&&a.manual?ic("lock","mu"):""}${wm[p]?ic("warn","wi"):""}</span></span><span class="pn">${esc(p)}</span><span class="who ${a?"":"nil"}">${a?av(a.op,"sm"):'<span class="av sm nil">'+ic("plus")+"</span>"}<span>${nm}</span></span>${a&&a.partner?'<span class="wt" style="color:var(--mu)!important">4 h + 4 h</span>':""}${wm[p]?`<span class="wt">${esc(wm[p][0])}</span>`:""}</button>`}).join("")+"</div>";
-h+=`<section class="card pad"><h4 class="sl">Sin puesto · ${free.length} de ${nAv} disponibles</h4>${free.length?`<div class="chips">${free.map(o=>`<button class="chip" data-a="person" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`:'<span class="mu">Todos tienen puesto</span>'}</section></div>`;return h}
-const statusPill=o=>isBaja(o)?'<span class="pill er">De baja</span>':isAP(o)?'<span class="pill wa">Asuntos propios</span>':falt(o).length?`<span class="pill wa">Faltan ${falt(o).reduce((a,x)=>a+x.h,0)} h</span>`:'<span class="pill ok">Disponible</span>';
-function bajaTxt(o,d=S.date){const b=S.ops[o].bajas.find(b=>d>=b.from&&(!b.to||d<=b.to));return b?"De baja desde "+fs(b.from)+" · "+(b.to?"hasta "+fs(b.to):"sin fecha de vuelta"):""}
-function teamRows(){const q=QF.trim().toLowerCase(),r=OPS().filter(o=>!q||o.toLowerCase().includes(q));
-return r.length?r.map(o=>{const c=S.ops[o];return`<button class="li" data-a="person" data-v="${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${isBaja(o)?bajaTxt(o):c.posts.length+" de "+P().length+" puestos"}</small></span>${statusPill(o)}${ic("chev","mu")}</button>`}).join(""):'<p class="hint pad">'+(OPS().length?"Nadie coincide con la búsqueda.":"Aún no hay nadie. Pulsa + para añadir a alguien.")+'</p>'}
-function vTeam(){const nAv=OPS().filter(o=>avail(o)).length;return`<div class="in pg">${stripCard()}<section class="card pad row sp"><b style="font-size:17px">${nAv} disponibles</b><span class="mu">de ${OPS().length} · ${fs(S.date)}</span></section><input type="text" id="q" data-h="q" placeholder="Buscar" value="${esc(QF)}" autocomplete="off" aria-label="Buscar"><section class="card" id="tl">${teamRows()}</section></div>`}
-function vRules(){let h='<div class="in pg"><p class="hint">Aquí mandas tú. El reparto sigue estas reglas cada vez que pulsas «Generar planning».</p>';
-[["sep","No pueden estar juntos"],["fav","Siempre en un puesto"],["split","Puestos de 4 h + 4 h"],["max","Máximo por semana"],["norep","Cambiar de puesto cada día"],["rot","Rotación"],["nota","Otras reglas (nota)"]].forEach(([k,t])=>{h+=`<h4 class="sl" style="margin:6px 0 -6px">${t}</h4>`+ruleSec(k)});return h+"</div>"}
+h+='<div class="grid">'+POSTS.map((p,i)=>{const a=t[p];const nm=a?esc(a.op)+(a.partner?" / "+esc(a.partner):""):"Sin asignar";
+return`<button class="st ${a?"":"nil"} ${wm[p]?"w":""}" data-a="post" data-v="${i}"><span class="h"><span class="cd">${String(i+1).padStart(2,"0")}</span><span>${a&&a.manual?ic("lock","mu"):""}${wm[p]?ic("warn","wi"):""}</span></span><span class="pn">${esc(SHORT[i])}</span><span class="who ${a?"":"nil"}">${a?av(a.op,"sm"):'<span class="av sm nil">'+ic("plus")+"</span>"}<span>${nm}</span></span>${a&&(a.partner||a.s)?`<span class="wt" style="color:var(--mu)!important">4 h + 4 h${a.partner?"":" · falta la otra persona"}</span>`:""}${wm[p]?`<span class="wt">${esc(wm[p][0])}</span>`:""}</button>`}).join("")+"</div>";
+h+='<p class="hint">Mantén pulsado un puesto para ver opciones rápidas, como 4 h + 4 h.</p>';
+h+=`<section class="card pad"><h4 class="sl">Apoyo · ${free.length} disponible${free.length===1?"":"s"} sin puesto</h4>${free.length?`<div class="chips">${free.map(o=>`<button class="chip" data-a="person" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`:'<span class="mu">Nadie de apoyo: todos tienen puesto</span>'}</section>${chips?`<div class="chips">${chips}</div>`:""}</div>`;return h}
+/* ---------- vista Equipo ---------- */
+function teamRows(){const q=QF.trim().toLowerCase(),r=OPS.filter(o=>!q||o.toLowerCase().includes(q));
+return r.length?r.map(o=>{const c=S.ops[o];return`<button class="li" data-a="person" data-v="${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${isBaja(o)?bajaTxt(o):(c.guest?"Refuerzo de hoy · "+c.posts.length+" puestos":turnoTxt(c)+" · "+c.posts.length+" puestos")+(c.solo8?" · solo 8 h":"")}</small></span>${statusPill(o)}${ic("chev","mu")}</button>`}).join(""):'<p class="hint pad">Nadie coincide con la búsqueda.</p>'}
+function vTeam(){const g=outGroups(),nAv=OPS.filter(o=>avail(o)).length;
+const pills=[["erte","ERTE"],["baja","Baja"],["ap","Asuntos propios"],["fal","Faltan horas"],["turno","Otro turno"]].filter(([k])=>g[k].length).map(([k,l])=>`<span class="pill wa">${l} · ${g[k].length}</span>`).join("");
+return`<div class="in pg">${shiftSeg().replace("seg dk","seg")}${stripCard()}<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><div class="row sp"><b style="font-size:17px">${nAv} disponibles</b><span class="mu">de ${OPS.length} · ${fs(S.date)}</span></div>${pills?`<div class="chips">${pills}</div>`:""}<button class="btn full" data-a="refu">${ic("plus")} Añadir refuerzo de otro turno o sitio</button></section><input type="text" id="q" data-h="q" placeholder="Buscar operario" value="${esc(QF)}" autocomplete="off" aria-label="Buscar operario"><section class="card" id="tl">${teamRows()}</section></div>`}
+/* ---------- vista ERTE ---------- */
+function vErte(){const sg=`<div class="seg">${[["rot","Rotación"],["lista","Lista"],["reg","Registro"]].map(([k,n])=>`<button class="${S.sub===k?"on":""}" data-a="sub" data-v="${k}">${n}</button>`).join("")}</div>`;
+return`<div class="in pg">${sg}${S.sub==="rot"?vRot():S.sub==="lista"?vLista():vReg()}</div>`}
+function vRot(){const D=RF.d,E=S.ertes[D],En=E||{n:[],v:[]};
+let h=`<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><label class="fl">Día del ERTE<input type="date" data-h="rfD" value="${D}"></label><div class="row sp"><span class="mu">${esc(fld(D))}</span><span class="pill ${working(D)?"ok":""}">${working(D)?"Laborable":"No laborable"}</span></div></section>`;
+if(E&&E.n.length){h+=`<section class="card pad" style="display:flex;flex-direction:column;gap:12px"><h4 class="sl" style="margin:0">ERTE de ese día · ${E.n.length}</h4><div class="chips">${E.n.map(o=>`<span class="chip ${E.v.includes(o)?"v":"on"}">${esc(o)}${E.v.includes(o)?" · vol.":""}</span>`).join("")}</div>${E.rb?`<button class="btn full" data-a="rfUndo">Deshacer y restaurar la lista</button>`:""}</section>`}
+else{h+=`<section class="card pad"><h4 class="sl">1 · ¿Cuánta gente va de ERTE?</h4><div class="stp"><button class="rb" data-a="rfN" data-v="-1" aria-label="Menos">−</button><b>${RF.n}</b><button class="rb" data-a="rfN" data-v="1" aria-label="Más">+</button></div></section>
+<section class="card pad"><h4 class="sl">2 · ¿Hay voluntarios?</h4><p class="hint" style="margin-bottom:10px">Cuentan dentro del total. Si no hay, sigue.</p><div class="chips">${S.rot.filter(o=>!isBaja(o,RF.d)).map(o=>`<button class="chip ${RF.vols.includes(o)?"v":""}" data-a="rfVol" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div></section>
+<button class="btn p full" data-a="rfCalc">3 · Calcular desde arriba de la lista</button>`;
+if(RF.prop)h+=`<section class="card"><div class="pad" style="padding-bottom:4px"><h4 class="sl" style="margin:0">Propuesta · ${RF.prop.length}</h4></div>${RF.prop.map(o=>`<div class="li">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${RF.vols.includes(o)?"Voluntario":"Puesto nº "+(S.rot.indexOf(o)+1)+" de la lista"}</small></span></div>`).join("")}<div class="pad"><p class="hint" style="margin-bottom:10px">Al confirmar pasan al final de la lista.</p><button class="btn p full" data-a="rfOk">${ic("check")} Confirmar ERTE</button></div></section>`}
+h+=`<details class="card pad"><summary>Ajuste manual<span class="mu">poner o quitar</span></summary>${OPS.map(o=>`<div class="row sp" style="padding:6px 0"><span>${esc(o)}</span><span class="row"><button class="chip ${En.n.includes(o)?"on":""}" data-a="eT" data-v="${esc(o)}">ERTE</button><button class="chip ${En.v.includes(o)?"v":""}" data-a="eV" data-v="${esc(o)}">Vol.</button></span></div>`).join("")}<p class="hint" style="margin-top:8px">Lo manual no cambia el orden de la lista.</p></details>`;return h}
+function vLista(){const D=RF.d,E=S.ertes[D];
+let h=`<section class="card pad"><h4 class="sl">ERTE · ${fs(D)}</h4>${E&&E.n.length?`<div class="chips">${E.n.map(o=>`<span class="chip ${E.v.includes(o)?"v":"on"}">${esc(o)}${E.v.includes(o)?" · vol.":""}</span>`).join("")}</div>`:'<span class="mu">Nadie ese día</span>'}</section>`;
+h+=`<p class="hint">El primero de la lista es el siguiente en ir de ERTE. Usa las flechas para cambiar el orden.</p><section class="card">${S.rot.map((o,i)=>`<div class="li"><span class="rk">${i+1}</span><span class="lt"><b>${esc(o)}</b><small>${isBaja(o,D)?"De baja · se salta":inE(o,D)?"ERTE ese día":" "}</small></span><button class="ib" data-a="mv" data-v="${esc(o)}|-1" ${i===0?"disabled":""} aria-label="Subir">${ic("up")}</button><button class="ib" data-a="mv" data-v="${esc(o)}|1" ${i===S.rot.length-1?"disabled":""} aria-label="Bajar">${ic("down")}</button></div>`).join("")}</section>`;
+h+=`<a class="btn wa full" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(lmsg())}">${ic("send")} Enviar lista por WhatsApp</a><button class="btn full" data-a="copy" data-v="l">Copiar lista</button>
+<details class="card pad"><summary>Pegar un orden nuevo</summary><p class="hint" style="margin-bottom:8px">Un nombre por línea. El de arriba es el primero.</p><textarea id="rotTx">${esc(S.rot.join("\n"))}</textarea><button class="btn p full" style="margin-top:10px" data-a="rotApply">Aplicar orden</button>${RF.msg?`<div class="note wa" style="margin-top:10px">${esc(RF.msg)}</div>`:""}</details>`;return h}
+function vReg(){const tot=OPS.reduce((a,o)=>({n:a.n+eDays(o).n,v:a.v+eDays(o).v}),{n:0,v:0});
+let h=`<section class="card pad row sp"><div><h4 class="sl" style="margin:0 0 4px">Total días de ERTE</h4><span class="mu">${tot.v} voluntarios</span></div><div class="num">${tot.n}<small>días</small></div></section><p class="hint">Un día se suma al registro cuando pasa. Los de hoy y futuros quedan pendientes. Solo cuentan días laborables.</p>`;
+h+=[...OPS].sort((a,b)=>eDays(b).n-eDays(a).n).map(o=>{const e=eDays(o),c=S.ops[o],ds=Object.keys(S.ertes).filter(d=>S.ertes[d].n.includes(o)).sort(),pend=ds.filter(d=>d>=TODAY).length;
+return`<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><div class="row sp"><div class="row">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${e.v} voluntarios${pend?" · "+pend+" pendiente"+(pend>1?"s":""):""}</small></span></div><div class="num">${e.n}<small>días</small></div></div>${ds.length?`<div class="mu">${ds.map(d=>d.slice(8)+"/"+d.slice(5,7)+(S.ertes[d].v.includes(o)?"*":"")+(d>=TODAY?"…":"")).join(" · ")}</div>`:""}<div class="row"><label class="fl grow">Días previos<input type="number" min="0" data-h="eb" data-v="${esc(o)}" value="${c.base}"></label><label class="fl grow">De ellos vol.<input type="number" min="0" data-h="ebv" data-v="${esc(o)}" value="${c.basev}"></label></div></section>`}).join("");
+return h+'<p class="hint">* voluntario · … pendiente</p>'}
+/* ---------- vista Más ---------- */
+function vRules(){const r=S.rules,po=id=>`<select id="${id}">${OPS.map(o=>`<option>${esc(o)}</option>`).join("")}</select>`,pp=id=>`<select id="${id}">${POSTS.map((x,i)=>`<option value="${i}">${esc(SHORT[i])}</option>`).join("")}</select>`;
+const sec=(t,h,body,add)=>`<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">${t}</h4><p class="hint">${h}</p>${body||'<span class="mu">Ninguna</span>'}<div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--ln);padding-top:12px">${add}</div></section>`;
+const line=(txt,btn)=>`<div class="row sp"><span style="flex:1;font-weight:700">${txt}</span>${btn}</div>`;
+const del=(a,i)=>`<button class="chip" data-a="${a}" data-v="${i}">Quitar</button>`;
+let h='<div class="in pg"><p class="hint">Aquí mandas tú. El reparto sigue estas reglas cada vez que pulsas «Generar planning».</p>';
+h+=sec(S.ilu?"No juntar en Espejos":"No juntar",S.ilu?"Si pueden, estas dos personas no coinciden en los dos puestos de Espejos.":`Si pueden, estas dos personas no coinciden a la vez en los puestos que marques:</p><div class="chips">${POSTS.map(p=>`<button class="chip ${S.sepP.includes(p)?"on":""}" data-a="rlSepP" data-v="${esc(p)}">${esc(p)}</button>`).join("")||'<span class="mu">Añade antes tus puestos</span>'}</div><p class="hint" style="display:none">`,r.sep.map((x,i)=>line(esc(x.a)+" y "+esc(x.b),del("rlSepDel",i))).join(""),`<div class="row">${po("rsa")}${po("rsb")}</div><button class="btn full" data-a="rlSepAdd">${ic("plus")} Añadir pareja</button>`);
+h+=sec("Puesto habitual","Esa persona va a ese puesto el porcentaje de días indicado y puede repetirlo seguido.",r.fav.map((x,i)=>line(esc(x.o)+" · "+esc(SHORT[POSTS.indexOf(x.p)])+`<br><span class="mu">${x.pct} % de los días</span>`,`<span class="row" style="gap:6px"><button class="ib sm" data-a="rlFavPct" data-v="${i}|-10" aria-label="Menos">−</button><button class="ib sm" data-a="rlFavPct" data-v="${i}|10" aria-label="Más">+</button>${del("rlFavDel",i)}</span>`)).join(""),`<div class="row">${po("rfo")}${pp("rfp")}</div><button class="btn full" data-a="rlFavAdd">${ic("plus")} Añadir puesto habitual</button>`);
+h+=sec("Máximo por semana","Esa persona no hace ese puesto más veces en la misma semana.",r.max.map((x,i)=>line(esc(x.o)+" · "+esc(SHORT[POSTS.indexOf(x.p)])+" · máx. "+x.n+" por semana",del("rlMaxDel",i))).join(""),`<div class="row">${po("rmo")}${pp("rmp")}</div><div class="row"><select id="rmn"><option>1</option><option>2</option><option>3</option></select><button class="btn grow" data-a="rlMaxAdd">${ic("plus")} Añadir máximo</button></div>`);
+h+=sec("Puesto preferido","Si hay opción, esa persona va a ese puesto.",r.pref.map((x,i)=>line(esc(x.o)+" · "+esc(SHORT[POSTS.indexOf(x.p)]),del("rlPrefDel",i))).join(""),`<div class="row">${po("rpo")}${pp("rpp")}</div><button class="btn full" data-a="rlPrefAdd">${ic("plus")} Añadir preferencia</button>`);
+h+=`<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Rotación</h4><p class="hint">Cuánto se evita repetir el mismo puesto a la misma persona en el último mes.</p><div class="seg">${[[1,"Suave"],[2,"Normal"],[3,"Fuerte"]].map(([v,l])=>`<button class="${r.rot===v?"on":""}" data-a="rlRot" data-v="${v}">${l}</button>`).join("")}</div></section><button class="btn dg full" data-a="rlReset">Restaurar valores habituales</button></div>`;return h}
+let CW=null;
+const DL=["L","M","X","J","V","S","D"];
+function cell(o,d){const c=S.ops[o];if(c.guest&&!((S.gd||{})[d]||[]).includes(o))return{t:"",k:"x"};
+if(isBaja(o,d))return{t:"Baja",k:"er"};if(inE(o,d))return{t:S.ertes[d].v.includes(o)?"ERTE vol.":"ERTE",k:"wa"};if(isAP(o,d))return{t:"Asuntos propios",k:"wa"};
+const f=falt(o,d).reduce((a,x)=>a+x.h,0),fx=f?" · falta "+f+" h":"";
+const tp=S.days[d]||{};let pi=-1,half=false;POSTS.forEach((p,i)=>{const a=tp[p];if(a&&(a.op===o||a.partner===o)){pi=i;half=!!a.partner}});
+if(pi>=0)return{t:SHORT[pi]+(half?" (4+4)":"")+fx,k:"p"};
+if(c.turno&&c.turno!==S.shift)return{t:"Otro turno ("+(c.turno==="M"?"mañana":"tarde")+")",k:"tu"};
+if(!working(d))return{t:"No laborable",k:"off"};if(POSTS.some(p=>tp[p]))return{t:"Apoyo"+fx,k:"ap"};
+return{t:f?"Falta "+f+" h":"—",k:f?"wa":"n"}}
+function weekDays(){const m=CW||mon(S.date);return[0,1,2,3,4,5,6].map(i=>addD(m,i))}
+function cuadMsg(){const ds=weekDays(),show=ds.filter((d,i)=>working(d)||POSTS.some(p=>(S.days[d]||{})[p])),a=ds[0],b=ds[6];
+const rg=new Date(a+"T12:00:00Z").toLocaleDateString("es-ES",{day:"numeric",month:"long",timeZone:"UTC"})+" al "+new Date(b+"T12:00:00Z").toLocaleDateString("es-ES",{day:"numeric",month:"long",timeZone:"UTC"});
+let m="*ILUNION · Cuadrante semana del "+rg+"*\n"+(S.shift==="M"?"Turno de mañana":"Turno de tarde")+"\n";
+const ops=cuadOps();
+m+="\n";ops.forEach(o=>{m+="\n*"+o+"*: "+show.map(d=>{const c=cell(o,d);return DL[ds.indexOf(d)]+" "+(c.t||"—")}).join(" · ")});return m.trim()}
+function cuadOps(){const ds=weekDays();return[...TEAM_(),...Object.keys(S.ops).filter(o=>S.ops[o].guest&&ds.some(d=>((S.gd||{})[d]||[]).includes(o)))]}
+const TEAM_=()=>[...BASE,...S.extra];
+function vCuad(){const ds=weekDays(),ops=cuadOps(),miss=ds.filter(d=>working(d)&&!POSTS.some(p=>(S.days[d]||{})[p]));
+const hd=d=>`<th class="${d===TODAY?"td":""}"><i>${DL[ds.indexOf(d)]}</i><b>${+d.slice(8)}</b></th>`;
+const mn=new Date(ds[0]+"T12:00:00Z").toLocaleDateString("es-ES",{month:"long",year:"numeric",timeZone:"UTC"});
+return`<div class="in pg"><section class="card pad row sp"><button class="ib sm" data-a="cwk" data-v="-1" aria-label="Semana anterior">${ic("back")}</button><span style="text-align:center"><b style="font-size:16px">${cap(mn)}</b><br><span class="mu">Semana del ${+ds[0].slice(8)} al ${+ds[6].slice(8)} · ${S.shift==="M"?"Mañana":"Tarde"}</span></span><button class="ib sm" data-a="cwk" data-v="1" aria-label="Semana siguiente">${ic("chev")}</button></section>
+${miss.length?`<div class="note wa">${ic("warn")}<span>Sin planning generado: ${miss.map(d=>DL[ds.indexOf(d)]+" "+(+d.slice(8))).join(", ")}</span></div>`:""}
+<section class="card"><div class="tw"><table class="cq"><thead><tr><th class="nm"></th>${ds.map(hd).join("")}</tr></thead><tbody>${ops.map(o=>`<tr><th class="nm"><button data-a="person" data-v="${esc(o)}">${esc(o)}</button></th>${ds.map(d=>{const c=cell(o,d);return`<td class="${c.k}">${esc(c.t)}</td>`}).join("")}</tr>`).join("")}</tbody></table></div></section>
+<p class="hint"><span class="pill">Puesto</span> <span class="pill wa">ERTE / asuntos propios</span> <span class="pill er">Baja</span> <span class="pill">Otro turno</span></p>
+<a class="btn wa full" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(cuadMsg())}">${ic("send")} Enviar cuadrante por WhatsApp</a><button class="btn full" data-a="cuadCopy">Copiar mensaje</button></div>`}
 function vMore(){
-if(MORE==="imp")return`<div class="in pg"><h4 class="sl" style="margin:0 0 -6px">Puestos</h4>${impSec("posts")}<h4 class="sl" style="margin:6px 0 -6px">Personas</h4>${impSec("ops")}</div>`;
-if(MORE==="posts"){return`<div class="in pg"><p class="hint">Añade, quita o cambia los puestos de tu área. Si quitas un puesto, desaparece también de las reglas y de lo que sabe hacer cada persona.</p>${sec(`<label class="fl">Nuevo puesto<input type="text" id="wp" placeholder="Nombre del puesto" autocomplete="off"></label><button class="btn p full" data-a="mAddPost">${ic("plus")} Añadir puesto</button>`)}<section class="card">${P().map((p,i)=>`<div class="li"><span class="cd">${String(i+1).padStart(2,"0")}</span><span class="lt"><b>${esc(p)}</b><small>${isSplit(p)?"4 h + 4 h · ":""}${OPS().filter(o=>allowed(o,p)).length} personas lo saben hacer</small></span><button class="chip ${isSplit(p)?"on":""}" data-a="rlSplit" data-v="${esc(p)}" aria-pressed="${isSplit(p)}">${isSplit(p)?ic("check"):""}4 y 4 h</button><button class="chip ${CDP===p?"x":""}" data-a="mDelPost" data-v="${esc(p)}">${CDP===p?"¿Seguro?":"Quitar"}</button></div>`).join("")||'<p class="hint pad">No hay puestos.</p>'}</section></div>`}
-if(MORE==="ap"){const all=[];OPS().forEach(o=>S.ops[o].ap.forEach(d=>all.push([d,o])));all.sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0);
+if(MORE==="cuad")return vCuad();
+if(MORE==="rl")return vRules();
+if(MORE==="ap"){const all=[];OPS.forEach(o=>S.ops[o].ap.forEach(d=>all.push([d,o])));all.sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0);
 const r=([d,o])=>`<div class="li" style="${d<TODAY?"opacity:.55":""}">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${fs(d)}${d===TODAY?" · hoy":""}</small></span><button class="chip" data-a="apDel" data-v="${esc(o)}|${d}">Quitar</button></div>`;
 const up=all.filter(a=>a[0]>=TODAY),pa=all.filter(a=>a[0]<TODAY).reverse().slice(0,8);
-return`<div class="in pg">${OPS().length?sec(`<label class="fl">Persona<select id="apo">${OPS().map(o=>`<option>${esc(o)}</option>`).join("")}</select></label><label class="fl">Día<input type="date" id="apd" value="${S.date}"></label><button class="btn p full" data-a="apAddP">${ic("plus")} Añadir asuntos propios</button><p class="hint">Ese día sale como asuntos propios y no se le asigna puesto.</p>`):""}<section class="card">${up.length?up.map(r).join(""):'<p class="hint pad">No hay asuntos propios próximos.</p>'}</section>${pa.length?`<h4 class="sl">Anteriores</h4><section class="card">${pa.map(r).join("")}</section>`:""}</div>`}
-if(MORE==="bk")return`<div class="in pg"><p class="hint">${CL.st==="ok"?"Tus datos se guardan también en la nube de esta app: si cierras o cambias de móvil, los recuperas al abrir.":CL.st==="err"?"No he podido guardar en la nube. De momento solo se guardan en este móvil.":"Tus datos se guardan en este móvil."} Conviene tener una copia por si acaso.</p>${sec(`<h4 class="sl" style="margin:0">Hacer copia</h4><button class="btn p full" data-a="bkCopy">${ic("save")} Copiar mi copia</button>${BK.tx?`<textarea readonly onfocus="this.select()">${esc(BK.tx)}</textarea>`:""}`)}${sec(`<h4 class="sl" style="margin:0">Restaurar</h4><textarea id="bkTx" placeholder="Pega aquí tu copia">${esc(BK.tx)}</textarea><button class="btn ${BK.cf?"dg":""} full" data-a="bkRestore">${BK.cf?"Pulsa otra vez: sustituye todo":"Restaurar copia"}</button>`)}</div>`;
-const nAp=OPS().reduce((a,o)=>a+S.ops[o].ap.filter(d=>d>=TODAY).length,0);
-const it=(i,a,t,s)=>`<button class="li" data-a="more" data-v="${a}">${ic(i)}<span class="lt"><b>${t}</b><small>${s}</small></span>${ic("chev","mu")}</button>`;
-return`<div class="in pg">${sec(`<h4 class="sl" style="margin:0">Mi área</h4><label class="fl">Área o departamento<input type="text" data-h="area" value="${esc(S.area)}" autocomplete="off"></label><label class="fl">Jefe de equipo<input type="text" data-h="lider" value="${esc(S.lider)}" placeholder="Nombre y apellido" autocomplete="off"></label>${tuSec()}`)}<section class="card">${it("photo","imp","Desde foto o lista","Sacar puestos o personas de una foto")}${it("team","posts","Puestos del área",P().length+" puestos")}${it("user","ap","Asuntos propios",nAp?nAp+" próximos":"Ninguno próximo")}${it("save","bk","Copia de seguridad","Guardar o restaurar tus datos")}</section>${STANDALONE()?"":`<section class="card"><button class="li" data-a="install">${ic("down")}<span class="lt"><b>Instalar en el móvil</b><small>${INST?"Añade la app a tu pantalla de inicio":IOS?"En iPhone: Compartir → Añadir a pantalla de inicio":"Desde el menú del navegador: Instalar app"}</small></span>${ic("chev","mu")}</button></section>`}<button class="btn dg full" data-a="reset">${BK.rs?"Pulsa otra vez: se borra todo":"Volver a empezar desde cero"}</button><p class="hint">Volver a empezar borra puestos, equipo, reglas y planning, y te lleva otra vez al asistente.</p></div>`}
+return`<div class="in pg"><section class="card pad" style="display:flex;flex-direction:column;gap:10px"><label class="fl">Operario<select id="apo">${OPS.map(o=>`<option>${esc(o)}</option>`).join("")}</select></label><label class="fl">Día<input type="date" id="apd" value="${S.date}"></label><button class="btn p full" data-a="apAddP">${ic("plus")} Añadir asuntos propios</button><p class="hint">Ese día el operario sale como asuntos propios y no se le asigna puesto.</p></section>
+<section class="card">${up.length?up.map(r).join(""):'<p class="hint pad">No hay asuntos propios próximos.</p>'}</section>${pa.length?`<h4 class="sl">Anteriores</h4><section class="card">${pa.map(r).join("")}</section>`:""}</div>`}
+if(MORE==="cal"){const M=S.calM||TODAY.slice(0,7),[y,mo]=M.split("-").map(Number),off=(new Date(Date.UTC(y,mo-1,1,12)).getUTCDay()+6)%7,nd=new Date(Date.UTC(y,mo,0)).getUTCDate();let c="",lab=0;
+["L","M","X","J","V","S","D"].forEach(x=>c+=`<div class="h">${x}</div>`);for(let i=0;i<off;i++)c+='<div class="dot"></div>';
+for(let i=1;i<=nd;i++){const d=M+"-"+String(i).padStart(2,"0"),w=working(d);if(w)lab++;c+=`<div class="${w?"":"no"} ${d===TODAY?"td":""}" data-a="calT" data-v="${d}">${i}</div>`}
+return`<div class="in pg"><section class="card pad" style="display:flex;flex-direction:column;gap:12px"><div class="row sp"><button class="ib" data-a="calM" data-v="-1" aria-label="Mes anterior">${ic("back")}</button><b style="text-transform:capitalize;font-size:17px">${fm(M)}</b><button class="ib" data-a="calM" data-v="1" aria-label="Mes siguiente">${ic("chev")}</button></div><div class="cal">${c}</div><p class="hint">${lab} días laborables. Toca un día para cambiarlo; en gris, no laborable.</p><button class="btn full" data-a="calR" data-v="${M}">Restablecer este mes</button></section>${vPhoto()}</div>`}
+if(MORE==="pu"){const v=S.pu||"per";
+const seg=`<div class="seg">${[["per","Por persona"],["post","Por puesto"]].map(([k,l])=>`<button class="${v===k?"on":""}" data-a="puView" data-v="${k}">${l}</button>`).join("")}</div>`;let b;
+if(v==="per")b=`<section class="card">${OPS.map(o=>{const c=S.ops[o];return`<button class="li" data-a="posts" data-v="${esc(o)}" style="align-items:flex-start">${av(o)}<span class="lt"><b>${esc(o)}</b><small style="white-space:normal">${c.posts.length?c.posts.map(p=>SHORT[POSTS.indexOf(p)]).join(" · "):"Ningún puesto"}</small></span>${ic("chev","mu")}</button>`}).join("")}</section>`;
+else b=POSTS.map(p=>{const w=OPS.filter(o=>S.ops[o].posts.includes(p));return`<section class="card pad"><h4 class="sl">${esc(p)} · ${w.length}</h4><div class="chips">${w.map(o=>`<button class="chip" data-a="posts" data-v="${esc(o)}">${esc(o)}</button>`).join("")||'<span class="mu">Nadie</span>'}</div></section>`}).join("");
+return`<div class="in pg"><p class="hint">Marca qué puestos puede hacer cada persona. El planning solo propone a alguien en los puestos marcados. Toca a una persona para cambiarlos.</p>${seg}${b}</div>`}
+if(MORE==="bk")return`<div class="in pg"><p class="hint">${CL.st==="ok"?"Tus datos se guardan también en la nube de esta app: si cierras o cambias de móvil, los recuperas al abrir.":CL.st==="err"?"No he podido guardar en la nube. De momento solo se guardan en este móvil.":"Tus datos se guardan en este móvil."} Si borras los datos del navegador o cambias de móvil, puede que se pierdan; por eso conviene tener una copia. Haz una copia de vez en cuando y guárdala en tus notas o mándatela por WhatsApp.</p><section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Hacer copia</h4><button class="btn p full" data-a="bkCopy">${ic("save")} Copiar copia de seguridad</button></section><section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Restaurar</h4><textarea id="bkTx" placeholder="Pega aquí la copia">${esc(BK.tx)}</textarea><button class="btn full ${BK.cf?"dg":""}" data-a="bkRestore">${BK.cf?"Pulsa otra vez: sustituye todos los datos":"Restaurar copia"}</button></section></div>`;
+const nAp=OPS.reduce((a,o)=>a+S.ops[o].ap.filter(d=>d>=TODAY).length,0);
+return`<div class="in pg"><section class="card"><button class="li" data-a="cuad">${ic("today")}<span class="lt"><b>Cuadrante semanal</b><small>Todo el equipo, día a día, para enviar</small></span>${ic("chev","mu")}</button><button class="li" data-a="more" data-v="pu">${ic("team")}<span class="lt"><b>Puestos por persona</b><small>Qué puede hacer cada operario</small></span>${ic("chev","mu")}</button><button class="li" data-a="more" data-v="rl">${ic("spark")}<span class="lt"><b>Reglas del reparto</b><small>No juntar, puesto habitual, máximos, rotación</small></span>${ic("chev","mu")}</button><button class="li" data-a="more" data-v="ap">${ic("user")}<span class="lt"><b>Asuntos propios</b><small>${nAp?nAp+" próximos":"Ninguno próximo"}</small></span>${ic("chev","mu")}</button><button class="li" data-a="more" data-v="cal">${ic("cal")}<span class="lt"><b>Calendario laboral</b><small>Qué días son laborables · cargar desde foto</small></span>${ic("chev","mu")}</button><button class="li" data-a="more" data-v="bk">${ic("save")}<span class="lt"><b>Copia de seguridad</b><small>Guardar o restaurar todos los datos</small></span>${ic("chev","mu")}</button><button class="li" data-a="wzOpen">${ic("spark")}<span class="lt"><b>Asistente de inicio</b><small>Repasar puestos, equipo, bajas y reglas</small></span>${ic("chev","mu")}</button></section></div>`}
+function vPhoto(){const R=CAL_RES,busy=R&&R.st==="busy";let h='<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Cargar desde foto</h4><p class="hint">Sube la foto del calendario laboral y la app lee los días. Puedes elegir varias imágenes.</p><input type="file" id="calf" accept="image/*" multiple>'+`<button class="btn p full" data-a="calRead" ${busy?"disabled":""}>${ic("photo")} ${busy?"Leyendo calendario…":"Leer calendario"}</button>`;
+if(R&&R.st==="err")h+=`<div class="note wa">${esc(R.msg)}</div>`;
+if(R&&R.st==="done")h+=R.items.map(it=>{const ok=!(it.claim>0)||it.claim===it.n;return`<div class="card pad" style="box-shadow:none;border:1px solid var(--ln)"><div class="row sp"><b style="text-transform:capitalize">${fm(it.m)}</b><span class="pill ${ok?"ok":"wa"}">${it.n} laborables${ok?"":" · la foto dice "+it.claim}</span></div><div class="mu" style="margin-top:6px">No laborables entre semana: ${it.no.map(d=>+d.slice(8)).join(", ")||"ninguno"}</div></div>`}).join("")+'<div class="row"><button class="btn p grow" data-a="calApply">Aplicar al calendario</button><button class="btn" data-a="calDisc">Descartar</button></div>';
+return h+"</section>"}
 /* ---------- hojas ---------- */
-function shPost(i){const p=P()[i],t=day(S.date),a=t[p],cur=a&&a.op;
+function shPost(i){const p=POSTS[i],t=day(S.date),a=t[p],cur=a&&a.op;
 if(S.conf[S.date])return`<div class="note ok">${ic("lock")}<span>Día confirmado. Desbloquéalo para cambiar puestos.</span></div><button class="btn full" data-a="unconf">Desbloquear</button>`;
-const at={};P().forEach(x=>{if(t[x]){at[t[x].op]=x;if(t[x].partner&&!at[t[x].partner])at[t[x].partner]=x}});
-const cand=OPS().filter(o=>allowed(o,p)||o===cur),g1=[],g2=[],g3=[];
+const at={};POSTS.forEach(x=>{if(t[x]){at[t[x].op]=x;if(t[x].partner&&!at[t[x].partner])at[t[x].partner]=x}});
+const cand=OPS.filter(o=>allowed(o,p)||(S.ilu&&p==="Door"&&orig(o)==="Alicia")||o===cur),g1=[],g2=[],g3=[];
 cand.forEach(o=>{if(!avail(o))g3.push(o);else if(at[o]&&at[o]!==p)g2.push(o);else g1.push(o)});
 const row=(o,sub,mut)=>`<button class="li ${mut?"mut":""}" data-a="setPost" data-v="${i}|${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${esc(sub)}</small></span>${o===cur?ic("check","okc"):""}</button>`;
 let h="";
-if(cur&&isSplit(p))h+=`<button class="note" data-a="partner" data-v="${i}">${ic("clock")}<span>Alterna 4 h + 4 h con<br><b>${a.partner?esc(a.partner):"nadie"}</b></span>${ic("chev","mu")}</button>`;
+if(cur&&!SPL(p,cur))h+=`<button class="btn full" data-a="split" data-v="${i}">${ic("clock")} ${a.s?"Quitar 4 h + 4 h":"Hacer 4 h + 4 h en este puesto"}</button>`;
+if(cur&&(SPL(p,cur)||a.s))h+=`<button class="note" data-a="partner" data-v="${i}">${ic("clock")}<span>4 h + 4 h · elegir quién hace cada parte<br><b>${esc(a.op)} ${HR()[0]}–${HR()[1]}${a.partner?" · "+esc(a.partner)+" "+HR()[1]+"–"+HR()[2]:""}</b></span>${ic("chev","mu")}</button>`;
 h+='<section class="card">';
 if(cur)h+=`<button class="li" data-a="clearPost" data-v="${i}"><span class="av nil">${ic("x")}</span><span class="lt"><b>Dejar sin asignar</b></span></button>`;
-h+=g1.map(o=>row(o,"Libre",false)).join("")+g2.map(o=>row(o,"Ahora en "+at[o]+" · se intercambian",false)).join("")+g3.map(o=>row(o,why(o),true)).join("");
-if(!cand.length)h+='<p class="hint pad">Nadie sabe hacer este puesto. Marca quién puede en la ficha de cada persona.</p>';
+h+=g1.map(o=>row(o,S.ilu&&p==="Door"&&orig(o)==="Alicia"?"Solo 4 h compartidas":"Libre",false)).join("")+g2.map(o=>row(o,"Ahora en "+at[o]+" · se intercambian",false)).join("")+g3.map(o=>row(o,why(o),true)).join("");
 return h+"</section>"+(g3.length?'<p class="hint">Las personas en gris no están disponibles ese día. Puedes elegirlas igualmente y saldrá un aviso.</p>':"")}
-function shPartner(i){const p=P()[i],t=day(S.date),a=t[p];if(!a)return"";const us=usedSet();
-const cand=OPS().filter(o=>o!==a.op&&(allowed(o,p)||o===a.partner));
-const row=o=>{const sub=!avail(o)?why(o):us.has(o)&&o!==a.partner?"Ya tiene puesto":"Libre";return`<button class="li ${!avail(o)?"mut":""}" data-a="setPartner" data-v="${i}|${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${esc(sub)}</small></span>${o===a.partner?ic("check","okc"):""}</button>`};
-return`<p class="hint">Se reparten el puesto: 4 h cada uno.</p><section class="card">${a.partner?`<button class="li" data-a="clearPartner" data-v="${i}"><span class="av nil">${ic("x")}</span><span class="lt"><b>Sin compañero</b></span></button>`:""}${cand.map(row).join("")||'<p class="hint pad">No hay nadie más que sepa hacer este puesto.</p>'}</section>`}
+const HR=()=>S.shift==="M"?["06:00","10:00","14:00"]:["14:00","18:00","22:00"];
+function shPartner(i){const p=POSTS[i],t=day(S.date),a=t[p]||{},H=HR(),at={};
+POSTS.forEach(x=>{if(x!==p&&t[x]){at[t[x].op]=x;if(t[x].partner)at[t[x].partner]=x}});
+const sl=(SHEET.sl===0||SHEET.sl===1)?SHEET.sl:(!a.op?0:!a.partner?1:null);
+const who=k=>k?a.partner:a.op;
+const slot=k=>`<button class="li" data-a="pairSl" data-v="${i}|${k}" style="${sl===k?"background:var(--acs)":""}"><span class="ico">${ic("clock")}</span><span class="lt"><b>${who(k)?esc(who(k)):"Elegir persona"}</b><small>${k?"Segunda parte":"Primera parte"} · ${H[k]} – ${H[k+1]}</small></span>${sl===k?"":ic("chev","mu")}</button>`;
+let h=`<p class="hint">${S.shift==="M"?"Turno de mañana":"Turno de tarde"}: quien elijas primero hace las primeras 4 horas y la otra persona las siguientes.</p><section class="card">${slot(0)}${slot(1)}</section>`;
+if(sl!==null){const cur=who(sl),cand=OPS.filter(o=>allowed(o,p)||o===cur);
+h+=`<h4 class="sl" style="margin:4px 0 -6px">${sl?"Segunda parte":"Primera parte"} · ${H[sl]} – ${H[sl+1]}</h4><section class="card">${cand.map(o=>{const sub=!avail(o)?why(o):S.ops[o].solo8?"Prefiere las 8 horas completas":at[o]?"Ahora en "+at[o]:(o===a.op||o===a.partner)&&o!==cur?"Está en la otra parte · se intercambian":"Libre";return`<button class="li ${!avail(o)?"mut":""}" data-a="pairSet" data-v="${i}|${sl}|${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${esc(sub)}</small></span>${o===cur?ic("check","okc"):""}</button>`}).join("")||'<p class="hint pad">Nadie sabe hacer este puesto.</p>'}</section>`}
+if(a.op&&a.partner)h+=`<button class="btn full" data-a="pairSwap" data-v="${i}">Intercambiar horas</button>`;
+if(a.op)h+=`<button class="btn dg full" data-a="split" data-v="${i}" ${SPL(p,a.op)?"hidden":""}>Quitar 4 h + 4 h</button>`;
+return h}
+function bajaTxt(o,d=S.date){const b=(S.ops[o].bajas||[]).find(b=>d>=b.from&&(!b.to||d<=b.to));return b?"De baja desde "+fs(b.from)+" · "+(b.to?"hasta "+fs(b.to):"sin fecha de vuelta"):""}
 function bajaSec(o){const c=S.ops[o],n=esc(o),bm=SHEET.bm||"hasta";
 const list=c.bajas.map((b,i)=>[b,i]).filter(([b])=>!b.to||b.to>=addD(TODAY,-30)).sort((x,y)=>x[0].from<y[0].from?-1:1);
 let h=`<section class="card pad" style="display:flex;flex-direction:column;gap:12px"><h4 class="sl" style="margin:0">Baja</h4>`;
-h+=list.length?list.map(([b,i])=>`<div class="row sp"><span class="lt" style="white-space:normal"><b style="white-space:normal;font-size:15px">Desde ${fs(b.from)}</b><small style="white-space:normal">${b.to?"Hasta "+fs(b.to):"Sin fecha de vuelta"}</small></span><button class="chip" data-a="${b.to?"bajaDel":"bajaEnd"}" data-v="${n}|${i}">${b.to?"Quitar":"Dar de alta el "+(+S.date.slice(8))}</button></div>`).join(""):'<span class="mu">No tiene bajas apuntadas</span>';
+h+=list.length?list.map(([b,i])=>`<div class="row sp"><span class="lt" style="white-space:normal"><b style="white-space:normal;font-size:15px">Desde ${fs(b.from)}</b><small style="white-space:normal">${b.to?"Hasta "+fs(b.to):"Sin fecha de vuelta"}</small></span><button class="chip" data-a="${b.to?"bajaDel":"bajaEnd"}" aria-label="${b.to?"Quitar baja":"Dar de alta"}" data-v="${n}|${i}">${b.to?"Quitar":"Dar de alta el "+(+S.date.slice(8))}</button></div>`).join(""):'<span class="mu">No tiene bajas apuntadas</span>';
+if(list.some(([b])=>!b.to))h+=`<p class="hint">«Dar de alta» lo pone activo desde el día que estás viendo (${fs(S.date)}).</p>`;
 if(SHEET.cb)h+=`<div class="note wa" style="flex-direction:column;align-items:stretch"><span><b>No se sabe cuándo vuelve</b><br>${n} estará de baja desde el ${fs(SHEET.cb.from)} y todos los días siguientes hasta que quites la baja. ¿Lo aceptas?</span><span class="row"><button class="btn p grow" data-a="bajaOk" data-v="${n}">Aceptar</button><button class="btn grow" data-a="bajaNo">Cancelar</button></span></div>`;
 else h+=`<div class="seg">${[["hasta","Hasta una fecha"],["abierta","Sin fecha de vuelta"]].map(([v,l])=>`<button class="${bm===v?"on":""}" data-a="bajaMode" data-v="${v}">${l}</button>`).join("")}</div><label class="fl">Desde<input type="date" id="bfd" data-h="bfd" value="${SHEET.bf||S.date}"></label>${bm==="hasta"?`<label class="fl">Hasta (último día de baja)<input type="date" id="bhd" data-h="bhd" value="${SHEET.bt||addD(SHEET.bf||S.date,6)}"></label>`:'<p class="hint">Se quedará de baja hasta que la quites. Te pediré que lo aceptes.</p>'}<button class="btn p full" data-a="bajaAdd" data-v="${n}">Poner de baja</button>`;
 return h+"</section>"}
-function shPerson(o){const c=S.ops[o],n=esc(o);
+function shPerson(o){const c=S.ops[o],e=eDays(o),n=esc(o),seg=(items,cur,act)=>`<div class="seg">${items.map(([v,l])=>`<button class="${cur===v?"on":""}" data-a="${act}" data-v="${n}|${v}">${l}</button>`).join("")}</div>`;
 const aps=c.ap.filter(d=>d>=addD(TODAY,-30)).sort(),fa=c.falta.filter(f=>f.d>=addD(TODAY,-30)).sort((a,b)=>a.d<b.d?-1:1);
-return`<div class="pid">${av(o,"lg")}<div><b>${n}</b>${statusPill(o)}</div></div>
+let h=`<div class="pid">${av(o,"lg")}<div><b>${n}</b>${statusPill(o)}</div></div>
+<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Nombre</h4><div class="row"><input type="text" id="rnm" value="${n}" autocomplete="off" aria-label="Nombre"><button class="btn p" data-a="rename" data-v="${n}">Guardar</button></div><p class="hint">Corrige el nombre o el apellido. Se cambia en todo: planning, ERTE, reglas y cuadrante.</p></section>
 ${bajaSec(o)}
-<section class="card pad"><h4 class="sl">Puestos que sabe hacer · ${c.posts.length}</h4><div class="chips">${P().map(p=>`<button class="chip ${c.posts.includes(p)?"on":""}" data-a="opPost" data-v="${n}|${esc(p)}">${esc(p)}</button>`).join("")}</div></section>
+<section class="card pad"><h4 class="sl">Jornada</h4><div class="seg">${[["","Puede hacer 4 h + 4 h"],["1","Solo 8 horas"]].map(([v,l])=>`<button class="${(c.solo8?"1":"")===v?"on":""}" data-a="solo8" data-v="${n}|${v}">${l}</button>`).join("")}</div><p class="hint" style="margin-top:8px">Con «Solo 8 horas» la app nunca le pone en un puesto compartido 4 h + 4 h.</p></section>
+<section class="card pad"><h4 class="sl">Turno</h4>${seg([["","Cualquiera"],["M","Mañana"],["T","Tarde"]],c.turno||"","opturno")}</section>
+<section class="card pad"><h4 class="sl">Puestos que puede hacer · ${c.posts.length}</h4><div class="chips">${POSTS.map(p=>`<button class="chip ${c.posts.includes(p)?(p4(o,p)?"v":"on"):""}" data-a="opPost" data-v="${n}|${esc(p)}">${esc(p)}${c.posts.includes(p)&&p4(o,p)?" · 4 h":""}</button>`).join("")}</div><p class="hint" style="margin-top:10px">Toca para marcar o quitar. Mantén pulsado un puesto para que solo haga 4 horas en él.</p></section>
 <section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Asuntos propios</h4>${aps.length?aps.map(d=>`<div class="row sp"><span>${fs(d)}${d===TODAY?" · hoy":""}</span><button class="chip" data-a="apDel" data-v="${n}|${d}">Quitar</button></div>`).join(""):'<span class="mu">Ningún día apuntado</span>'}<div class="row"><input type="date" id="sapd" value="${S.date}"><button class="btn p" data-a="apAddS" data-v="${n}">Añadir</button></div></section>
 <section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Horas que falta (médico, permiso…)</h4>${fa.length?fa.map(f=>`<div class="row sp"><span>${fs(f.d)} · ${f.h} h · ${esc(f.m)}</span><button class="chip" data-a="fDel" data-v="${n}|${f.d}|${f.h}|${esc(f.m)}">Quitar</button></div>`).join(""):'<span class="mu">Ninguna</span>'}<div class="row"><input type="date" id="sfd" value="${S.date}"><input type="number" id="sfh" min="0.5" step="0.5" placeholder="Horas" style="max-width:100px"></div><select id="sfm"><option>Médico</option><option>Permiso</option><option>Sindical</option><option>Otro</option></select><button class="btn p full" data-a="fAdd" data-v="${n}">Añadir horas</button></section>
-<button class="btn dg full" data-a="opDel" data-v="${n}">${SHEET.cd?"Pulsa otra vez para eliminar":"Eliminar de mi equipo"}</button>`}
-const shAvisos=()=>{const w=warnList();return w.length?`<section class="card">${w.map(x=>`<div class="li">${ic("warn","mu")}<span class="lt" style="white-space:normal"><b style="white-space:normal;font-size:15px;font-weight:500">${esc(x.m)}</b>${x.p?`<small>${esc(x.p)}</small>`:""}</span></div>`).join("")}</section>`:'<div class="note ok"><span>Sin avisos. El planning cumple las reglas.</span></div>'};
-function shSend(){const cf=!!S.conf[S.date],m=msg(),w=warns(),nf=P().filter(p=>!day(S.date)[p]).length;
+<section class="card pad row sp"><div><h4 class="sl" style="margin:0 0 4px">ERTE acumulado</h4><span class="mu">${e.v} voluntarios</span></div><div class="num">${e.n}<small>días</small></div></section>`;
+if(c.guest)h+=`<button class="btn full" data-a="gQuit" data-v="${n}">Quitar de hoy</button><p class="hint">Se queda guardado con sus puestos para otra vez. Para borrarlo del todo, usa «Olvidar» en el menú de refuerzos.</p>`;
+if(S.extra.includes(o))h+=`<button class="btn dg full" data-a="opDel" data-v="${n}">${SHEET.cd?"Pulsa otra vez para eliminar":"Eliminar operario"}</button>`;return h}
+function shAvisos(){const w=warnList();return w.length?`<section class="card">${w.map(x=>`<div class="li">${ic("warn","mu")}<span class="lt" style="white-space:normal"><b style="white-space:normal;font-size:15px;font-weight:500">${esc(x.m)}</b>${x.p?`<small>${esc(x.p)}</small>`:""}</span></div>`).join("")}</section>`:'<div class="note ok"><span>Sin avisos. El planning cumple las reglas.</span></div>'}
+function shOut(){const g=outGroups(),L=[["erte","ERTE"],["baja","De baja"],["ap","Asuntos propios"],["fal","Faltan horas"],["turno","Otro turno"]].filter(([k])=>g[k].length);
+return L.length?L.map(([k,l])=>`<div><h4 class="sl">${l}</h4><section class="card">${g[k].map(o=>`<button class="li" data-a="person" data-v="${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b>${k==="fal"?`<small>${falt(o).map(f=>f.h+" h · "+esc(f.m)).join(", ")}</small>`:""}</span>${ic("chev","mu")}</button>`).join("")}</section></div>`).join(""):'<div class="note ok"><span>Todo el equipo está disponible.</span></div>'}
+function shSend(){const cf=!!S.conf[S.date],m=msg(),w=warns(),nf=POSTS.filter(p=>!day(S.date)[p]).length;
 let h=`<section class="card pad"><pre class="pre">${esc(m)}</pre></section>`;
 if(w.length)h+=`<button class="note wa" data-a="avisos">${ic("warn")}<span>${w.length} aviso${w.length>1?"s":""} sin resolver</span>${ic("chev")}</button>`;
 if(nf)h+=`<div class="note wa">${ic("warn")}<span>Faltan ${nf} puestos por cubrir</span></div>`;
-h+=cf?`<a class="btn wa full" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(m)}">${ic("send")} Enviar por WhatsApp</a><button class="btn full" data-a="copy">Copiar mensaje</button><button class="btn full" data-a="unconf">${ic("lock")} Desbloquear para editar</button>`:`<button class="btn p full" data-a="conf">${ic("check")} Confirmar planning</button><p class="hint">Al confirmar se bloquea el día y aparece el botón de WhatsApp.</p>`;return h}
-function sheetHTML(){if(!SHEET)return"";const T=SHEET.t;let title="",body="";
-if(T==="post"){title=P()[SHEET.i];body=shPost(SHEET.i)}else if(T==="partner"){title="Compañero 4 h + 4 h";body=shPartner(SHEET.i)}else if(T==="person"){title=SHEET.o;body=shPerson(SHEET.o)}
-else if(T==="avisos"){title="Avisos";body=shAvisos()}else if(T==="send"){title="Enviar planning";body=shSend()}else if(T==="addop"){title="Añadir persona";body=peopleForm()}
-else return"";
-return`<div class="sh" data-a="closeBd"><div class="shp" id="shp" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="gr"></div><div class="in"><div class="shh"><h3 id="shT">${esc(title)}</h3><button class="ib" data-a="close" aria-label="Cerrar">${ic("x")}</button></div>${body}</div></div></div>`}
+h+=cf?`<a class="btn wa full" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(m)}">${ic("send")} Enviar por WhatsApp</a><button class="btn full" data-a="copy" data-v="p">Copiar mensaje</button><button class="btn full" data-a="unconf">${ic("lock")} Desbloquear para editar</button>`:`<button class="btn p full" data-a="conf">${ic("check")} Confirmar planning</button><p class="hint">Al confirmar se bloquea el día y aparece el botón de WhatsApp.</p>`;return h}
+function shAdd(){if(!ADD.posts)ADD.posts=POSTS.filter(p=>!LIST[p]);
+return`<label class="fl">Nombre<input type="text" id="nn" value="${esc(ADD.name)}" placeholder="Nombre y apellido" autocomplete="off"></label>
+<section class="card pad"><h4 class="sl">Turno</h4><div class="seg">${[["","Cualquiera"],["M","Mañana"],["T","Tarde"]].map(([v,l])=>`<button class="${ADD.turno===v?"on":""}" data-a="addTurno" data-v="${v}">${l}</button>`).join("")}</div></section>
+<section class="card pad"><h4 class="sl">Puestos que puede hacer · ${ADD.posts.length}</h4><div class="chips">${POSTS.map(p=>`<button class="chip ${ADD.posts.includes(p)?"on":""}" data-a="addPost" data-v="${esc(p)}">${esc(p)}</button>`).join("")}</div></section>
+${ADD.err?`<div class="note wa">${esc(ADD.err)}</div>`:""}<button class="btn p full" data-a="addDo">${ic("plus")} Añadir operario</button>`}
+function shRefu(){const here=(S.gd[S.date]||[]),book=Object.keys(S.ops).filter(o=>S.ops[o].guest&&!here.includes(o));
+let h=`<p class="hint">¿Viene alguien de otro turno u otro sitio? Se queda guardado con sus puestos para la próxima vez, pero no entra en tu equipo: solo cuenta los días que lo añadas.</p>`;
+if(book.length)h+=`<section class="card"><h4 class="sl" style="padding:14px 16px 0;margin:0">Ya guardados</h4>${book.map(o=>`<div class="li">${av(o)}<button class="lt" data-a="refAdd" data-v="${esc(o)}" style="text-align:left"><b>${esc(o)}</b><small>${S.ops[o].posts.length} puestos · tocar para añadir hoy</small></button><button class="chip" data-a="refForget" data-v="${esc(o)}">${SHEET.cd===o?"¿Seguro?":"Olvidar"}</button></div>`).join("")}</section>`;
+h+=`<section class="card pad" style="display:flex;flex-direction:column;gap:12px"><h4 class="sl" style="margin:0">Nuevo operario</h4><label class="fl">Nombre<input type="text" id="rn" value="${esc(REF.name)}" placeholder="Nombre y apellido" autocomplete="off"></label><h4 class="sl" style="margin:0">¿Qué puestos sabe hacer? · ${REF.posts.length}</h4><div class="chips">${POSTS.map(p=>`<button class="chip ${REF.posts.includes(p)?"on":""}" data-a="refPost" data-v="${esc(p)}">${esc(p)}</button>`).join("")}</div><div class="row"><button class="btn grow" data-a="refAll">Marcar todos</button><button class="btn grow" data-a="refNone">Ninguno</button></div>${REF.err?`<div class="note wa"><span>${esc(REF.err)}</span></div>`:""}<button class="btn p full" data-a="refDo">${ic("plus")} Añadir hoy</button></section>`;return h}
+function shPosts(o){const c=S.ops[o],n=esc(o);return`<div class="pid">${av(o,"lg")}<div><b>${n}</b><span class="mu">${c.posts.length} de ${POSTS.length} puestos</span></div></div><section class="card">${POSTS.map(p=>`<button class="li" data-a="opPost" data-v="${n}|${esc(p)}"><span class="lt"><b>${esc(p)}</b></span><span class="pill ${c.posts.includes(p)?(p4(o,p)?"wa":"ok"):""}">${c.posts.includes(p)?(p4(o,p)?"Solo 4 h":"Puede"):"No"}</span></button>`).join("")}</section><div class="row"><button class="btn grow" data-a="opPostsAll" data-v="${n}">Marcar todos</button><button class="btn grow" data-a="opPostsReset" data-v="${n}">Valores habituales</button></div>`}
+function shQuick(i){const p=POSTS[i],a=day(S.date)[p],cf=!!S.conf[S.date];
+if(cf)return`<div class="note ok">${ic("lock")}<span>Día confirmado. Desbloquéalo para cambiar puestos.</span></div><button class="btn full" data-a="unconf">Desbloquear</button>`;
+const qb=(ac,i2,t,sub)=>`<button class="li" data-a="${ac}" data-v="${i}">${`<span class="ico">${ic(i2)}</span>`}<span class="lt"><b>${t}</b>${sub?`<small>${sub}</small>`:""}</span></button>`;
+let h='<section class="card">';
+if(!a||!SPL(p,a.op))h+=qb("split","clock",a&&a.s?"Quitar 4 h + 4 h":"Poner 4 h + 4 h",a&&a.s?"Vuelve a una sola persona":"Dos personas se reparten el puesto");
+if(a&&(SPL(p,a.op)||a.s))h+=qb("partner","team","Elegir quién hace cada parte",a.partner?esc(a.op)+" "+HR()[0]+" · "+esc(a.partner)+" "+HR()[1]:"Falta elegir");
+h+=qb("post","user",a?"Cambiar persona":"Elegir persona",a?esc(a.op):"");
+if(a)h+=qb("clearPost","x","Dejar sin asignar","");
+return h+"</section>"}
+function shPq(o,p){const c=S.ops[o],m=!c.posts.includes(p)?0:p4(o,p)?4:8,n=esc(o),q=esc(p);
+const row=(v,i,t,sub)=>`<button class="li" data-a="pqSet" data-v="${n}|${q}|${v}"><span class="ico">${ic(i)}</span><span class="lt"><b>${t}</b><small>${sub}</small></span>${m===v?ic("check","okc"):""}</button>`;
+return`<p class="hint">${n} en ${q}:</p><section class="card">${row(8,"check","Puede hacerlo","Jornada completa, 8 horas")}${row(4,"clock","Solo 4 horas","Solo en un puesto compartido 4 h + 4 h")}${row(0,"x","No puede hacerlo","No se le asignará este puesto")}</section>`}
+function sheetHTML(){if(!SHEET)return"";const T=SHEET.t;let title="",body="";if(T==="pq"){title=SHEET.p;body=shPq(SHEET.o,SHEET.p)}else if(T==="quick"){title=POSTS[SHEET.i];body=shQuick(SHEET.i)}else
+if(T==="post"){title=POSTS[SHEET.i];body=shPost(SHEET.i)}else if(T==="partner"){title="4 h + 4 h";body=shPartner(SHEET.i)}else if(T==="person"){title=SHEET.o;body=shPerson(SHEET.o)}
+else if(T==="avisos"){title="Avisos";body=shAvisos()}else if(T==="out"){title="No disponibles";body=shOut()}else if(T==="send"){title="Enviar planning";body=shSend()}else if(T==="addop"){title="Nuevo operario";body=shAdd()}else if(T==="refu"){title="Refuerzo de otro turno o sitio";body=shRefu()}else if(T==="posts"){title="Puestos de "+SHEET.o;body=shPosts(SHEET.o)}
+return`<div class="sh" data-a="closeBd"><div class="shp" id="shp" role="dialog" aria-modal="true"><div class="gr"></div><div class="in"><div class="shh"><h3>${esc(title)}</h3><button class="ib" data-a="close" aria-label="Cerrar">${ic("x")}</button></div>${body}</div></div></div>`}
 /* ---------- pintar ---------- */
-let BK={tx:"",cf:false,rs:false};
-let INST=null;const STANDALONE=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
-const IOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();INST=e;if(TAB==="mas"&&!MORE)render()});
-window.addEventListener("appinstalled",()=>{INST=null;toast("App instalada");render()});
-const TOG=["wPost","fSepP","rlSplit","opPost","imTog","wBaja","rlNorep","rlRot","tuEq","tuM","tuW","bajaMode"];
-function a11y(fk,wasSheet){document.querySelectorAll("[data-a]").forEach(b=>{if(TOG.includes(b.dataset.a))b.setAttribute("aria-pressed",b.classList.contains("on"))});
-document.querySelectorAll(".dc").forEach(b=>{const d=b.dataset.v;b.setAttribute("aria-label",fl(d));if(d===S.date)b.setAttribute("aria-current","date")});
-const sh=$("shp");if(sh&&!wasSheet){const c=sh.querySelector("[data-a=close]");if(c)c.focus();return}
-if(fk){const el=fk.id?$(fk.id):document.querySelector(`[data-a="${CSS.escape(fk.a)}"]${fk.v!==undefined?`[data-v="${CSS.escape(fk.v)}"]`:""}`);if(el&&el!==document.activeElement)el.focus({preventScroll:true})}}
-function render(){const ae=document.activeElement,fk=ae&&ae!==document.body?{id:ae.id,a:ae.dataset&&ae.dataset.a,v:ae.dataset&&ae.dataset.v}:null;if(fk&&!fk.id&&!fk.a)fk.a=null;const wasSheet=!!$("shp");_render();a11y(fk&&(fk.id||fk.a)?fk:null,wasSheet)}
-function _render(){const wn=$("wn");if(wn&&!wn.readOnly)W.name=wn.value;const wa=$("wa");if(wa)S.area=wa.value;const wl=$("wl");if(wl)S.lider=wl.value;const itx=$("imTx");if(itx)IM.tx=itx.value;
-const m=$("main");
-if(!S.done){$("hd").innerHTML="";m.className="wzm";m.innerHTML=wizHTML();$("tabs").hidden=true;$("shr").innerHTML=sheetHTML();document.body.style.overflow=SHEET?"hidden":"";return}
+function render(){const za=$("wza");if(za)S.area=za.value;const nn=$("nn");if(nn&&SHEET&&SHEET.t==="addop")ADD.name=nn.value;const rn=$("rn");if(rn&&SHEET&&SHEET.t==="refu")REF.name=rn.value;normRot();
+if(!S.wzDone){$("hd").innerHTML="";const m=$("main");m.className="wzm";m.innerHTML=wizHTML();$("tabs").hidden=true;$("shr").innerHTML=sheetHTML();document.body.style.overflow=SHEET?"hidden":"";return}
 $("tabs").hidden=false;
-$("hd").innerHTML=hdHTML();m.className="d0";
-m.innerHTML=TAB==="hoy"?vHoy():TAB==="equipo"?vTeam():TAB==="reglas"?vRules():vMore();
+$("hd").innerHTML=hdHTML();const m=$("main");m.className="d0";
+m.innerHTML=TAB==="v1"?vHoy():TAB==="v2"?vTeam():TAB==="v3"?vErte():vMore();
 $("tabs").innerHTML=tabsHTML();
 const old=$("shp"),sc=old?old.scrollTop:0,key=SHEET?[SHEET.t,SHEET.i,SHEET.o].join("|"):"";
 $("shr").innerHTML=sheetHTML();const np=$("shp");if(np&&key===LAST&&sc)np.scrollTop=sc;LAST=key;
 document.body.style.overflow=SHEET?"hidden":""}
 function toast(t,u){const e=$("toast");e.innerHTML=esc(t)+(u?'<button class="tu" data-a="undo">Deshacer</button>':"");e.classList.add("show");clearTimeout(TT);TT=setTimeout(()=>e.classList.remove("show"),u?6000:1800)}
+/* ---------- asistente de inicio ---------- */
+const WZN=6;let WZ={del:null};
+function wizHTML(){const n=S.wz||0;const head=`<div class="wzh">${n>0?`<button class="ib sm" data-a="wzBack" aria-label="Atrás">${ic("back")}</button>`:""}<div class="pb" style="flex:1"><i style="width:${Math.round(100*(n+1)/WZN)}%"></i></div><b>Paso ${n+1} de ${WZN}</b></div>`;
+const cta=(t,cls="p",i="chev")=>`<div class="cta"><button class="btn ${cls} full" data-a="wzNext">${t} ${ic(i)}</button></div>`;
+const card=b=>`<section class="card pad" style="display:flex;flex-direction:column;gap:12px">${b}</section>`;
+let h=`<div class="in wz">${head}`;if(n===0)WZ.del=null;
+if(n===0)h+=`<section class="hero"><span class="mark">${ic("team")}</span><h1>Vamos a preparar tu planning</h1><p>Te haré unas preguntas sobre tu trabajo, tu equipo y tus reglas. Después la app reparte a tu gente en los puestos cada día.</p></section>${card(`<label class="fl">¿Cómo se llama tu área o línea?<input type="text" id="wza" value="${esc(S.area)}" placeholder="Ej.: Almacén, Línea 2…" autocomplete="off"></label><span class="fl">¿En qué turno estás esta semana?</span>${shiftSeg().replace("seg dk","seg")}`)}${cta("Empezar","y")}${card(`<h4 class="sl" style="margin:0">¿Ya usabas la app?</h4><span class="mu">Pega aquí tu copia de seguridad (Más → Copia de seguridad → Copiar copia de seguridad) y recuperas todo: equipo, puestos, reglas y plannings.</span><textarea id="bkTx" placeholder="Pega aquí tu copia" style="min-height:110px">${esc(BK.tx)}</textarea><button class="btn ${BK.cf?"dg":""} full" data-a="bkRestore">${ic("save")} ${BK.cf?"Pulsa otra vez: sustituye todo":"Restaurar mi copia"}</button>`)}`;
+if(n===1)h+=`<h1>Tus puestos</h1><p class="lead">¿Qué puestos hay en tu área? Escríbelos uno a uno.</p>${card(`<label class="fl">Nombre del puesto<input type="text" id="wzp" placeholder="Ej.: Portones" autocomplete="off"></label><button class="btn p full" data-a="wzAddPost">${ic("plus")} Añadir puesto</button>`)}${POSTS.length?`<section class="card">${POSTS.map((p,i)=>`<div class="li"><span class="cd">${String(i+1).padStart(2,"0")}</span><span class="lt"><b>${esc(p)}</b></span><button class="chip ${WZ.del===p?"x":""}" data-a="wzDelPost" data-v="${esc(p)}">${WZ.del===p?"¿Seguro?":"Quitar"}</button></div>`).join("")}</section>`:""}<div class="cta"><button class="btn p full" data-a="wzNext" ${POSTS.length?"":"disabled"}>Siguiente: tu equipo ${ic("chev")}</button></div>`;
+if(n===2)h+=`<h1>Tu equipo</h1><p class="lead">Añade a cada persona y marca qué puestos sabe hacer. Toca a alguien para cambiar su turno, sus puestos o su nombre.</p><button class="btn p full" data-a="addop">${ic("plus")} Añadir persona</button>${OPS.length?`<section class="card">${teamRows()}</section>`:'<p class="hint">Todavía no hay nadie en tu equipo.</p>'}<div class="cta"><button class="btn p full" data-a="wzNext" ${OPS.length?"":"disabled"}>Siguiente: bajas ${ic("chev")}</button></div>`;
+if(n===3){const T=OPS.filter(o=>!S.ops[o].guest);h+=`<h1>¿Alguien está de baja?</h1><p class="lead">Toca a quien esté de baja desde hoy. Se queda de baja hasta que la quites en su ficha, donde también puedes poner fechas.</p>${card(`<div class="chips">${T.map(o=>`<button class="chip ${S.ops[o].bajas.some(b=>!b.to&&b.from<=TODAY)?"on":""}" data-a="wzBaja" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`)}${cta(T.some(o=>S.ops[o].bajas.some(b=>!b.to))?"Siguiente":"No hay nadie de baja")}`}
+if(n===4){const T=OPS.filter(o=>!S.ops[o].guest),nb=T.filter(o=>S.ops[o].bajas.some(b=>!b.to&&b.from<=TODAY)).length;h+=`<section class="hero"><span class="mark">${ic("check")}</span><h1>¿Todo listo?</h1><p>${S.area?esc(S.area)+" · ":""}${POSTS.length} puestos · ${T.length} personas${nb?" · "+nb+" de baja":""} · turno de ${S.shift==="M"?"mañana":"tarde"}.<br>Puedes cambiar cualquier cosa después. Ahora repasamos tus reglas de reparto.</p></section>${cta("Todo listo","y","check")}`}
+if(n===5)h+=`<h1>Tus reglas</h1><p class="lead">El reparto sigue estas reglas cada vez que pulsas «Generar planning». Cambia lo que quieras.</p>${vRules().replace('<div class="in pg">','<div class="pg">')}${cta("Terminar y empezar","y","check")}`;
+return h+"</div>"}
 /* ---------- acciones ---------- */
-const optP2=()=>{const a=optP();return a.slice(1).concat(a.slice(0,1))};
-const A={tab:v=>{TAB=v;MORE=null;SHEET=null;CDP=null;window.scrollTo(0,0)},day:v=>setDate(v),dd:v=>setDate(addD(S.date,Number(v))),
-gen:()=>{if(S.conf[S.date])return;if(!OPS().length){toast("Añade a alguien al equipo");return 1}snap();generate();toast("Planning generado",1)},clr:()=>{if(!S.conf[S.date]){snap();S.days[S.date]={};toast("Día limpiado",1)}},
-undo:()=>{if(UNDO){S.days[UNDO.d]=UNDO.days;UNDO=null;toast("Cambio deshecho")}},conf:()=>{S.conf[S.date]=true},unconf:()=>{delete S.conf[S.date]},
-post:v=>{SHEET={t:"post",i:Number(v)}},partner:v=>{SHEET={t:"partner",i:Number(v)}},person:v=>{SHEET={t:"person",o:v}},avisos:()=>{SHEET={t:"avisos"}},send:()=>{SHEET={t:"send"}},
-addop:()=>{W.name="";W.posts=[];W.edit=null;W.err="";SHEET={t:"addop"}},
+const E0=D=>S.ertes[D]||(S.ertes[D]={n:[],v:[]});
+const sp=v=>v.split("|");
+function purge(o,from,to,lb){let n=0,k=0;Object.keys(S.days).forEach(d=>{if(d<from||(to&&d>to))return;const t=S.days[d];if(S.conf[d]){if(POSTS.some(p=>t[p]&&(t[p].op===o||t[p].partner===o)))k++;return}POSTS.forEach(p=>{const a=t[p];if(!a)return;if(a.op===o){if(a.partner&&SPL(p,a.partner)){}delete t[p];n++}else if(a.partner===o){delete a.partner;n++}})});
+toast((lb||"Baja apuntada")+(n?" · quitado de "+n+" puesto"+(n>1?"s":"")+" ya planificado"+(n>1?"s":""):"")+(k?" · hay "+k+" día(s) confirmado(s) con esa persona, revísalos":""))}
+const A={wzNext:()=>{const za=$("wza");if(za)S.area=za.value.trim();if((S.wz||0)===1&&!POSTS.length)return 1;if((S.wz||0)===2&&!OPS.length)return 1;if((S.wz||0)>=WZN-1){S.wzDone=true;S.wz=0;TAB="v1";MORE=null;SHEET=null;window.scrollTo(0,0);toast("¡Todo listo! Pulsa «Generar planning»");return}S.wz=(S.wz||0)+1;window.scrollTo(0,0)},
+wzOpen:()=>{S.wzDone=false;S.wz=0;SHEET=null;MORE=null;window.scrollTo(0,0)},
+wzAddPost:()=>{const n=String(($("wzp")||{}).value||"").replace(/[|]/g,"").replace(/\s+/g," ").trim();if(!n)return 1;if(["__proto__","constructor","prototype"].includes(n)){toast("Ese nombre no se puede usar");return 1}if(POSTS.some(x=>x.toLowerCase()===n.toLowerCase())){toast("Ese puesto ya existe");return 1}S.posts.push(n);S.short.push(n.length>14?n.slice(0,13)+"…":n);normState();WZ.del=null;setTimeout(()=>{const e=$("wzp");if(e)e.focus()},0)},
+wzDelPost:v=>{if(WZ.del!==v){WZ.del=v;return}const i=S.posts.indexOf(v);if(i<0)return 1;S.posts.splice(i,1);S.short.splice(i,1);Object.values(S.ops).forEach(c=>{if(c.posts)c.posts=c.posts.filter(x=>x!==v)});["fav","max","pref"].forEach(k=>S.rules[k]=S.rules[k].filter(r=>r.p!==v));S.sepP=S.sepP.filter(x=>x!==v);Object.values(S.days).forEach(d=>delete d[v]);WZ.del=null;normState();toast("Puesto quitado")},
+rlSepP:v=>{S.sepP=S.sepP.includes(v)?S.sepP.filter(x=>x!==v):[...S.sepP,v];normState()},
+wzBack:()=>{S.wz=Math.max(0,(S.wz||0)-1);window.scrollTo(0,0)},
+wzBaja:v=>{const c=S.ops[v];if(!c)return 1;if(c.bajas.some(b=>!b.to&&b.from<=TODAY))c.bajas=c.bajas.filter(b=>!(!b.to&&b.from<=TODAY));else c.bajas.push({from:TODAY,to:null})},
+tab:v=>{TAB=v;MORE=null;SHEET=null;window.scrollTo(0,0)},sub:v=>{S.sub=v},sh:v=>{S.shift=v},
+wk:v=>setDate(addD(S.date,7*Number(v))),day:v=>setDate(v),
+dd:v=>setDate(addD(S.date,Number(v))),gen:()=>{if(S.conf[S.date])return;snap();const n4=generate();toast("Planning generado"+(n4?" · "+n4+" puesto"+(n4>1?"s":"")+" en 4 h + 4 h":""),1)},clr:()=>{if(!S.conf[S.date]){snap();S.days[S.date]={};toast("Día limpiado",1)}},undo:()=>{if(UNDO){S.days[UNDO.d]=UNDO.days;UNDO=null;toast("Cambio deshecho")}},conf:()=>{S.conf[S.date]=true},unconf:()=>{delete S.conf[S.date]},
+post:v=>{SHEET={t:"post",i:Number(v)}},partner:v=>{SHEET={t:"partner",i:Number(v)}},person:v=>{SHEET={t:"person",o:v}},avisos:()=>{SHEET={t:"avisos"}},out:()=>{SHEET={t:"out"}},send:()=>{SHEET={t:"send"}},
+addop:()=>{ADD={name:"",turno:"",posts:null,err:""};SHEET={t:"addop"}},
 close:()=>{SHEET=null},closeBd:(v,b,e)=>{if(e.target!==b)return 1;SHEET=null},
-setPost:v=>{const[i,o]=sp(v),p=P()[Number(i)],t=day(S.date),cur=t[p]&&t[p].op;if(o===cur){SHEET=null;return}snap();toast("Puesto cambiado",1);
-const q=P().find(x=>x!==p&&t[x]&&(t[x].op===o||t[x].partner===o));
-if(q){const z=t[q];if(z.op===o){if(cur){z.op=cur;z.manual=true}else if(z.partner){z.op=z.partner;delete z.partner;z.manual=true}else delete t[q]}else{if(cur)z.partner=cur;else delete z.partner;z.manual=true}}
-const keepP=t[p]&&t[p].partner&&isSplit(p)?t[p].partner:null;t[p]={op:o,manual:true};if(keepP&&keepP!==o)t[p].partner=keepP;SHEET=null},
-clearPost:v=>{snap();delete day(S.date)[P()[Number(v)]];SHEET=null;toast("Puesto liberado",1)},
-setPartner:v=>{const[i,o]=sp(v),a=day(S.date)[P()[Number(i)]];if(a){a.partner=o;a.manual=true}SHEET={t:"post",i:Number(i)}},
-clearPartner:v=>{const a=day(S.date)[P()[Number(v)]];if(a){delete a.partner;a.manual=true}SHEET={t:"post",i:Number(v)}},
-copy:async()=>{try{await navigator.clipboard.writeText(msg());toast("Copiado")}catch(x){toast("No se pudo copiar")}return 1},
-opPost:v=>{const[o,p]=sp(v),c=S.ops[o];c.posts=c.posts.includes(p)?c.posts.filter(x=>x!==p):[...c.posts,p]},
-more:v=>{MORE=v||null;CDP=null;BK.cf=false;BK.rs=false;SHEET=null;window.scrollTo(0,0)},
-bkCopy:async()=>{const j=JSON.stringify(S);try{await navigator.clipboard.writeText(j);toast("Copia copiada")}catch(x){BK.tx=j;render();toast("Selecciona el texto y cópialo")}return 1},
-bkRestore:()=>{const t=$("bkTx").value.trim();BK.tx=t;if(!t){toast("Pega primero la copia");return 1}if(!BK.cf){BK.cf=true;return}BK.cf=false;try{const d=JSON.parse(t);if(!d||typeof d!=="object"||!d.ops||!d.posts)throw 0;S=d;normState();BK.tx="";$("main").innerHTML="";TAB="hoy";MORE=null;window.scrollTo(0,0);toast("Copia restaurada")}catch(x){toast("Esa copia no es válida");return 1}},
-reset:()=>{if(!BK.rs){BK.rs=true;return}BK.rs=false;S=D0();W={name:"",posts:[],edit:null,err:"",bm:"",f:{}};TAB="hoy";MORE=null;toast("Empezamos de cero")},
-mAddPost:()=>{const n=nm($("wp").value);if(!n)return 1;if(badName(n)){toast("Ese nombre no se puede usar");return 1}if(P().some(x=>x.toLowerCase()===n.toLowerCase())){toast("Ese puesto ya existe");return 1}S.posts.push(n);toast("Puesto añadido")},
-mDelPost:v=>{if(CDP!==v){CDP=v;return}dropPost(v);CDP=null;toast("Puesto quitado")},
+setPost:v=>{const[i,o]=sp(v),p=POSTS[Number(i)],t=day(S.date),cur=t[p]&&t[p].op;if(o===cur){SHEET=null;return}snap();toast("Puesto cambiado",1);
+const q=POSTS.find(x=>x!==p&&t[x]&&t[x].op===o);if(q){if(cur)t[q]={op:cur,manual:true};else delete t[q]}
+const keepP=t[p]&&t[p].partner&&(SPL(p,o)||t[p].s)?t[p].partner:null,keepS=t[p]&&t[p].s;t[p]={op:o,manual:true};if(keepS)t[p].s=1;if(keepP&&keepP!==o)t[p].partner=keepP;SHEET=null;if(p4(o,p)){t[p].s=1;if(!t[p].partner)SHEET={t:"partner",i:Number(i)}}},
+clearPost:v=>{snap();delete day(S.date)[POSTS[Number(v)]];SHEET=null;toast("Puesto liberado",1)},
+split:v=>{const p=POSTS[Number(v)],a=day(S.date)[p];if(a&&a.s){snap();delete a.s;delete a.partner;a.manual=true;SHEET=null;toast("Vuelve a una sola persona",1);return}if(a){snap();a.s=1;a.manual=true}SHEET={t:"partner",i:Number(v)}},
+pairSl:v=>{const[i,k]=sp(v);SHEET={t:"partner",i:Number(i),sl:Number(k)}},
+pairSet:v=>{const[i,k,o]=sp(v),p=POSTS[Number(i)],t=day(S.date);snap();const a=t[p]||(t[p]={}),me=k==="0"?"op":"partner",ot=k==="0"?"partner":"op";
+if(a[ot]===o){a[ot]=a[me];if(!a[ot])delete a[ot]}a[me]=o;if(!a.op&&a.partner){a.op=a.partner;delete a.partner}a.s=1;a.manual=true;SHEET={t:"partner",i:Number(i)}},
+pairSwap:v=>{const a=day(S.date)[POSTS[Number(v)]];if(a&&a.partner){snap();const x=a.op;a.op=a.partner;a.partner=x;a.manual=true}},
+solo8:v=>{const[o,x]=sp(v);if(x)S.ops[o].solo8=true;else delete S.ops[o].solo8},
+setPartner:v=>{const[i,o]=sp(v),a=day(S.date)[POSTS[Number(i)]];if(a){a.partner=o;a.manual=true}SHEET={t:"post",i:Number(i)}},
+clearPartner:v=>{const a=day(S.date)[POSTS[Number(v)]];if(a){delete a.partner;a.manual=true}SHEET={t:"post",i:Number(v)}},
+copy:async(v,b)=>{try{await navigator.clipboard.writeText(v==="l"?lmsg():msg());toast("Copiado")}catch(x){toast("No se pudo copiar")}return 1},
+opst:v=>{const[o,s]=sp(v);S.ops[o].st=s},opturno:v=>{const[o,s]=sp(v);S.ops[o].turno=s},
+opPost:v=>{const[o,p]=sp(v),c=S.ops[o];c.posts=c.posts.includes(p)?c.posts.filter(x=>x!==p):[...c.posts,p];if(!c.posts.includes(p))c.p4=(c.p4||[]).filter(x=>x!==p)},
+pqSet:v=>{const[o,p,m]=sp(v),c=S.ops[o];c.p4=(c.p4||[]).filter(x=>x!==p);if(m==="0")c.posts=c.posts.filter(x=>x!==p);else{if(!c.posts.includes(p))c.posts.push(p);if(m==="4")c.p4.push(p)}SHEET=SHEET.back==="posts"?{t:"posts",o}:{t:"person",o}},
+posts:v=>{SHEET={t:"posts",o:v}},puView:v=>{S.pu=v},opPostsAll:v=>{S.ops[v].posts=[...POSTS]},opPostsReset:v=>{S.ops[v].posts=POSTS.filter(p=>defAllowed(v,p))},
 bajaMode:v=>{SHEET.bm=v},
+rename:v=>{const o=v,n=($("rnm").value||"").trim().replace(/[|]/g," ").replace(/\s+/g," ");if(!n){toast("Escribe el nombre");return 1}if(n===o)return 1;
+if(Object.keys(S.ops).some(x=>x!==o&&x.toLowerCase()===n.toLowerCase())){toast("Ya hay alguien con ese nombre");return 1}
+const mp=x=>x===o?n:x,ma=a=>Array.isArray(a)?a.map(mp):a,key=orig(o),ent={};
+Object.keys(S.ops).forEach(k=>{ent[mp(k)]=S.ops[k]});S.ops=ent;
+const bi=BASE.indexOf(o);if(bi>=0){BASE[bi]=n;S.ren[key]=n}S.extra=ma(S.extra);S.rot=ma(S.rot);
+Object.values(S.days).forEach(d=>Object.values(d).forEach(a=>{if(a){a.op=mp(a.op);if(a.partner)a.partner=mp(a.partner)}}));
+Object.values(S.ertes).forEach(e=>{e.n=ma(e.n);e.v=ma(e.v);if(e.rb)e.rb=ma(e.rb)});
+Object.keys(S.gd||{}).forEach(d=>S.gd[d]=ma(S.gd[d]));
+S.rules.sep.forEach(r=>{r.a=mp(r.a);r.b=mp(r.b)});["fav","max","pref"].forEach(k=>S.rules[k].forEach(r=>{r.o=mp(r.o)}));
+if(typeof RF!=="undefined"&&RF){RF.vols=ma(RF.vols||[]);RF.prop=ma(RF.prop)}UNDO=null;OPS=mkOPS();SHEET={t:"person",o:n};toast("Nombre cambiado a "+n)},
+cuad:()=>{TAB="v5";MORE="cuad";CW=mon(S.date);SHEET=null;window.scrollTo(0,0)},
+cwk:v=>{CW=addD(CW||mon(S.date),7*Number(v))},
+cuadCopy:async()=>{try{await navigator.clipboard.writeText(cuadMsg());toast("Mensaje copiado")}catch(x){toast("No se pudo copiar")}return 1},
+refu:()=>{REF={name:"",posts:[],err:""};SHEET={t:"refu"}},
+refPost:v=>{REF.posts=REF.posts.includes(v)?REF.posts.filter(x=>x!==v):[...REF.posts,v]},
+refAll:()=>{REF.posts=[...POSTS]},refNone:()=>{REF.posts=[]},
+refAdd:v=>{S.gd[S.date]=[...new Set([...(S.gd[S.date]||[]),v])];OPS=mkOPS();SHEET=null;toast(v+" añadido hoy")},
+refDo:()=>{const n=($("rn").value||"").trim().replace(/[|]/g,"");REF.name=n;if(!n){REF.err="Escribe el nombre.";return}
+if(TEAM().some(x=>x.toLowerCase()===n.toLowerCase())||Object.keys(S.ops).some(x=>x.toLowerCase()===n.toLowerCase())){REF.err="Ese nombre ya existe. Si ya lo guardaste, tócalo en «Ya guardados».";return}
+if(!REF.posts.length){REF.err="Marca al menos un puesto que sepa hacer.";return}REF.err="";
+S.ops[n]={st:"ok",turno:"",posts:[...REF.posts],ap:[],falta:[],base:0,basev:0,bajas:[],guest:true};S.gd[S.date]=[...(S.gd[S.date]||[]),n];OPS=mkOPS();SHEET=null;toast(n+" añadido hoy y guardado")},
+gQuit:v=>{S.gd[S.date]=(S.gd[S.date]||[]).filter(x=>x!==v);if(!S.conf[S.date]){const t=day(S.date);POSTS.forEach(p=>{const a=t[p];if(!a)return;if(a.op===v)delete t[p];else if(a.partner===v)delete a.partner})}OPS=mkOPS();SHEET=null;toast(v+" quitado de hoy")},
+refForget:v=>{if(SHEET.cd!==v){SHEET.cd=v;return}Object.keys(S.gd).forEach(d=>S.gd[d]=S.gd[d].filter(x=>x!==v));Object.keys(S.days).forEach(d=>POSTS.forEach(p=>{const a=S.days[d][p];if(a&&a.op===v)delete S.days[d][p]}));delete S.ops[v];OPS=mkOPS();SHEET.cd=null;toast("Olvidado")},
+rlSepDel:v=>{S.rules.sep.splice(+v,1)},
+rlSepAdd:()=>{const a=$("rsa").value,b=$("rsb").value;if(a===b){toast("Elige dos personas distintas");return 1}if(S.rules.sep.some(x=>(x.a===a&&x.b===b)||(x.a===b&&x.b===a))){toast("Ya está");return 1}S.rules.sep.push({a,b})},
+rlFavDel:v=>{S.rules.fav.splice(+v,1)},
+rlFavPct:v=>{const[i,d]=sp(v),f=S.rules.fav[+i];if(f)f.pct=Math.max(10,Math.min(100,f.pct+Number(d)))},
+rlFavAdd:()=>{const o=$("rfo").value,p=POSTS[+$("rfp").value];if(S.rules.fav.some(x=>x.o===o&&x.p===p)){toast("Ya está");return 1}S.rules.fav.push({o,p,pct:90})},
+rlMaxDel:v=>{S.rules.max.splice(+v,1)},
+rlMaxAdd:()=>{const o=$("rmo").value,p=POSTS[+$("rmp").value],n=+$("rmn").value;S.rules.max=S.rules.max.filter(x=>!(x.o===o&&x.p===p));S.rules.max.push({o,p,n})},
+rlPrefDel:v=>{S.rules.pref.splice(+v,1)},
+rlPrefAdd:()=>{const o=$("rpo").value,p=POSTS[+$("rpp").value];if(S.rules.pref.some(x=>x.o===o&&x.p===p)){toast("Ya está");return 1}S.rules.pref.push({o,p})},
+rlRot:v=>{S.rules.rot=+v},
+rlReset:()=>{S.rules=RULES0();toast("Reglas restauradas")},
+
 bajaAdd:v=>{const f=$("bfd").value,bm=SHEET.bm||"hasta";if(!f){toast("Pon el día de inicio");return 1}
 if(bm==="hasta"){const t=$("bhd").value;if(!t||t<f){toast("El último día no puede ser anterior al inicio");return 1}S.ops[v].bajas.push({from:f,to:t});SHEET.bf=SHEET.bt=null;purge(v,f,t)}else{SHEET.cb={from:f}}},
 bajaOk:v=>{const cb=SHEET.cb;if(cb){S.ops[v].bajas.push({from:cb.from,to:null});SHEET.bf=SHEET.bt=null;purge(v,cb.from,null)}SHEET.cb=null},
-bajaNo:()=>{SHEET.cb=null},bajaDel:v=>{const[o,i]=sp(v);S.ops[o].bajas.splice(Number(i),1)},
+bajaNo:()=>{SHEET.cb=null},
+bajaDel:v=>{const[o,i]=sp(v);S.ops[o].bajas.splice(Number(i),1)},
 bajaEnd:v=>{const[o,i]=sp(v),b=S.ops[o].bajas[Number(i)];if(!b)return;b.to=addD(S.date,-1);if(b.to<b.from)S.ops[o].bajas.splice(Number(i),1)},
 apAddS:v=>{const d=$("sapd").value;if(!d)return 1;const c=S.ops[v];if(!c.ap.includes(d)){c.ap.push(d);purge(v,d,d,"Asuntos propios apuntados")}},
 apAddP:()=>{const o=$("apo").value,d=$("apd").value;if(!d)return 1;const c=S.ops[o];if(!c.ap.includes(d)){c.ap.push(d);purge(o,d,d,"Asuntos propios apuntados")}},
 apDel:v=>{const[o,d]=sp(v);S.ops[o].ap=S.ops[o].ap.filter(x=>x!==d)},
 fAdd:v=>{const d=$("sfd").value,h=parseFloat($("sfh").value);if(!d||!(h>0)){toast("Pon el día y las horas");return 1}S.ops[v].falta.push({d,h,m:$("sfm").value})},
 fDel:v=>{const[o,d,h,m]=sp(v),f=S.ops[o].falta,i=f.findIndex(x=>x.d===d&&String(x.h)===h&&x.m===m);if(i>=0)f.splice(i,1)},
-opDel:v=>{if(!SHEET.cd){SHEET.cd=true;return}dropPerson(v);SHEET=null;toast("Eliminado del equipo")},
-imList:v=>{IM={k:v,mode:"list",busy:false,items:[],err:"",tx:""}},
-imParse:v=>{const t=($("imTx")||{}).value||"";IM.tx=t;const lines=t.split(/\n+/).map(x=>x.trim()).filter(Boolean);const raw=(lines.length>1?lines:t.split(/[;,]+/)).map(x=>x.replace(/^\s*(?:\d+\s*[.)\-:]\s*|\d+\s+|[-•*·]\s*)/,"").trim()).filter(Boolean);
-const arr=raw.map(x=>{if(v!=="ops"||lines.length<2)return{n:x,posts:[]};const m=x.split(/\s*[:–—]\s*|\s+-\s+/);return{n:m[0],posts:m[1]?m[1].split(/[,\/]+/):[]}});
-IM.items=cleanItems(arr,v);IM.err=IM.items.length?"":"No he encontrado ningún nombre en la lista."},
-imTog:v=>{const x=IM.items[+v];if(x&&!x.dup)x.on=!x.on},
-imCancel:()=>{IM={k:"",mode:"",busy:false,items:[],err:"",tx:""}},
-imAdd:v=>{let n=0;IM.items.filter(x=>x.on&&!x.dup).forEach(x=>{if(v==="posts"){if(!P().some(p=>p.toLowerCase()===x.n.toLowerCase())){S.posts.push(x.n);n++}}else if(!OPS().some(o=>o.toLowerCase()===x.n.toLowerCase())){S.ops[x.n]={posts:x.posts.length?[...x.posts]:[...P()],bajas:[],ap:[],falta:[]};S.order.push(x.n);n++}});A.imCancel();toast(n===1?"Añadido 1":"Añadidos "+n)},
-tuEq:v=>{S.tu.eq=v},
-install:async()=>{if(INST){INST.prompt();try{await INST.userChoice}catch(e){}INST=null;render()}else toast(IOS?"Pulsa Compartir y luego «Añadir a pantalla de inicio»":"Abre el menú del navegador y elige «Instalar app»");return 1},
-tuM:v=>{S.tu.ref=addD(mon(TODAY),-(tuWeek()-1)*7);S.tu.m=v==="1"},
-tuW:v=>{const cm=S.tu.ref?isMan(TODAY):true;S.tu.ref=addD(mon(TODAY),-(+v-1)*7);S.tu.m=cm},
-/* asistente */
-wnext:()=>{const n=S.step;if(n===0){const a=$("wa");if(a)S.area=a.value.trim();const l=$("wl");if(l)S.lider=l.value.trim()}if(n===1&&!P().length)return 1;if(n===2&&!OPS().length)return 1;S.step=Math.min(5,n+1);if(S.step===5)S.qi=0;window.scrollTo(0,0)},
-wback:()=>{S.step=Math.max(0,S.step-1);window.scrollTo(0,0)},
-wAddPost:()=>{const n=nm($("wp").value);if(!n)return 1;if(badName(n)){toast("Ese nombre no se puede usar");return 1}if(P().some(x=>x.toLowerCase()===n.toLowerCase())){toast("Ese puesto ya existe");return 1}S.posts.push(n)},
-wDelPost:v=>{dropPost(v)},
-wPost:v=>{W.posts=W.posts.includes(v)?W.posts.filter(x=>x!==v):[...W.posts,v]},wAll:()=>{W.posts=[...P()]},wNone:()=>{W.posts=[]},
-wSave:()=>{const e=$("wn"),n=((e&&e.value)||W.name||"").trim().replace(/[|]/g,"");W.name=n;
-if(!n){W.err="Escribe el nombre.";return}
-if(badName(n)){W.err="Ese nombre no se puede usar.";return}
-if(!W.edit&&OPS().some(x=>x.toLowerCase()===n.toLowerCase())){W.err="Ya tienes a alguien con ese nombre.";return}
-if(!W.posts.length){W.err="Marca al menos un puesto que sepa hacer.";return}
-if(W.edit)S.ops[n].posts=[...W.posts];else{S.ops[n]={posts:[...W.posts],bajas:[],ap:[],falta:[]};S.order.push(n)}
-W.name="";W.posts=[];W.edit=null;W.err="";if(SHEET&&SHEET.t==="addop")SHEET=null;toast("Guardado")},
-wEdit:v=>{W.name=v;W.posts=[...S.ops[v].posts];W.edit=v;W.err="";window.scrollTo(0,0)},
-wCancel:()=>{W.name="";W.posts=[];W.edit=null;W.err=""},
-wDelOp:v=>{dropPerson(v);if(W.edit===v)A.wCancel()},
-wBaja:v=>{const c=S.ops[v];if(c.bajas.some(b=>!b.to))c.bajas=c.bajas.filter(b=>b.to);else c.bajas.push({from:TODAY,to:null})},
-qnext:()=>{const nt=document.querySelector("[data-h=nt]");if(nt)S.rules.nota=nt.value;if(S.qi>=QS.length-1){S.done=true;TAB="hoy";window.scrollTo(0,0);toast("¡Todo listo! Pulsa «Generar planning»");return}S.qi++;window.scrollTo(0,0)},
-qprev:()=>{S.qi=Math.max(0,S.qi-1)},
-/* reglas */
-fSepP:v=>{const a=W.f.sp||[];W.f.sp=a.includes(v)?a.filter(x=>x!==v):[...a,v]},fSepAll:()=>{W.f.sp=[...P()]},
-rlSepDel:v=>{S.rules.sep.splice(+v,1)},
-rlSepAdd:()=>{const a=fv("sa",optP()),b=fv("sb",optP2()),ps=(W.f.sp||[]).filter(p=>P().includes(p));if(!a||!b||a===b){toast("Elige dos personas distintas");return 1}if(!ps.length){toast("Elige en qué puestos");return 1}
-if(S.rules.sep.some(x=>(x.a===a&&x.b===b)||(x.a===b&&x.b===a))){toast("Esa pareja ya está");return 1}S.rules.sep.push({a,b,posts:ps});W.f.sp=[];toast("Regla añadida")},
-rlFavDel:v=>{S.rules.fav.splice(+v,1)},
-rlFavAdd:()=>{const o=fv("fo",optP()),p=fv("fp",optQ()),pct=+fv("fq",[[100],[90],[70],[50]]);if(!o||!p){toast("Faltan datos");return 1}if(!allowed(o,p)){toast(o+" no sabe hacer ese puesto");return 1}S.rules.fav=S.rules.fav.filter(x=>!(x.o===o&&x.p===p));S.rules.fav.push({o,p,pct});toast("Regla añadida")},
-rlSplit:v=>{S.split=S.split.includes(v)?S.split.filter(x=>x!==v):[...S.split,v]},
-rlMaxDel:v=>{S.rules.max.splice(+v,1)},
-rlMaxAdd:()=>{const o=fv("mo",optP()),p=fv("mp",optQ()),n=+fv("mn",[[1],[2],[3]]);if(!o||!p){toast("Faltan datos");return 1}S.rules.max=S.rules.max.filter(x=>!(x.o===o&&x.p===p));S.rules.max.push({o,p,n});toast("Regla añadida")},
-rlNorep:v=>{S.rules.norep=v==="true"},rlRot:v=>{S.rules.rot=+v}};
-const C={area:v=>{S.area=v.trim()},lider:v=>{S.lider=v.trim()},fs:(v,el)=>{W.f[el.dataset.k]=v},nt:v=>{S.rules.nota=v},bfd:v=>{SHEET.bf=v;if(SHEET.bt&&SHEET.bt<v)SHEET.bt=null},bhd:v=>{SHEET.bt=v},imgf:(v,el)=>{readImg(el.files&&el.files[0],el.dataset.k);el.value="";return 1}};
+opDel:v=>{if(!SHEET.cd){SHEET.cd=true;return}S.extra=S.extra.filter(x=>x!==v);{const bi=S.team.indexOf(v);if(bi>=0)S.team.splice(bi,1)}S.rot=S.rot.filter(x=>x!==v);["sep"].forEach(k=>S.rules[k]=S.rules[k].filter(r=>r.a!==v&&r.b!==v));["fav","max","pref"].forEach(k=>S.rules[k]=S.rules[k].filter(r=>r.o!==v));OPS=mkOPS();delete S.ops[v];Object.values(S.days).forEach(d=>POSTS.forEach(p=>{if(d[p]&&d[p].op===v)delete d[p]}));SHEET=null},
+addTurno:v=>{ADD.turno=v},addPost:v=>{ADD.posts=ADD.posts.includes(v)?ADD.posts.filter(x=>x!==v):[...ADD.posts,v]},
+addDo:()=>{const n=$("nn").value.trim().replace(/[|]/g,"");ADD.name=n;if(!n){ADD.err="Escribe el nombre.";return}if(OPS.some(x=>x.toLowerCase()===n.toLowerCase())){ADD.err="Ese nombre ya existe.";return}
+S.extra.push(n);OPS=mkOPS();S.ops[n]={st:"ok",turno:ADD.turno,posts:[...ADD.posts],ap:[],falta:[],base:0,basev:0,bajas:[]};SHEET={t:"person",o:n};toast("Operario añadido")},
+rfN:v=>{RF.n=Math.max(0,RF.n+Number(v));RF.prop=null},
+rfVol:v=>{RF.vols=RF.vols.includes(v)?RF.vols.filter(x=>x!==v):[...RF.vols,v];RF.prop=null},
+rfCalc:()=>{RF.prop=propose()},
+rfOk:()=>{const D=RF.d,p=RF.prop;if(!p||!p.length)return 1;S.ertes[D]={n:p,v:RF.vols.filter(x=>p.includes(x)),rb:[...S.rot]};S.rot=[...S.rot.filter(o=>!p.includes(o)),...p];RF.prop=null;RF.vols=[];RF.n=0},
+rfUndo:()=>{const E=S.ertes[RF.d];if(E&&E.rb)S.rot=E.rb;delete S.ertes[RF.d]},
+eT:v=>{const E=E0(RF.d);if(E.n.includes(v)){E.n=E.n.filter(x=>x!==v);E.v=E.v.filter(x=>x!==v)}else E.n.push(v);if(!E.n.length)delete S.ertes[RF.d]},
+eV:v=>{const E=E0(RF.d);if(!E.n.includes(v))E.n.push(v);E.v=E.v.includes(v)?E.v.filter(x=>x!==v):[...E.v,v]},
+mv:v=>{const[o,d]=sp(v),i=S.rot.indexOf(o),j=i+Number(d);if(i<0||j<0||j>=S.rot.length)return;S.rot.splice(i,1);S.rot.splice(j,0,o)},
+rotApply:()=>{const out=[],bad=[];$("rotTx").value.split("\n").forEach(l=>{l=l.replace(/^[\d\s.\-)•*]+/,"").trim().toLowerCase();if(!l)return;const f=OPS.find(o=>o.toLowerCase()===l)||OPS.find(o=>o.toLowerCase().startsWith(l)||l.startsWith(o.toLowerCase()));if(f){if(!out.includes(f))out.push(f)}else bad.push(l)});S.rot=out;RF.msg=bad.length?"No encontré: "+bad.join(", "):""},
+more:v=>{MORE=v||null;BK.cf=false;window.scrollTo(0,0)},
+bkCopy:async()=>{const j=JSON.stringify(S);try{await navigator.clipboard.writeText(j);toast("Copia copiada")}catch(x){BK.tx=j;render();toast("Selecciona el texto y cópialo")}return 1},
+bkRestore:()=>{const t=$("bkTx").value.trim();BK.tx=t;if(!t){toast("Pega primero la copia");return 1}if(!BK.cf){BK.cf=true;return}BK.cf=false;try{const d=JSON.parse(t);if(!d||typeof d!=="object"||!d.ops||!d.days)throw 0;S=d;normState();S.wzDone=true;S.wz=0;TAB="v1";MORE=null;RF.d=S.date;RF.prop=null;BK.tx="";window.scrollTo(0,0);toast("Copia restaurada")}catch(x){toast("Esa copia no es válida");return 1}},
+calM:v=>{const[y,m]=(S.calM||TODAY.slice(0,7)).split("-").map(Number),x=new Date(Date.UTC(y,m-1+Number(v),1,12));S.calM=x.toISOString().slice(0,7)},
+calT:v=>{S.cal[v]=!working(v)},calR:v=>{Object.keys(S.cal).forEach(d=>{if(d.startsWith(v))delete S.cal[d]})},
+calRead:()=>{const f=$("calf")&&$("calf").files;if(!f||!f.length){CAL_RES={st:"err",msg:"Elige primero la foto."};return}calRead(Array.from(f));return 1},
+calApply:()=>{const it=(CAL_RES&&CAL_RES.items)||[];it.forEach(x=>mw(x.m).forEach(d=>{S.cal[d]=!x.no.includes(d)}));if(it.length)S.calM=it[0].m;CAL_RES=null;toast("Calendario actualizado")},
+calDisc:()=>{CAL_RES=null}};
+const C={bfd:v=>{SHEET.bf=v;if(SHEET.bt&&SHEET.bt<v)SHEET.bt=null},bhd:v=>{SHEET.bt=v},rfD:v=>{if(v){RF.d=v;RF.prop=null}},eb:(v,el)=>{S.ops[el.dataset.v].base=Math.max(0,parseInt(v)||0)},ebv:(v,el)=>{S.ops[el.dataset.v].basev=Math.max(0,parseInt(v)||0)}};
+let LPF=false;
+(()=>{let tm=0,sx=0,sy=0,el=null;const stop=()=>{clearTimeout(tm);if(el)el.classList.remove("lp");el=null};
+document.addEventListener("pointerdown",e=>{LPF=false;const q=e.target.closest("[data-a=opPost]");if(q&&SHEET&&(SHEET.t==="person"||SHEET.t==="posts")){sx=e.clientX;sy=e.clientY;el=q;const[o,pp]=q.dataset.v.split("|"),back=SHEET.t;tm=setTimeout(()=>{if(!el)return;LPF=true;try{navigator.vibrate&&navigator.vibrate(15)}catch(x){}stop();SHEET={t:"pq",o,p:pp,back};render()},450);return}const b=e.target.closest(".st[data-a=post]");if(!b||SHEET)return;sx=e.clientX;sy=e.clientY;el=b;tm=setTimeout(()=>{if(!el)return;const i=Number(el.dataset.v);LPF=true;try{navigator.vibrate&&navigator.vibrate(15)}catch(x){}stop();SHEET={t:"quick",i};render()},450);setTimeout(()=>{if(el===b)b.classList.add("lp")},120)});
+document.addEventListener("pointermove",e=>{if(el&&Math.hypot(e.clientX-sx,e.clientY-sy)>10)stop()});
+["pointerup","pointercancel","pointerleave"].forEach(n=>document.addEventListener(n,()=>{if(el)stop()},true));
+document.addEventListener("contextmenu",e=>{if(!e.target.closest("input,textarea,.sel,.wa,pre"))e.preventDefault()});document.addEventListener("selectstart",e=>{if(!e.target.closest||!e.target.closest("input,textarea,.sel,.wa,pre"))e.preventDefault()});
+document.addEventListener("click",e=>{if(LPF){LPF=false;e.stopPropagation();e.preventDefault()}},true)})();
 document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b||!A[b.dataset.a])return;const r=A[b.dataset.a](b.dataset.v,b,e);if(!r){save();render()}});
 document.addEventListener("change",e=>{const el=e.target.closest("[data-h]");if(!el||!C[el.dataset.h])return;const r=C[el.dataset.h](el.value,el);if(!r){save();render()}});
+document.addEventListener("keydown",e=>{if(e.key!=="Enter"||!e.target)return;const m={wzp:"wzAddPost",nn:"addDo"}[e.target.id];if(!m)return;e.preventDefault();const r=A[m]();if(!r){save();render()}});
 document.addEventListener("input",e=>{const el=e.target;if(el&&el.dataset&&el.dataset.h==="q"){QF=el.value;$("tl").innerHTML=teamRows()}});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&SHEET){SHEET=null;render();return}if(e.key!=="Enter")return;const id=e.target&&e.target.id;const m={wp:S.done?"mAddPost":"wAddPost",wn:"wSave"}[id];if(!m)return;e.preventDefault();const r=A[m]();if(!r){save();render()}});
-document.addEventListener("visibilitychange",()=>{if(document.hidden)return;const t=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);if(t!==TODAY){if(S.date===TODAY)S.date=t;TODAY=t;render()}});
 render();cloudInit();
+
 if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))navigator.serviceWorker.register("sw.js").catch(()=>{});
-(async()=>{try{if(!window.claude||!claude.use)return;const s=await claude.use("sample");if(s){SMP=true;render()}}catch(e){}})();
 </script>
+
 </body></html>
-
-
-
-
