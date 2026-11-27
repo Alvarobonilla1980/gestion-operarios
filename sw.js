@@ -1,6 +1,6 @@
 // Planning de Equipo: funcionamiento sin conexión.
 // Sube VERSION cada vez que cambies index.html para que los móviles cojan la nueva versión.
-const VERSION = "operarios-v7";
+const VERSION = "operarios-v8";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
@@ -23,7 +23,7 @@ self.addEventListener("fetch", e => {
   // La página: primero la red (para tener siempre la última versión); sin conexión, la guardada.
   if (req.mode === "navigate") {
     e.respondWith(
-      fetch(req)
+      fetch(req, { cache: "no-cache" })
         .then(r => { const copy = r.clone(); caches.open(VERSION).then(c => c.put("index.html", copy)); return r; })
         .catch(() => caches.match("index.html"))
     );
