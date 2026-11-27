@@ -1,6 +1,8 @@
 # gestion-operarios
 
-**Ilunion · Control de operarios**: app para el móvil que reparte a los operarios en los puestos cada día, con bajas, ERTE, calendario laboral, cuadrante semanal y envío por WhatsApp.
+**Control de operarios**: app para el móvil que reparte a los operarios en los puestos cada día, con bajas, ERTE, calendario laboral, cuadrante semanal y envío por WhatsApp.
+
+La primera vez se abre un asistente para crear desde cero el área, los puestos, el equipo, las bajas y las reglas. Quien ya usaba la app puede pegar su copia de seguridad en esa primera pantalla y recupera todo.
 
 ## Ponerla en marcha (una sola vez)
 
@@ -14,7 +16,7 @@
 
 Queda con su icono, se abre a pantalla completa y funciona sin conexión. Los datos se guardan en el propio móvil (haz copias en *Más → Copia de seguridad*).
 
-**Pasar los datos desde la versión de Claude:** en la app de Claude, *Más → Copia de seguridad → Copiar copia de seguridad*; en esta app, *Más → Copia de seguridad*, pega y pulsa *Restaurar* dos veces.
+**Pasar los datos desde la versión de Claude (Ilunion):** en la app de Claude, *Más → Copia de seguridad → Copiar copia de seguridad*; en esta app, *Más → Copia de seguridad*, pega y pulsa *Restaurar* dos veces.
 
 ## Para quien la mantenga
 

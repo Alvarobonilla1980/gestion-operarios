@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Ilunion · Control de operarios</title>
+<title>Control de operarios</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -157,13 +157,13 @@ main.wzm{padding-bottom:20px}
 <div id="shr"></div>
 <div id="toast" class="toast" role="status"></div>
 <script>
-const BASE=["Julia Navas","Silvia","Javi Navarro","Pepi","Laura","Javi Castellano","Cantarero","Andrea","Pascual","Loli","Loles","Juanjo","Alicia","Rafa","Julia Neves","Nacho"];let OPS;
-const POSTS=["Portones","Soporte LH + Palancas","Soporte RH + Manguitos","Faros","Door","Wheel RH + 2 tacos","Wheel LH + Parasoles","Tapas + Pasos + cowgrill","Corchos","Espejos RH + BTA RH","Espejos LH + BTA LH","BTA + gatos + premontaje.bat"];
-const ESP=[POSTS[9],POSTS[10]],WH=[POSTS[5],POSTS[6]],LAURA=[POSTS[11],POSTS[7],POSTS[0]];
-const SHORT=["Portones","Soporte LH","Soporte RH","Faros","Door","Wheel RH","Wheel LH","Cowgrill","Corchos","Espejos RH","Espejos LH","BTA"];
-const LIST={[POSTS[9]]:["Julia Navas","Andrea","Pepi","Loles","Alicia"],[POSTS[10]]:["Julia Navas","Andrea","Pepi","Loles","Alicia"],"Faros":["Nacho","Javi Castellano","Juanjo","Javi Navarro"],"Door":["Nacho","Juanjo","Julia Neves","Javi Castellano"],[POSTS[1]]:["Javi Navarro","Julia Navas","Pepi"]};
+const ILU_BASE=["Julia Navas","Silvia","Javi Navarro","Pepi","Laura","Javi Castellano","Cantarero","Andrea","Pascual","Loli","Loles","Juanjo","Alicia","Rafa","Julia Neves","Nacho"];let OPS;let BASE=[],POSTS=[],SHORT=[],ESP=[],WH=[],LAURA=[],LIST={};
+const ILU_POSTS=["Portones","Soporte LH + Palancas","Soporte RH + Manguitos","Faros","Door","Wheel RH + 2 tacos","Wheel LH + Parasoles","Tapas + Pasos + cowgrill","Corchos","Espejos RH + BTA RH","Espejos LH + BTA LH","BTA + gatos + premontaje.bat"];
+const IP=ILU_POSTS;
+const ILU_SHORT=["Portones","Soporte LH","Soporte RH","Faros","Door","Wheel RH","Wheel LH","Cowgrill","Corchos","Espejos RH","Espejos LH","BTA"];
+const ILU_LIST={[IP[9]]:["Julia Navas","Andrea","Pepi","Loles","Alicia"],[IP[10]]:["Julia Navas","Andrea","Pepi","Loles","Alicia"],"Faros":["Nacho","Javi Castellano","Juanjo","Javi Navarro"],"Door":["Nacho","Juanjo","Julia Neves","Javi Castellano"],[IP[1]]:["Javi Navarro","Julia Navas","Pepi"]};
 /* Calendario laboral (fotos Oct, Nov, Dic 2026). false = no laborable entre semana. Sáb/Dom son no laborables por defecto. */
-const CAL_FILE={"2026-10-09":false,"2026-10-12":false,"2026-12-08":false,"2026-12-22":false,"2026-12-23":false,"2026-12-24":false,"2026-12-25":false,"2026-12-28":false,"2026-12-29":false,"2026-12-30":false,"2026-12-31":false};
+const ILU_CAL={"2026-10-09":false,"2026-10-12":false,"2026-12-08":false,"2026-12-22":false,"2026-12-23":false,"2026-12-24":false,"2026-12-25":false,"2026-12-28":false,"2026-12-29":false,"2026-12-30":false,"2026-12-31":false};
 const $=i=>document.getElementById(i);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TODAY=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
@@ -178,22 +178,27 @@ const av=(n,k="")=>`<span class="av ${k}" style="--h:${hue(n)}">${esc(ini(n))}</
 const IC={today:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4M9 15l2 2 4-4"/>',team:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 5a3.5 3.5 0 010 6.5M18 14c2 .6 3.3 2.4 3.5 6"/>',erte:'<path d="M20 11a8 8 0 00-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0014.5 4.5L20 16M20 20v-4h-4"/>',more:'<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',chev:'<path d="M9 6l6 6-6 6"/>',back:'<path d="M15 6l-6 6 6 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',check:'<path d="M5 12l4 4 10-10"/>',lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',warn:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',send:'<path d="M4 12l16-8-6 16-3-7z"/>',search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/>',up:'<path d="M6 14l6-6 6 6"/>',down:'<path d="M6 10l6 6 6-6"/>',cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',spark:'<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/>',save:'<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c.5-4.5 3.5-7 8-7s7.5 2.5 8 7"/>'};
 const ic=(n,c="")=>`<svg class="ic ${c}" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
 const LOGO='<svg class="logo" width="118" height="27" viewBox="0 0 132 30" role="img" aria-label="Ilunion"><circle cx="13" cy="15" r="11" fill="none" stroke="#fff" stroke-width="3"/><circle cx="13" cy="15" r="4.5" fill="#f0b72f"/><text x="32" y="23" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" letter-spacing="1.5" fill="#fff">ILUNION</text></svg>';
-function defAllowed(o,p){if(LIST[p]&&!LIST[p].includes(o))return false;if(o==="Laura")return LAURA.includes(p);if((o==="Loles"||o==="Loli")&&WH.includes(p))return false;return true}
+function defAllowed(o,p){if(!S.ilu)return true;if(LIST[p]&&!LIST[p].includes(o))return false;if(o==="Laura")return LAURA.includes(p);if((o==="Loles"||o==="Loli")&&WH.includes(p))return false;return true}
 /* ---------- estado ---------- */
 let S;try{S=JSON.parse(localStorage.getItem("ctrlop")||"null")}catch(e){}
 if(!S)S={shift:"T",date:TODAY,ops:{},days:{},conf:{}};
 if(S.wzDone===undefined)S.wzDone=Object.keys(S.days||{}).length>0;S.wz=S.wz||0;
 S.conf=S.conf||{};S.extra=S.extra||[];S.ertes=S.ertes||{};S.cal=S.cal||{};S.sub=S.sub||"rot";
-S.rot=S.rot&&S.rot.length?S.rot:["Julia Navas","Rafa","Laura","Andrea","Javi Castellano","Loles","Juanjo","Pepi","Javi Navarro","Silvia","Loli","Pascual","Nacho","Alicia","Julia Neves","Cantarero"];
-const RULES0=()=>({sep:[{a:"Loles",b:"Julia Navas"},{a:"Andrea",b:"Julia Navas"}],fav:[{o:"Javi Navarro",p:POSTS[1],pct:90}],max:[{o:"Javi Navarro",p:"Faros",n:1}],pref:[{o:"Andrea",p:POSTS[9]},{o:"Julia Navas",p:POSTS[9]}],rot:2});
+S.rot=S.rot&&S.rot.length?S.rot:!S.ilu&&S.team?[]:["Julia Navas","Rafa","Laura","Andrea","Javi Castellano","Loles","Juanjo","Pepi","Javi Navarro","Silvia","Loli","Pascual","Nacho","Alicia","Julia Neves","Cantarero"];
+const RULES0=()=>!S.ilu?{sep:[],fav:[],max:[],pref:[],rot:2}:({sep:[{a:"Loles",b:"Julia Navas"},{a:"Andrea",b:"Julia Navas"}],fav:[{o:"Javi Navarro",p:IP[1],pct:90}],max:[{o:"Javi Navarro",p:"Faros",n:1}],pref:[{o:"Andrea",p:IP[9]},{o:"Julia Navas",p:IP[9]}],rot:2});
 const mkOPS=()=>[...BASE,...S.extra,...Object.keys(S.ops||{}).filter(o=>S.ops[o].guest&&((S.gd||{})[S.date]||[]).includes(o))];
 const TEAM=()=>[...BASE,...S.extra];
 const orig=o=>{const k=Object.keys(S.ren||{}).find(k=>S.ren[k]===o);return k||o};
-function normState(){S.ren=S.ren||{};Object.entries(S.ren).forEach(([a,b])=>{const i=BASE.indexOf(a);if(i>=0)BASE[i]=b});if(!S.rules)S.rules=RULES0();["sep","fav","max","pref"].forEach(k=>{if(!Array.isArray(S.rules[k]))S.rules[k]=[]});if(![1,2,3].includes(S.rules.rot))S.rules.rot=2;S.ops=S.ops||{};S.days=S.days||{};S.conf=S.conf||{};S.extra=S.extra||[];S.ertes=S.ertes||{};S.cal=S.cal||{};S.sub=S.sub||"rot";S.shift=S.shift||"T";S.date=S.date||TODAY;S.rot=S.rot&&S.rot.length?S.rot:[];S.gd=S.gd||{};OPS=mkOPS();
-OPS.forEach(o=>{const c=S.ops[o]||(S.ops[o]={st:"ok",turno:o==="Alicia"||o==="Julia Neves"?"M":""});
+function normState(){
+if(!Array.isArray(S.team)){const old=Object.keys(S.ops||{}).length>0||Object.keys(S.days||{}).length>0;S.ilu=old;S.team=old?[...ILU_BASE]:[];S.posts=old?[...ILU_POSTS]:[];S.short=old?[...ILU_SHORT]:[]}
+if(!Array.isArray(S.posts))S.posts=[];if(!Array.isArray(S.short)||S.short.length!==S.posts.length)S.short=S.posts.map((p,i)=>(S.short&&S.short[i])||p);if(!Array.isArray(S.sepP))S.sepP=[];S.area=S.area||"";
+BASE=S.team;POSTS=S.posts;SHORT=S.short;
+if(S.ilu){ESP=[IP[9],IP[10]];WH=[IP[5],IP[6]];LAURA=[IP[11],IP[7],IP[0]];LIST=ILU_LIST}else{S.sepP=S.sepP.filter(p=>POSTS.includes(p));ESP=S.sepP;WH=[];LAURA=[];LIST={}}
+S.ren=S.ren||{};Object.entries(S.ren).forEach(([a,b])=>{const i=BASE.indexOf(a);if(i>=0)BASE[i]=b});if(!S.rules)S.rules=RULES0();["sep","fav","max","pref"].forEach(k=>{if(!Array.isArray(S.rules[k]))S.rules[k]=[]});if(![1,2,3].includes(S.rules.rot))S.rules.rot=2;S.ops=S.ops||{};S.days=S.days||{};S.conf=S.conf||{};S.extra=S.extra||[];S.ertes=S.ertes||{};S.cal=S.cal||{};S.sub=S.sub||"rot";S.shift=S.shift||"T";S.date=S.date||TODAY;S.rot=S.rot&&S.rot.length?S.rot:[];S.gd=S.gd||{};OPS=mkOPS();
+OPS.forEach(o=>{const c=S.ops[o]||(S.ops[o]={st:"ok",turno:S.ilu&&(o==="Alicia"||o==="Julia Neves")?"M":""});
 if(c.st==="erte"){if(c.since)for(let d=c.since,i=0;d<=TODAY&&i<120;d=addD(d,1),i++){const E=S.ertes[d]||(S.ertes[d]={n:[],v:[]});if(!E.n.includes(o))E.n.push(o)}c.st="ok"}
 if(!c.posts)c.posts=POSTS.filter(p=>defAllowed(o,p));c.ap=c.ap||[];c.falta=c.falta||[];c.base=c.base||0;c.basev=c.basev||0;c.bajas=c.bajas||[];if(c.st==="baja"){c.bajas.push({from:TODAY,to:null});c.st="ok"}})}normState();
-if(!S._init){S._init=1;if(!S.ops.Cantarero.bajas.length)S.ops.Cantarero.bajas.push({from:TODAY,to:null})}
+if(!S._init){S._init=1;if(S.ilu&&S.ops.Cantarero&&!S.ops.Cantarero.bajas.length)S.ops.Cantarero.bajas.push({from:TODAY,to:null})}
 let CL={st:"local",db:null,ready:false,tm:0,busy:false,dirty:false};
 const save=()=>{S._t=Date.now();try{localStorage.setItem("ctrlop",JSON.stringify(S))}catch(e){}cloudSave()};
 function cloudSave(){if(!CL.ready||!CL.db)return;CL.dirty=true;clearTimeout(CL.tm);CL.tm=setTimeout(cloudFlush,700)}
@@ -218,7 +223,7 @@ const falt=(o,d=S.date)=>S.ops[o].falta.filter(f=>f.d===d);
 const isBaja=(o,d=S.date)=>(S.ops[o].bajas||[]).some(b=>d>=b.from&&(!b.to||d<=b.to));
 const avail=(o,d=S.date)=>{const c=S.ops[o];if(c.guest&&!((S.gd||{})[d]||[]).includes(o))return false;return !isBaja(o,d)&&!isAP(o,d)&&!inE(o,d)&&(!c.turno||c.turno===S.shift)};
 const why=o=>isBaja(o)?"De baja":isAP(o)?"Asuntos propios":inE(o)?"ERTE":"Otro turno";
-const working=d=>S.cal[d]!==undefined?S.cal[d]:CAL_FILE[d]!==undefined?CAL_FILE[d]:![0,6].includes(new Date(d+"T12:00:00Z").getUTCDay());
+const working=d=>S.cal[d]!==undefined?S.cal[d]:(S.ilu&&ILU_CAL[d]!==undefined)?ILU_CAL[d]:![0,6].includes(new Date(d+"T12:00:00Z").getUTCDay());
 function eDays(o){let n=0,v=0;for(const d in S.ertes){if(d>=TODAY||!working(d))continue;const e=S.ertes[d];if(e.n.includes(o)){n++;if(e.v.includes(o))v++}}const c=S.ops[o];return{n:n+c.base,v:v+c.basev}}
 function normRot(){const T=TEAM();S.rot=[...S.rot.filter((o,i)=>T.includes(o)&&S.rot.indexOf(o)===i),...T.filter(o=>!S.rot.includes(o))]}
 const setDate=d=>{S.date=d;RF.d=d;RF.prop=null;OPS=mkOPS()};
@@ -250,7 +255,7 @@ function warnList(){const d=S.date,t=day(d),prev=S.days[addD(d,-1)]||{},w=[],see
 if(!working(d))add(null,"Día no laborable según el calendario");
 POSTS.forEach(p=>{const a=t[p];if(!a)return;const o=a.op;if(seen[o])add(p,o+" está en dos puestos");seen[o]=1;
 if(!avail(o))add(p,o+" no está disponible ("+why(o)+")");
-if(p==="Door"&&orig(o)==="Alicia")add(p,o+" en Door: solo 4 h compartidas con Pepi, Rafa o Silvia");else if(!allowed(o,p))add(p,o+" no puede hacer "+p);
+if(S.ilu&&p==="Door"&&orig(o)==="Alicia")add(p,o+" en Door: solo 4 h compartidas con Pepi, Rafa o Silvia");else if(!allowed(o,p))add(p,o+" no puede hacer "+p);
 if(prev[p]&&prev[p].op===o&&!favOK(o,p))add(p,o+" repite "+p+" respecto a ayer");
 falt(o).forEach(f=>add(p,o+" falta "+f.h+" h ("+f.m+")"));if(p4(o,p)&&!a.partner)add(p,o+" solo puede hacer 4 h en "+p+": falta la otra persona");if(a.partner&&S.ops[o].solo8)add(p,o+" prefiere hacer las 8 horas, no 4 h + 4 h");
 S.rules.max.forEach(m=>{if(m.o===o&&m.p===p&&weekCount(o,p,d)>=m.n)add(p,o+" ya hizo "+SHORT[POSTS.indexOf(p)]+" "+m.n+" vez"+(m.n>1?"es":"")+" esta semana")});
@@ -303,7 +308,7 @@ const chips=[["erte","ERTE"],["baja","Baja"],["ap","Asuntos propios"],["fal","Fa
 const sub=[S.date===TODAY?"Hoy":"",!working(S.date)?"No laborable":"",cf?"Confirmado":""].filter(Boolean).join(" · ")||(S.shift==="M"?"Turno de mañana":"Turno de tarde");
 const dn=new Date(S.date+"T12:00:00Z").toLocaleDateString("es-ES",{weekday:"long",timeZone:"UTC"}),dm=new Date(S.date+"T12:00:00Z").toLocaleDateString("es-ES",{day:"numeric",month:"long",timeZone:"UTC"});
 let h='<div class="in pg">';
-h+=`<section class="ban"><div class="top">${LOGO}${shiftSeg()}</div><div class="dt"><button class="ib g" data-a="dd" data-v="-1" aria-label="Día anterior">${ic("back")}</button><div class="dd"><b>${esc(cap(dn))}</b><span>${esc(dm)} · ${sub}</span></div><button class="ib g" data-a="dd" data-v="1" aria-label="Día siguiente">${ic("chev")}</button></div><div class="pr"><div class="pb"><i style="width:${Math.round(100*cov/POSTS.length)}%"></i></div><b>${cov}/${POSTS.length}</b></div><div class="bst"><span><b>${cov}</b> de ${POSTS.length} puestos cubiertos</span><span><b>${nAv}</b> disponibles de ${OPS.length}</span></div>${nAv<POSTS.length?`<div class="bal">${ic("warn")}<span>Faltan ${POSTS.length-nAv} persona${POSTS.length-nAv>1?"s":""}: hay ${nAv} disponibles para ${POSTS.length} puestos</span></div>`:""}${cov&&cov<POSTS.length?`<div class="bal">${ic("warn")}<span>Sin cubrir: ${POSTS.filter(x=>!t[x]).map(x=>SHORT[POSTS.indexOf(x)]).join(", ")}</span></div>`:""}${(nAv<POSTS.length||(cov&&cov<POSTS.length))?`<button class="btn gh full" data-a="refu">${ic("plus")} Añadir operario de otro turno o sitio</button>`:""}${cf?`<div class="cfl">${ic("lock")}<span>Día confirmado</span><button class="btn gh" style="min-height:36px" data-a="unconf">Editar</button></div>`:`<div class="row"><button class="btn y grow" data-a="gen">${ic("spark")} Generar planning</button><button class="btn gh" data-a="clr">Limpiar</button></div>`}</section>`;
+h+=`<section class="ban"><div class="top">${S.ilu?LOGO:`<b style="font-size:17px;color:#fff">${esc(S.area||"Mi equipo")}</b>`}${shiftSeg()}</div><div class="dt"><button class="ib g" data-a="dd" data-v="-1" aria-label="Día anterior">${ic("back")}</button><div class="dd"><b>${esc(cap(dn))}</b><span>${esc(dm)} · ${sub}</span></div><button class="ib g" data-a="dd" data-v="1" aria-label="Día siguiente">${ic("chev")}</button></div><div class="pr"><div class="pb"><i style="width:${Math.round(100*cov/POSTS.length)}%"></i></div><b>${cov}/${POSTS.length}</b></div><div class="bst"><span><b>${cov}</b> de ${POSTS.length} puestos cubiertos</span><span><b>${nAv}</b> disponibles de ${OPS.length}</span></div>${nAv<POSTS.length?`<div class="bal">${ic("warn")}<span>Faltan ${POSTS.length-nAv} persona${POSTS.length-nAv>1?"s":""}: hay ${nAv} disponibles para ${POSTS.length} puestos</span></div>`:""}${cov&&cov<POSTS.length?`<div class="bal">${ic("warn")}<span>Sin cubrir: ${POSTS.filter(x=>!t[x]).map(x=>SHORT[POSTS.indexOf(x)]).join(", ")}</span></div>`:""}${(nAv<POSTS.length||(cov&&cov<POSTS.length))?`<button class="btn gh full" data-a="refu">${ic("plus")} Añadir operario de otro turno o sitio</button>`:""}${cf?`<div class="cfl">${ic("lock")}<span>Día confirmado</span><button class="btn gh" style="min-height:36px" data-a="unconf">Editar</button></div>`:`<div class="row"><button class="btn y grow" data-a="gen">${ic("spark")} Generar planning</button><button class="btn gh" data-a="clr">Limpiar</button></div>`}</section>`;
 h+=stripCard();
 h+=`<button class="note" data-a="cuad">${ic("today")}<span>Ver cuadrante de la semana</span>${ic("chev")}</button>`;
 if(!cov&&!cf)h+='<p class="hint">Toca «Generar planning» y la app propone el día. Después toca cualquier puesto para cambiar a la persona.</p>';
@@ -345,7 +350,7 @@ const sec=(t,h,body,add)=>`<section class="card pad" style="display:flex;flex-di
 const line=(txt,btn)=>`<div class="row sp"><span style="flex:1;font-weight:700">${txt}</span>${btn}</div>`;
 const del=(a,i)=>`<button class="chip" data-a="${a}" data-v="${i}">Quitar</button>`;
 let h='<div class="in pg"><p class="hint">Aquí mandas tú. El reparto sigue estas reglas cada vez que pulsas «Generar planning».</p>';
-h+=sec("No juntar en Espejos","Si pueden, estas dos personas no coinciden en los dos puestos de Espejos.",r.sep.map((x,i)=>line(esc(x.a)+" y "+esc(x.b),del("rlSepDel",i))).join(""),`<div class="row">${po("rsa")}${po("rsb")}</div><button class="btn full" data-a="rlSepAdd">${ic("plus")} Añadir pareja</button>`);
+h+=sec(S.ilu?"No juntar en Espejos":"No juntar",S.ilu?"Si pueden, estas dos personas no coinciden en los dos puestos de Espejos.":`Si pueden, estas dos personas no coinciden a la vez en los puestos que marques:</p><div class="chips">${POSTS.map(p=>`<button class="chip ${S.sepP.includes(p)?"on":""}" data-a="rlSepP" data-v="${esc(p)}">${esc(p)}</button>`).join("")||'<span class="mu">Añade antes tus puestos</span>'}</div><p class="hint" style="display:none">`,r.sep.map((x,i)=>line(esc(x.a)+" y "+esc(x.b),del("rlSepDel",i))).join(""),`<div class="row">${po("rsa")}${po("rsb")}</div><button class="btn full" data-a="rlSepAdd">${ic("plus")} Añadir pareja</button>`);
 h+=sec("Puesto habitual","Esa persona va a ese puesto el porcentaje de días indicado y puede repetirlo seguido.",r.fav.map((x,i)=>line(esc(x.o)+" · "+esc(SHORT[POSTS.indexOf(x.p)])+`<br><span class="mu">${x.pct} % de los días</span>`,`<span class="row" style="gap:6px"><button class="ib sm" data-a="rlFavPct" data-v="${i}|-10" aria-label="Menos">−</button><button class="ib sm" data-a="rlFavPct" data-v="${i}|10" aria-label="Más">+</button>${del("rlFavDel",i)}</span>`)).join(""),`<div class="row">${po("rfo")}${pp("rfp")}</div><button class="btn full" data-a="rlFavAdd">${ic("plus")} Añadir puesto habitual</button>`);
 h+=sec("Máximo por semana","Esa persona no hace ese puesto más veces en la misma semana.",r.max.map((x,i)=>line(esc(x.o)+" · "+esc(SHORT[POSTS.indexOf(x.p)])+" · máx. "+x.n+" por semana",del("rlMaxDel",i))).join(""),`<div class="row">${po("rmo")}${pp("rmp")}</div><div class="row"><select id="rmn"><option>1</option><option>2</option><option>3</option></select><button class="btn grow" data-a="rlMaxAdd">${ic("plus")} Añadir máximo</button></div>`);
 h+=sec("Puesto preferido","Si hay opción, esa persona va a ese puesto.",r.pref.map((x,i)=>line(esc(x.o)+" · "+esc(SHORT[POSTS.indexOf(x.p)]),del("rlPrefDel",i))).join(""),`<div class="row">${po("rpo")}${pp("rpp")}</div><button class="btn full" data-a="rlPrefAdd">${ic("plus")} Añadir preferencia</button>`);
@@ -404,7 +409,7 @@ return h+"</section>"}
 function shPost(i){const p=POSTS[i],t=day(S.date),a=t[p],cur=a&&a.op;
 if(S.conf[S.date])return`<div class="note ok">${ic("lock")}<span>Día confirmado. Desbloquéalo para cambiar puestos.</span></div><button class="btn full" data-a="unconf">Desbloquear</button>`;
 const at={};POSTS.forEach(x=>{if(t[x]){at[t[x].op]=x;if(t[x].partner&&!at[t[x].partner])at[t[x].partner]=x}});
-const cand=OPS.filter(o=>allowed(o,p)||(p==="Door"&&orig(o)==="Alicia")||o===cur),g1=[],g2=[],g3=[];
+const cand=OPS.filter(o=>allowed(o,p)||(S.ilu&&p==="Door"&&orig(o)==="Alicia")||o===cur),g1=[],g2=[],g3=[];
 cand.forEach(o=>{if(!avail(o))g3.push(o);else if(at[o]&&at[o]!==p)g2.push(o);else g1.push(o)});
 const row=(o,sub,mut)=>`<button class="li ${mut?"mut":""}" data-a="setPost" data-v="${i}|${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${esc(sub)}</small></span>${o===cur?ic("check","okc"):""}</button>`;
 let h="";
@@ -412,7 +417,7 @@ if(cur&&!SPL(p,cur))h+=`<button class="btn full" data-a="split" data-v="${i}">${
 if(cur&&(SPL(p,cur)||a.s))h+=`<button class="note" data-a="partner" data-v="${i}">${ic("clock")}<span>4 h + 4 h · elegir quién hace cada parte<br><b>${esc(a.op)} ${HR()[0]}–${HR()[1]}${a.partner?" · "+esc(a.partner)+" "+HR()[1]+"–"+HR()[2]:""}</b></span>${ic("chev","mu")}</button>`;
 h+='<section class="card">';
 if(cur)h+=`<button class="li" data-a="clearPost" data-v="${i}"><span class="av nil">${ic("x")}</span><span class="lt"><b>Dejar sin asignar</b></span></button>`;
-h+=g1.map(o=>row(o,p==="Door"&&orig(o)==="Alicia"?"Solo 4 h compartidas":"Libre",false)).join("")+g2.map(o=>row(o,"Ahora en "+at[o]+" · se intercambian",false)).join("")+g3.map(o=>row(o,why(o),true)).join("");
+h+=g1.map(o=>row(o,S.ilu&&p==="Door"&&orig(o)==="Alicia"?"Solo 4 h compartidas":"Libre",false)).join("")+g2.map(o=>row(o,"Ahora en "+at[o]+" · se intercambian",false)).join("")+g3.map(o=>row(o,why(o),true)).join("");
 return h+"</section>"+(g3.length?'<p class="hint">Las personas en gris no están disponibles ese día. Puedes elegirlas igualmente y saldrá un aviso.</p>':"")}
 const HR=()=>S.shift==="M"?["06:00","10:00","14:00"]:["14:00","18:00","22:00"];
 function shPartner(i){const p=POSTS[i],t=day(S.date),a=t[p]||{},H=HR(),at={};
@@ -483,7 +488,7 @@ if(T==="post"){title=POSTS[SHEET.i];body=shPost(SHEET.i)}else if(T==="partner"){
 else if(T==="avisos"){title="Avisos";body=shAvisos()}else if(T==="out"){title="No disponibles";body=shOut()}else if(T==="send"){title="Enviar planning";body=shSend()}else if(T==="addop"){title="Nuevo operario";body=shAdd()}else if(T==="refu"){title="Refuerzo de otro turno o sitio";body=shRefu()}else if(T==="posts"){title="Puestos de "+SHEET.o;body=shPosts(SHEET.o)}
 return`<div class="sh" data-a="closeBd"><div class="shp" id="shp" role="dialog" aria-modal="true"><div class="gr"></div><div class="in"><div class="shh"><h3>${esc(title)}</h3><button class="ib" data-a="close" aria-label="Cerrar">${ic("x")}</button></div>${body}</div></div></div>`}
 /* ---------- pintar ---------- */
-function render(){const nn=$("nn");if(nn&&SHEET&&SHEET.t==="addop")ADD.name=nn.value;const rn=$("rn");if(rn&&SHEET&&SHEET.t==="refu")REF.name=rn.value;normRot();
+function render(){const za=$("wza");if(za)S.area=za.value;const nn=$("nn");if(nn&&SHEET&&SHEET.t==="addop")ADD.name=nn.value;const rn=$("rn");if(rn&&SHEET&&SHEET.t==="refu")REF.name=rn.value;normRot();
 if(!S.wzDone){$("hd").innerHTML="";const m=$("main");m.className="wzm";m.innerHTML=wizHTML();$("tabs").hidden=true;$("shr").innerHTML=sheetHTML();document.body.style.overflow=SHEET?"hidden":"";return}
 $("tabs").hidden=false;
 $("hd").innerHTML=hdHTML();const m=$("main");m.className="d0";
@@ -494,16 +499,16 @@ $("shr").innerHTML=sheetHTML();const np=$("shp");if(np&&key===LAST&&sc)np.scroll
 document.body.style.overflow=SHEET?"hidden":""}
 function toast(t,u){const e=$("toast");e.innerHTML=esc(t)+(u?'<button class="tu" data-a="undo">Deshacer</button>':"");e.classList.add("show");clearTimeout(TT);TT=setTimeout(()=>e.classList.remove("show"),u?6000:1800)}
 /* ---------- asistente de inicio ---------- */
-const WZN=6;
+const WZN=6;let WZ={del:null};
 function wizHTML(){const n=S.wz||0;const head=`<div class="wzh">${n>0?`<button class="ib sm" data-a="wzBack" aria-label="Atrás">${ic("back")}</button>`:""}<div class="pb" style="flex:1"><i style="width:${Math.round(100*(n+1)/WZN)}%"></i></div><b>Paso ${n+1} de ${WZN}</b></div>`;
 const cta=(t,cls="p",i="chev")=>`<div class="cta"><button class="btn ${cls} full" data-a="wzNext">${t} ${ic(i)}</button></div>`;
 const card=b=>`<section class="card pad" style="display:flex;flex-direction:column;gap:12px">${b}</section>`;
-let h=`<div class="in wz">${head}`;
-if(n===0)h+=`<section class="hero"><span class="mark">${ic("team")}</span><h1>Vamos a preparar tu planning</h1><p>Te enseño tus puestos, tu equipo y tus reglas para que lo revises. Después la app reparte a tu gente en los puestos cada día.</p></section>${card(`<span class="fl">¿En qué turno estás esta semana?</span>${shiftSeg().replace("seg dk","seg")}`)}${cta("Empezar","y")}${card(`<h4 class="sl" style="margin:0">¿Ya usabas la app?</h4><span class="mu">Pega aquí la copia de seguridad de la app anterior (Más → Copia de seguridad → Copiar copia de seguridad) y recuperas todo.</span><textarea id="bkTx" placeholder="Pega aquí tu copia" style="min-height:110px">${esc(BK.tx)}</textarea><button class="btn ${BK.cf?"dg":""} full" data-a="bkRestore">${ic("save")} ${BK.cf?"Pulsa otra vez: sustituye todo":"Restaurar mi copia"}</button>`)}`;
-if(n===1)h+=`<h1>Tus puestos</h1><p class="lead">Estos son los ${POSTS.length} puestos de tu línea. Debajo de cada uno, quién lo sabe hacer. Toca a una persona para cambiar sus puestos.</p>${POSTS.map((p,i)=>{const w=OPS.filter(o=>S.ops[o].posts.includes(p));return`<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><div class="row"><span class="cd">${String(i+1).padStart(2,"0")}</span><b style="flex:1">${esc(p)}</b><span class="mu">${w.length}</span></div><div class="chips">${w.map(o=>`<button class="chip" data-a="posts" data-v="${esc(o)}">${esc(o)}</button>`).join("")||'<span class="mu">Nadie lo sabe hacer todavía</span>'}</div></section>`}).join("")}${cta("Siguiente: tu equipo")}`;
-if(n===2)h+=`<h1>Tu equipo</h1><p class="lead">Revisa a tu gente. Toca a alguien para cambiar su turno, sus puestos o su nombre, o para quitarlo.</p><button class="btn full" data-a="addop">${ic("plus")} Añadir persona</button><section class="card">${teamRows()}</section>${cta("Siguiente: bajas")}`;
+let h=`<div class="in wz">${head}`;if(n===0)WZ.del=null;
+if(n===0)h+=`<section class="hero"><span class="mark">${ic("team")}</span><h1>Vamos a preparar tu planning</h1><p>Te haré unas preguntas sobre tu trabajo, tu equipo y tus reglas. Después la app reparte a tu gente en los puestos cada día.</p></section>${card(`<label class="fl">¿Cómo se llama tu área o línea?<input type="text" id="wza" value="${esc(S.area)}" placeholder="Ej.: Almacén, Línea 2…" autocomplete="off"></label><span class="fl">¿En qué turno estás esta semana?</span>${shiftSeg().replace("seg dk","seg")}`)}${cta("Empezar","y")}${card(`<h4 class="sl" style="margin:0">¿Ya usabas la app?</h4><span class="mu">Pega aquí tu copia de seguridad (Más → Copia de seguridad → Copiar copia de seguridad) y recuperas todo: equipo, puestos, reglas y plannings.</span><textarea id="bkTx" placeholder="Pega aquí tu copia" style="min-height:110px">${esc(BK.tx)}</textarea><button class="btn ${BK.cf?"dg":""} full" data-a="bkRestore">${ic("save")} ${BK.cf?"Pulsa otra vez: sustituye todo":"Restaurar mi copia"}</button>`)}`;
+if(n===1)h+=`<h1>Tus puestos</h1><p class="lead">¿Qué puestos hay en tu área? Escríbelos uno a uno.</p>${card(`<label class="fl">Nombre del puesto<input type="text" id="wzp" placeholder="Ej.: Portones" autocomplete="off"></label><button class="btn p full" data-a="wzAddPost">${ic("plus")} Añadir puesto</button>`)}${POSTS.length?`<section class="card">${POSTS.map((p,i)=>`<div class="li"><span class="cd">${String(i+1).padStart(2,"0")}</span><span class="lt"><b>${esc(p)}</b></span><button class="chip ${WZ.del===p?"x":""}" data-a="wzDelPost" data-v="${esc(p)}">${WZ.del===p?"¿Seguro?":"Quitar"}</button></div>`).join("")}</section>`:""}<div class="cta"><button class="btn p full" data-a="wzNext" ${POSTS.length?"":"disabled"}>Siguiente: tu equipo ${ic("chev")}</button></div>`;
+if(n===2)h+=`<h1>Tu equipo</h1><p class="lead">Añade a cada persona y marca qué puestos sabe hacer. Toca a alguien para cambiar su turno, sus puestos o su nombre.</p><button class="btn p full" data-a="addop">${ic("plus")} Añadir persona</button>${OPS.length?`<section class="card">${teamRows()}</section>`:'<p class="hint">Todavía no hay nadie en tu equipo.</p>'}<div class="cta"><button class="btn p full" data-a="wzNext" ${OPS.length?"":"disabled"}>Siguiente: bajas ${ic("chev")}</button></div>`;
 if(n===3){const T=OPS.filter(o=>!S.ops[o].guest);h+=`<h1>¿Alguien está de baja?</h1><p class="lead">Toca a quien esté de baja desde hoy. Se queda de baja hasta que la quites en su ficha, donde también puedes poner fechas.</p>${card(`<div class="chips">${T.map(o=>`<button class="chip ${S.ops[o].bajas.some(b=>!b.to&&b.from<=TODAY)?"on":""}" data-a="wzBaja" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`)}${cta(T.some(o=>S.ops[o].bajas.some(b=>!b.to))?"Siguiente":"No hay nadie de baja")}`}
-if(n===4){const T=OPS.filter(o=>!S.ops[o].guest),nb=T.filter(o=>S.ops[o].bajas.some(b=>!b.to&&b.from<=TODAY)).length;h+=`<section class="hero"><span class="mark">${ic("check")}</span><h1>¿Todo listo?</h1><p>${POSTS.length} puestos · ${T.length} personas${nb?" · "+nb+" de baja":""} · turno de ${S.shift==="M"?"mañana":"tarde"}.<br>Puedes cambiar cualquier cosa después. Ahora repasamos tus reglas de reparto.</p></section>${cta("Todo listo","y","check")}`}
+if(n===4){const T=OPS.filter(o=>!S.ops[o].guest),nb=T.filter(o=>S.ops[o].bajas.some(b=>!b.to&&b.from<=TODAY)).length;h+=`<section class="hero"><span class="mark">${ic("check")}</span><h1>¿Todo listo?</h1><p>${S.area?esc(S.area)+" · ":""}${POSTS.length} puestos · ${T.length} personas${nb?" · "+nb+" de baja":""} · turno de ${S.shift==="M"?"mañana":"tarde"}.<br>Puedes cambiar cualquier cosa después. Ahora repasamos tus reglas de reparto.</p></section>${cta("Todo listo","y","check")}`}
 if(n===5)h+=`<h1>Tus reglas</h1><p class="lead">El reparto sigue estas reglas cada vez que pulsas «Generar planning». Cambia lo que quieras.</p>${vRules().replace('<div class="in pg">','<div class="pg">')}${cta("Terminar y empezar","y","check")}`;
 return h+"</div>"}
 /* ---------- acciones ---------- */
@@ -511,8 +516,11 @@ const E0=D=>S.ertes[D]||(S.ertes[D]={n:[],v:[]});
 const sp=v=>v.split("|");
 function purge(o,from,to,lb){let n=0,k=0;Object.keys(S.days).forEach(d=>{if(d<from||(to&&d>to))return;const t=S.days[d];if(S.conf[d]){if(POSTS.some(p=>t[p]&&(t[p].op===o||t[p].partner===o)))k++;return}POSTS.forEach(p=>{const a=t[p];if(!a)return;if(a.op===o){if(a.partner&&SPL(p,a.partner)){}delete t[p];n++}else if(a.partner===o){delete a.partner;n++}})});
 toast((lb||"Baja apuntada")+(n?" · quitado de "+n+" puesto"+(n>1?"s":"")+" ya planificado"+(n>1?"s":""):"")+(k?" · hay "+k+" día(s) confirmado(s) con esa persona, revísalos":""))}
-const A={wzNext:()=>{if((S.wz||0)>=WZN-1){S.wzDone=true;S.wz=0;TAB="v1";MORE=null;SHEET=null;window.scrollTo(0,0);toast("¡Todo listo! Pulsa «Generar planning»");return}S.wz=(S.wz||0)+1;window.scrollTo(0,0)},
+const A={wzNext:()=>{const za=$("wza");if(za)S.area=za.value.trim();if((S.wz||0)===1&&!POSTS.length)return 1;if((S.wz||0)===2&&!OPS.length)return 1;if((S.wz||0)>=WZN-1){S.wzDone=true;S.wz=0;TAB="v1";MORE=null;SHEET=null;window.scrollTo(0,0);toast("¡Todo listo! Pulsa «Generar planning»");return}S.wz=(S.wz||0)+1;window.scrollTo(0,0)},
 wzOpen:()=>{S.wzDone=false;S.wz=0;SHEET=null;MORE=null;window.scrollTo(0,0)},
+wzAddPost:()=>{const n=String(($("wzp")||{}).value||"").replace(/[|]/g,"").replace(/\s+/g," ").trim();if(!n)return 1;if(["__proto__","constructor","prototype"].includes(n)){toast("Ese nombre no se puede usar");return 1}if(POSTS.some(x=>x.toLowerCase()===n.toLowerCase())){toast("Ese puesto ya existe");return 1}S.posts.push(n);S.short.push(n.length>14?n.slice(0,13)+"…":n);normState();WZ.del=null;setTimeout(()=>{const e=$("wzp");if(e)e.focus()},0)},
+wzDelPost:v=>{if(WZ.del!==v){WZ.del=v;return}const i=S.posts.indexOf(v);if(i<0)return 1;S.posts.splice(i,1);S.short.splice(i,1);Object.values(S.ops).forEach(c=>{if(c.posts)c.posts=c.posts.filter(x=>x!==v)});["fav","max","pref"].forEach(k=>S.rules[k]=S.rules[k].filter(r=>r.p!==v));S.sepP=S.sepP.filter(x=>x!==v);Object.values(S.days).forEach(d=>delete d[v]);WZ.del=null;normState();toast("Puesto quitado")},
+rlSepP:v=>{S.sepP=S.sepP.includes(v)?S.sepP.filter(x=>x!==v):[...S.sepP,v];normState()},
 wzBack:()=>{S.wz=Math.max(0,(S.wz||0)-1);window.scrollTo(0,0)},
 wzBaja:v=>{const c=S.ops[v];if(!c)return 1;if(c.bajas.some(b=>!b.to&&b.from<=TODAY))c.bajas=c.bajas.filter(b=>!(!b.to&&b.from<=TODAY));else c.bajas.push({from:TODAY,to:null})},
 tab:v=>{TAB=v;MORE=null;SHEET=null;window.scrollTo(0,0)},sub:v=>{S.sub=v},sh:v=>{S.shift=v},
@@ -585,7 +593,7 @@ apAddP:()=>{const o=$("apo").value,d=$("apd").value;if(!d)return 1;const c=S.ops
 apDel:v=>{const[o,d]=sp(v);S.ops[o].ap=S.ops[o].ap.filter(x=>x!==d)},
 fAdd:v=>{const d=$("sfd").value,h=parseFloat($("sfh").value);if(!d||!(h>0)){toast("Pon el día y las horas");return 1}S.ops[v].falta.push({d,h,m:$("sfm").value})},
 fDel:v=>{const[o,d,h,m]=sp(v),f=S.ops[o].falta,i=f.findIndex(x=>x.d===d&&String(x.h)===h&&x.m===m);if(i>=0)f.splice(i,1)},
-opDel:v=>{if(!SHEET.cd){SHEET.cd=true;return}S.extra=S.extra.filter(x=>x!==v);OPS=mkOPS();delete S.ops[v];Object.values(S.days).forEach(d=>POSTS.forEach(p=>{if(d[p]&&d[p].op===v)delete d[p]}));SHEET=null},
+opDel:v=>{if(!SHEET.cd){SHEET.cd=true;return}S.extra=S.extra.filter(x=>x!==v);{const bi=S.team.indexOf(v);if(bi>=0)S.team.splice(bi,1)}S.rot=S.rot.filter(x=>x!==v);["sep"].forEach(k=>S.rules[k]=S.rules[k].filter(r=>r.a!==v&&r.b!==v));["fav","max","pref"].forEach(k=>S.rules[k]=S.rules[k].filter(r=>r.o!==v));OPS=mkOPS();delete S.ops[v];Object.values(S.days).forEach(d=>POSTS.forEach(p=>{if(d[p]&&d[p].op===v)delete d[p]}));SHEET=null},
 addTurno:v=>{ADD.turno=v},addPost:v=>{ADD.posts=ADD.posts.includes(v)?ADD.posts.filter(x=>x!==v):[...ADD.posts,v]},
 addDo:()=>{const n=$("nn").value.trim().replace(/[|]/g,"");ADD.name=n;if(!n){ADD.err="Escribe el nombre.";return}if(OPS.some(x=>x.toLowerCase()===n.toLowerCase())){ADD.err="Ese nombre ya existe.";return}
 S.extra.push(n);OPS=mkOPS();S.ops[n]={st:"ok",turno:ADD.turno,posts:[...ADD.posts],ap:[],falta:[],base:0,basev:0,bajas:[]};SHEET={t:"person",o:n};toast("Operario añadido")},
@@ -616,6 +624,7 @@ document.addEventListener("contextmenu",e=>{if(!e.target.closest("input,textarea
 document.addEventListener("click",e=>{if(LPF){LPF=false;e.stopPropagation();e.preventDefault()}},true)})();
 document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b||!A[b.dataset.a])return;const r=A[b.dataset.a](b.dataset.v,b,e);if(!r){save();render()}});
 document.addEventListener("change",e=>{const el=e.target.closest("[data-h]");if(!el||!C[el.dataset.h])return;const r=C[el.dataset.h](el.value,el);if(!r){save();render()}});
+document.addEventListener("keydown",e=>{if(e.key!=="Enter"||!e.target)return;const m={wzp:"wzAddPost",nn:"addDo"}[e.target.id];if(!m)return;e.preventDefault();const r=A[m]();if(!r){save();render()}});
 document.addEventListener("input",e=>{const el=e.target;if(el&&el.dataset&&el.dataset.h==="q"){QF=el.value;$("tl").innerHTML=teamRows()}});
 render();cloudInit();
 
