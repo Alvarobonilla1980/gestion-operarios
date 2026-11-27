@@ -5,6 +5,7 @@
 <title>Planning de Equipo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#1a2d68">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <style>
@@ -126,7 +127,8 @@ summary::-webkit-details-marker{display:none}details[open] summary{margin-bottom
 .shh h3{font-size:20px;font-weight:800}
 .shp .in{display:flex;flex-direction:column;gap:14px}
 .pid{display:flex;align-items:center;gap:14px}.pid b{font-size:20px;display:block;margin-bottom:4px}
-.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:99px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s;z-index:60;white-space:nowrap;display:flex;gap:14px;align-items:.toast.show{opacity:1;pointer-events:auto}.tu{color:inherit;text-decoration:underline;font-weight:800;min-height:28px;padding:0 4px}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:99px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s;z-index:60;white-space:nowrap;display:flex;gap:14px;align-items:center}
+.toast.show{opacity:1;pointer-events:auto}.tu{color:inherit;text-decoration:underline;font-weight:800;min-height:28px;padding:0 4px}
 @media (prefers-reduced-motion:reduce){.shp{animation:none}.toast{transition:none}.btn:active,.chip:active,.rb:active{transform:none}}
 .wz{padding-top:14px;padding-bottom:40px;display:flex;flex-direction:column;gap:16px}
 .wh{display:flex;align-items:center;gap:12px;padding-top:16px}.wh .pb{background:var(--ln)}.wh .pb i{background:var(--acb)}.wh b{font-size:13px;color:var(--mu);white-space:nowrap}
@@ -151,7 +153,7 @@ main.wzm{padding-bottom:20px}
 <script>
 const $=i=>document.getElementById(i);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const TODAY=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+let TODAY=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const addD=(d,n)=>{const x=new Date(d+"T12:00:00Z");x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)};
 const mon=d=>{const x=new Date(d+"T12:00:00Z");return addD(d,-((x.getUTCDay()+6)%7))};
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
@@ -163,6 +165,9 @@ const av=(n,k="")=>`<span class="av ${k}" style="--h:${hue(n)}">${esc(ini(n))}</
 const IC={today:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4M9 15l2 2 4-4"/>',team:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 5a3.5 3.5 0 010 6.5M18 14c2 .6 3.3 2.4 3.5 6"/>',erte:'<path d="M20 11a8 8 0 00-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0014.5 4.5L20 16M20 20v-4h-4"/>',more:'<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',chev:'<path d="M9 6l6 6-6 6"/>',back:'<path d="M15 6l-6 6 6 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',check:'<path d="M5 12l4 4 10-10"/>',lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',warn:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',send:'<path d="M4 12l16-8-6 16-3-7z"/>',search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/>',up:'<path d="M6 14l6-6 6 6"/>',down:'<path d="M6 10l6 6 6-6"/>',cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',spark:'<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/>',save:'<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c.5-4.5 3.5-7 8-7s7.5 2.5 8 7"/>'};
 const ic=(n,c="")=>`<svg class="ic ${c}" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
 const sp=v=>v.split("|");
+const BADN=["__proto__","constructor","prototype","hasOwnProperty","toString","valueOf"];
+const nm=v=>String(v||"").replace(/[|]/g,"").replace(/\s+/g," ").trim();
+const badName=n=>BADN.includes(n);
 /* ---------- estado ---------- */
 const D0=()=>({v:2,step:0,qi:0,done:false,area:"",lider:"",posts:[],split:[],order:[],ops:{},rules:{sep:[],fav:[],max:[],norep:true,rot:2,nota:""},days:{},conf:{},tu:{eq:"",ref:"",m:true},date:TODAY,_t:0});
 let S;try{S=JSON.parse(localStorage.getItem("planeq")||"null")}catch(e){}
@@ -203,15 +208,16 @@ S.rules.sep.forEach(r=>{const x=r.a===o?r.b:r.b===o?r.a:null;if(!x||!r.posts.inc
 function generate(){if(S.conf[S.date])return;const d=S.date,t=day(d),prev=S.days[addD(d,-1)]||{};
 const keep={};P().forEach(p=>{if(t[p]&&t[p].manual)keep[p]=t[p]});let best=null,bs=1e9;
 const pre={};S.rules.fav.forEach(f=>{const k=f.p+"#0";if(S.ops[f.o]&&P().includes(f.p)&&!keep[f.p]&&!pre[k]&&avail(f.o)&&allowed(f.o,f.p)&&!P().some(p=>keep[p]&&(keep[p].op===f.o||keep[p].partner===f.o))&&!Object.values(pre).includes(f.o)&&Math.random()*100<f.pct)pre[k]=f.o});
+const RC={},WC={},rc=(o,p)=>{const k=o+"|"+p;return RC[k]!==undefined?RC[k]:(RC[k]=recent(o,p,d))},wc=(o,p)=>{const k=o+"|"+p;return WC[k]!==undefined?WC[k]:(WC[k]=weekCount(o,p,d))};
 const keys=[];P().forEach(p=>{if(keep[p])return;keys.push(p+"#0");if(isSplit(p))keys.push(p+"#1")});
 const wasPrev=(o,p)=>prev[p]&&(prev[p].op===o||prev[p].partner===o);
 for(let it=0;it<250;it++){const cur={},used=new Set();let sc=0;
 P().forEach(p=>{if(keep[p]){cur[p+"#0"]=keep[p].op;used.add(keep[p].op);if(keep[p].partner){cur[p+"#1"]=keep[p].partner;used.add(keep[p].partner)}}});
 Object.entries(pre).forEach(([k,o])=>{cur[k]=o;used.add(o)});
 const todo=keys.filter(k=>!pre[k]);
-const cands=k=>{const p=k.split("#")[0];return OPS().filter(o=>avail(o)&&allowed(o,p)&&!used.has(o)&&!(S.rules.norep&&wasPrev(o,p)&&!favOK(o,p))&&!S.rules.max.some(m=>m.o===o&&m.p===p&&weekCount(o,p,d)>=m.n))};
-todo.sort((a,b)=>cands(a).length-cands(b).length+(Math.random()-.5));
-todo.forEach(k=>{const p=k.split("#")[0];const c=cands(k).map(o=>({o,s:recent(o,p,d)*(.6+S.rules.rot*.6)+soft(o,k,cur)+Math.random()*1.5})).sort((a,b)=>a.s-b.s)[0];if(c){cur[k]=c.o;used.add(c.o);sc+=c.s}else sc+=100});
+const cands=k=>{const p=k.split("#")[0];return OPS().filter(o=>avail(o)&&allowed(o,p)&&!used.has(o)&&!(S.rules.norep&&wasPrev(o,p)&&!favOK(o,p))&&!S.rules.max.some(m=>m.o===o&&m.p===p&&wc(o,p)>=m.n))};
+const ord=todo.map(k=>[k,cands(k).length+Math.random()]).sort((a,b)=>a[1]-b[1]).map(x=>x[0]);
+ord.forEach(k=>{const p=k.split("#")[0];const c=cands(k).map(o=>({o,s:rc(o,p)*(.6+S.rules.rot*.6)+soft(o,k,cur)+Math.random()*1.5})).sort((a,b)=>a.s-b.s)[0];if(c){cur[k]=c.o;used.add(c.o);sc+=c.s}else sc+=100});
 if(sc<bs){bs=sc;best=cur}}
 P().forEach(p=>{if(keep[p])return;const a=best[p+"#0"],b=best[p+"#1"];if(a||b){t[p]={op:a||b};if(a&&b)t[p].partner=b}else delete t[p]})}
 function warnList(){const d=S.date,t=day(d),prev=S.days[addD(d,-1)]||{},w=[],seen={};const add=(p,m)=>w.push({p,m});
@@ -250,7 +256,8 @@ const delb=(a,i)=>`<button class="chip x" data-a="${a}" data-v="${i}">Quitar</bu
 const sec=(body)=>`<section class="card pad" style="display:flex;flex-direction:column;gap:12px">${body}</section>`;
 function ruleSec(q){const r=S.rules;
 if(q==="sep"){const ps=W.f.sp||[];return sec((r.sep.length?r.sep.map((x,i)=>line(esc(x.a)+" y "+esc(x.b)+`<br><span class="mu">no juntos en: ${esc(lst(x.posts))}</span>`,delb("rlSepDel",i))).join(""):'<span class="mu">Ninguna por ahora</span>')+
-`<div style="border-top:1px solid var(--ln);padding-top:12px;display:flex;flex-direction:column;gap:10px"><b>Añadir una</b><div class="row">${sel("sa",optP())}${sel("sb",optP2())}</div><span class="mu">¿En qué puestos no deben coincidir?</span><div class="chips">${chipsFor(ps,"fSepP")}</div><div class="row"><button class="btn grow" data-a="fSepAll">Todos</button><button class="btn grow" data-a="rlSepAdd">${ic("plus")} Añadir</button></div></if(q==="fav")return sec((r.fav.length?r.fav.map((x,i)=>line(esc(x.o)+" · "+esc(x.p)+`<br><span class="mu">${x.pct===100?"Siempre":x.pct+" % de los días"}</span>`,delb("rlFavDel",i))).join(""):'<span class="mu">Ninguna por ahora</span>')+
+`<div style="border-top:1px solid var(--ln);padding-top:12px;display:flex;flex-direction:column;gap:10px"><b>Añadir una</b><div class="row">${sel("sa",optP())}${sel("sb",optP2())}</div><span class="mu">¿En qué puestos no deben coincidir?</span><div class="chips">${chipsFor(ps,"fSepP")}</div><div class="row"><button class="btn grow" data-a="fSepAll">Todos</button><button class="btn grow" data-a="rlSepAdd">${ic("plus")} Añadir</button></div></div>`)}
+if(q==="fav")return sec((r.fav.length?r.fav.map((x,i)=>line(esc(x.o)+" · "+esc(x.p)+`<br><span class="mu">${x.pct===100?"Siempre":x.pct+" % de los días"}</span>`,delb("rlFavDel",i))).join(""):'<span class="mu">Ninguna por ahora</span>')+
 `<div style="border-top:1px solid var(--ln);padding-top:12px;display:flex;flex-direction:column;gap:10px"><b>Añadir una</b><div class="row">${sel("fo",optP())}${sel("fp",optQ())}</div>${sel("fq",[[100,"Siempre (100 %)"],[90,"Casi siempre (90 %)"],[70,"A menudo (70 %)"],[50,"La mitad de los días"]])}<button class="btn full" data-a="rlFavAdd">${ic("plus")} Añadir</button></div>`);
 if(q==="split")return sec(`<span class="mu">Marca los puestos que se reparten entre dos personas, 4 h cada una.</span><div class="chips">${chipsFor(S.split,"rlSplit")}</div>`);
 if(q==="max")return sec((r.max.length?r.max.map((x,i)=>line(esc(x.o)+" · "+esc(x.p)+" · máx. "+x.n+" por semana",delb("rlMaxDel",i))).join(""):'<span class="mu">Ninguna por ahora</span>')+
@@ -270,7 +277,7 @@ if(on&&IM.err)h+=`<div class="note wa"><span>${esc(IM.err)}</span></div>`;
 if(on&&IM.items.length)h+=`<span class="mu" style="font-weight:700">He encontrado ${IM.items.length}. Toca para quitar los que no quieras.</span><div class="chips">${IM.items.map((x,i)=>`<button class="chip ${x.on?"on":""}" data-a="imTog" data-v="${i}" ${x.dup?"disabled":""}>${x.on?ic("check"):""}${esc(x.n)}${x.dup?" · ya está":""}${k==="ops"&&x.posts.length?` · ${x.posts.length} puesto${x.posts.length>1?"s":""}`:""}</button>`).join("")}</div>${k==="ops"?`<p class="hint">${P().length?"A quien no se le indiquen puestos se le ponen todos; luego lo cambias en su ficha.":"Aún no hay puestos: añádelos y después marca qué sabe hacer cada persona."}</p>`:""}<div class="row"><button class="btn grow" data-a="imCancel">Cancelar</button><button class="btn p grow" data-a="imAdd" data-v="${k}" ${n?"":"disabled"}>${ic("plus")} Añadir ${n}</button></div>`;
 return sec(`<h4 class="sl" style="margin:0">Desde foto o lista</h4>`+h)}
 function cleanItems(arr,k){const seen=new Set(),out=[],ex=(k==="posts"?P():OPS()).map(x=>x.toLowerCase());
-(Array.isArray(arr)?arr:[]).forEach(x=>{const n=String(typeof x==="string"?x:(x&&x.n)||"").replace(/[|]/g,"").replace(/\s+/g," ").trim();if(!n||n.length>60)return;const l=n.toLowerCase();if(seen.has(l))return;seen.add(l);
+(Array.isArray(arr)?arr:[]).forEach(x=>{const n=String(typeof x==="string"?x:(x&&x.n)||"").replace(/[|]/g,"").replace(/\s+/g," ").trim();if(!n||n.length>60)return;const l=n.toLowerCase();if(seen.has(l)||badName(n))return;seen.add(l);
 const ps=k==="ops"&&x&&Array.isArray(x.posts)?x.posts.map(p=>P().find(q=>q.toLowerCase()===String(p).trim().toLowerCase())).filter(Boolean):[];
 const dup=ex.includes(l);out.push({n,posts:[...new Set(ps)],on:!dup,dup})});return out}
 function shrink(f){return new Promise(res=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{try{const M=1600,r=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*r);c.height=Math.round(im.height*r);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>res(b||f),"image/jpeg",.85)}catch(e){res(f)}};im.onerror=()=>{URL.revokeObjectURL(u);res(f)};im.src=u})}
@@ -301,7 +308,8 @@ const left=TAB==="mas"&&MORE?`<button class="ib" data-a="more" data-v="" aria-la
 const right=TAB==="equipo"?`<button class="ib" data-a="addop" aria-label="Añadir persona">${ic("plus")}</button>`:"";
 return`<div class="in"><div class="pt"><div class="row">${left}<h1>${T}</h1></div>${right}</div></div>`}
 function tabsHTML(){const NW=warns().length,cf=!!S.conf[S.date];const T=([k,i,l])=>`<button class="tb ${TAB===k?"on":""}" data-a="tab" data-v="${k}">${ic(i)}<span>${l}</span>${k==="hoy"&&NW?`<span class="bd">${NW}</span>`:""}</button>`;
-return'<div class="in">'+T(["hoy","today","Hoy"])+T(["equipo","team","Equipo"])+`<button class="fab ${cf?"ok":""}" data-a="send" aria-label="Revisar y enviar"><i>${ic("send")}</i><span>Enviar</span></button>`+T(["reglas","spark","Reglas"])+T(["mas","more","Más"])+"</function vHoy(){const cf=!!S.conf[S.date],t=day(S.date),used=usedSet(),cov=P().filter(p=>t[p]).length,wl=warnList(),wm={};wl.forEach(x=>{if(x.p)(wm[x.p]=wm[x.p]||[]).push(x.m)});
+return'<div class="in">'+T(["hoy","today","Hoy"])+T(["equipo","team","Equipo"])+`<button class="fab ${cf?"ok":""}" data-a="send" aria-label="Revisar y enviar"><i>${ic("send")}</i><span>Enviar</span></button>`+T(["reglas","spark","Reglas"])+T(["mas","more","Más"])+"</div>"}
+function vHoy(){const cf=!!S.conf[S.date],t=day(S.date),used=usedSet(),cov=P().filter(p=>t[p]).length,wl=warnList(),wm={};wl.forEach(x=>{if(x.p)(wm[x.p]=wm[x.p]||[]).push(x.m)});
 const free=OPS().filter(o=>avail(o)&&!used.has(o)),nAv=OPS().filter(o=>avail(o)).length,NP=P().length,nd=need();
 const dn=new Date(S.date+"T12:00:00Z").toLocaleDateString("es-ES",{weekday:"long",timeZone:"UTC"}),dm=new Date(S.date+"T12:00:00Z").toLocaleDateString("es-ES",{day:"numeric",month:"long",timeZone:"UTC"});
 const sub=[S.date===TODAY?"Hoy":"",cf?"Confirmado":""].filter(Boolean).join(" · ");
@@ -360,7 +368,8 @@ function shPerson(o){const c=S.ops[o],n=esc(o);
 const aps=c.ap.filter(d=>d>=addD(TODAY,-30)).sort(),fa=c.falta.filter(f=>f.d>=addD(TODAY,-30)).sort((a,b)=>a.d<b.d?-1:1);
 return`<div class="pid">${av(o,"lg")}<div><b>${n}</b>${statusPill(o)}</div></div>
 ${bajaSec(o)}
-<section class="card pad"><h4 class="sl">Puestos que sabe hacer · ${c.posts.length}</h4><div class="chips">${P().map(p=>`<button class="chip ${c.posts.includes(p)?"on":""}" data-a="opPost" data-v="${n}|${esc(p)}">${esc(p)}</button>`).join("")}</div></<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Asuntos propios</h4>${aps.length?aps.map(d=>`<div class="row sp"><span>${fs(d)}${d===TODAY?" · hoy":""}</span><button class="chip" data-a="apDel" data-v="${n}|${d}">Quitar</button></div>`).join(""):'<span class="mu">Ningún día apuntado</span>'}<div class="row"><input type="date" id="sapd" value="${S.date}"><button class="btn p" data-a="apAddS" data-v="${n}">Añadir</button></div></section>
+<section class="card pad"><h4 class="sl">Puestos que sabe hacer · ${c.posts.length}</h4><div class="chips">${P().map(p=>`<button class="chip ${c.posts.includes(p)?"on":""}" data-a="opPost" data-v="${n}|${esc(p)}">${esc(p)}</button>`).join("")}</div></section>
+<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Asuntos propios</h4>${aps.length?aps.map(d=>`<div class="row sp"><span>${fs(d)}${d===TODAY?" · hoy":""}</span><button class="chip" data-a="apDel" data-v="${n}|${d}">Quitar</button></div>`).join(""):'<span class="mu">Ningún día apuntado</span>'}<div class="row"><input type="date" id="sapd" value="${S.date}"><button class="btn p" data-a="apAddS" data-v="${n}">Añadir</button></div></section>
 <section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Horas que falta (médico, permiso…)</h4>${fa.length?fa.map(f=>`<div class="row sp"><span>${fs(f.d)} · ${f.h} h · ${esc(f.m)}</span><button class="chip" data-a="fDel" data-v="${n}|${f.d}|${f.h}|${esc(f.m)}">Quitar</button></div>`).join(""):'<span class="mu">Ninguna</span>'}<div class="row"><input type="date" id="sfd" value="${S.date}"><input type="number" id="sfh" min="0.5" step="0.5" placeholder="Horas" style="max-width:100px"></div><select id="sfm"><option>Médico</option><option>Permiso</option><option>Sindical</option><option>Otro</option></select><button class="btn p full" data-a="fAdd" data-v="${n}">Añadir horas</button></section>
 <button class="btn dg full" data-a="opDel" data-v="${n}">${SHEET.cd?"Pulsa otra vez para eliminar":"Eliminar de mi equipo"}</button>`}
 const shAvisos=()=>{const w=warnList();return w.length?`<section class="card">${w.map(x=>`<div class="li">${ic("warn","mu")}<span class="lt" style="white-space:normal"><b style="white-space:normal;font-size:15px;font-weight:500">${esc(x.m)}</b>${x.p?`<small>${esc(x.p)}</small>`:""}</span></div>`).join("")}</section>`:'<div class="note ok"><span>Sin avisos. El planning cumple las reglas.</span></div>'};
@@ -373,10 +382,16 @@ function sheetHTML(){if(!SHEET)return"";const T=SHEET.t;let title="",body="";
 if(T==="post"){title=P()[SHEET.i];body=shPost(SHEET.i)}else if(T==="partner"){title="Compañero 4 h + 4 h";body=shPartner(SHEET.i)}else if(T==="person"){title=SHEET.o;body=shPerson(SHEET.o)}
 else if(T==="avisos"){title="Avisos";body=shAvisos()}else if(T==="send"){title="Enviar planning";body=shSend()}else if(T==="addop"){title="Añadir persona";body=peopleForm()}
 else return"";
-return`<div class="sh" data-a="closeBd"><div class="shp" id="shp" role="dialog" aria-modal="true"><div class="gr"></div><div class="in"><div class="shh"><h3>${esc(title)}</h3><button class="ib" data-a="close" aria-label="Cerrar">${ic("x")}</button></div>${body}</div></div></div>`}
+return`<div class="sh" data-a="closeBd"><div class="shp" id="shp" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="gr"></div><div class="in"><div class="shh"><h3 id="shT">${esc(title)}</h3><button class="ib" data-a="close" aria-label="Cerrar">${ic("x")}</button></div>${body}</div></div></div>`}
 /* ---------- pintar ---------- */
 let BK={tx:"",cf:false,rs:false};
-function render(){const wn=$("wn");if(wn&&!wn.readOnly)W.name=wn.value;const wa=$("wa");if(wa)S.area=wa.value;const wl=$("wl");if(wl)S.lider=wl.value;const itx=$("imTx");if(itx)IM.tx=itx.value;
+const TOG=["wPost","fSepP","rlSplit","opPost","imTog","wBaja","rlNorep","rlRot","tuEq","tuM","tuW","bajaMode"];
+function a11y(fk,wasSheet){document.querySelectorAll("[data-a]").forEach(b=>{if(TOG.includes(b.dataset.a))b.setAttribute("aria-pressed",b.classList.contains("on"))});
+document.querySelectorAll(".dc").forEach(b=>{const d=b.dataset.v;b.setAttribute("aria-label",fl(d));if(d===S.date)b.setAttribute("aria-current","date")});
+const sh=$("shp");if(sh&&!wasSheet){const c=sh.querySelector("[data-a=close]");if(c)c.focus();return}
+if(fk){const el=fk.id?$(fk.id):document.querySelector(`[data-a="${CSS.escape(fk.a)}"]${fk.v!==undefined?`[data-v="${CSS.escape(fk.v)}"]`:""}`);if(el&&el!==document.activeElement)el.focus({preventScroll:true})}}
+function render(){const ae=document.activeElement,fk=ae&&ae!==document.body?{id:ae.id,a:ae.dataset&&ae.dataset.a,v:ae.dataset&&ae.dataset.v}:null;if(fk&&!fk.id&&!fk.a)fk.a=null;const wasSheet=!!$("shp");_render();a11y(fk&&(fk.id||fk.a)?fk:null,wasSheet)}
+function _render(){const wn=$("wn");if(wn&&!wn.readOnly)W.name=wn.value;const wa=$("wa");if(wa)S.area=wa.value;const wl=$("wl");if(wl)S.lider=wl.value;const itx=$("imTx");if(itx)IM.tx=itx.value;
 const m=$("main");
 if(!S.done){$("hd").innerHTML="";m.className="wzm";m.innerHTML=wizHTML();$("tabs").hidden=true;$("shr").innerHTML=sheetHTML();document.body.style.overflow=SHEET?"hidden":"";return}
 $("tabs").hidden=false;
@@ -408,7 +423,7 @@ more:v=>{MORE=v||null;CDP=null;BK.cf=false;BK.rs=false;SHEET=null;window.scrollT
 bkCopy:async()=>{const j=JSON.stringify(S);try{await navigator.clipboard.writeText(j);toast("Copia copiada")}catch(x){BK.tx=j;render();toast("Selecciona el texto y cópialo")}return 1},
 bkRestore:()=>{const t=$("bkTx").value.trim();BK.tx=t;if(!t){toast("Pega primero la copia");return 1}if(!BK.cf){BK.cf=true;return}BK.cf=false;try{const d=JSON.parse(t);if(!d||typeof d!=="object"||!d.ops||!d.posts)throw 0;S=d;normState();BK.tx="";toast("Copia restaurada")}catch(x){toast("Esa copia no es válida");return 1}},
 reset:()=>{if(!BK.rs){BK.rs=true;return}BK.rs=false;S=D0();W={name:"",posts:[],edit:null,err:"",bm:"",f:{}};TAB="hoy";MORE=null;toast("Empezamos de cero")},
-mAddPost:()=>{const n=($("wp").value||"").trim();if(!n)return 1;if(P().some(x=>x.toLowerCase()===n.toLowerCase())){toast("Ese puesto ya existe");return 1}S.posts.push(n);toast("Puesto añadido")},
+mAddPost:()=>{const n=nm($("wp").value);if(!n)return 1;if(badName(n)){toast("Ese nombre no se puede usar");return 1}if(P().some(x=>x.toLowerCase()===n.toLowerCase())){toast("Ese puesto ya existe");return 1}S.posts.push(n);toast("Puesto añadido")},
 mDelPost:v=>{if(CDP!==v){CDP=v;return}dropPost(v);CDP=null;toast("Puesto quitado")},
 bajaMode:v=>{SHEET.bm=v},
 bajaAdd:v=>{const f=$("bfd").value,bm=SHEET.bm||"hasta";if(!f){toast("Pon el día de inicio");return 1}
@@ -435,11 +450,12 @@ tuW:v=>{const cm=S.tu.ref?isMan(TODAY):true;S.tu.ref=addD(mon(TODAY),-(+v-1)*7);
 /* asistente */
 wnext:()=>{const n=S.step;if(n===0){const a=$("wa");if(a)S.area=a.value.trim();const l=$("wl");if(l)S.lider=l.value.trim()}if(n===1&&!P().length)return 1;if(n===2&&!OPS().length)return 1;S.step=Math.min(5,n+1);if(S.step===5)S.qi=0;window.scrollTo(0,0)},
 wback:()=>{S.step=Math.max(0,S.step-1);window.scrollTo(0,0)},
-wAddPost:()=>{const n=($("wp").value||"").trim();if(!n)return 1;if(P().some(x=>x.toLowerCase()===n.toLowerCase())){toast("Ese puesto ya existe");return 1}S.posts.push(n)},
+wAddPost:()=>{const n=nm($("wp").value);if(!n)return 1;if(badName(n)){toast("Ese nombre no se puede usar");return 1}if(P().some(x=>x.toLowerCase()===n.toLowerCase())){toast("Ese puesto ya existe");return 1}S.posts.push(n)},
 wDelPost:v=>{dropPost(v)},
 wPost:v=>{W.posts=W.posts.includes(v)?W.posts.filter(x=>x!==v):[...W.posts,v]},wAll:()=>{W.posts=[...P()]},wNone:()=>{W.posts=[]},
 wSave:()=>{const e=$("wn"),n=((e&&e.value)||W.name||"").trim().replace(/[|]/g,"");W.name=n;
 if(!n){W.err="Escribe el nombre.";return}
+if(badName(n)){W.err="Ese nombre no se puede usar.";return}
 if(!W.edit&&OPS().some(x=>x.toLowerCase()===n.toLowerCase())){W.err="Ya tienes a alguien con ese nombre.";return}
 if(!W.posts.length){W.err="Marca al menos un puesto que sepa hacer.";return}
 if(W.edit)S.ops[n].posts=[...W.posts];else{S.ops[n]={posts:[...W.posts],bajas:[],ap:[],falta:[]};S.order.push(n)}
@@ -465,7 +481,8 @@ const C={area:v=>{S.area=v.trim()},lider:v=>{S.lider=v.trim()},fs:(v,el)=>{W.f[e
 document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b||!A[b.dataset.a])return;const r=A[b.dataset.a](b.dataset.v,b,e);if(!r){save();render()}});
 document.addEventListener("change",e=>{const el=e.target.closest("[data-h]");if(!el||!C[el.dataset.h])return;const r=C[el.dataset.h](el.value,el);if(!r){save();render()}});
 document.addEventListener("input",e=>{const el=e.target;if(el&&el.dataset&&el.dataset.h==="q"){QF=el.value;$("tl").innerHTML=teamRows()}});
-document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const id=e.target&&e.target.id;const m={wp:S.done?"mAddPost":"wAddPost",wn:"wSave"}[id];if(!m)return;e.preventDefault();const r=A[m]();if(!r){save();render()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&SHEET){SHEET=null;render();return}if(e.key!=="Enter")return;const id=e.target&&e.target.id;const m={wp:S.done?"mAddPost":"wAddPost",wn:"wSave"}[id];if(!m)return;e.preventDefault();const r=A[m]();if(!r){save();render()}});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)return;const t=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);if(t!==TODAY){if(S.date===TODAY)S.date=t;TODAY=t;render()}});
 render();cloudInit();
 (async()=>{try{if(!window.claude||!claude.use)return;const s=await claude.use("sample");if(s){SMP=true;render()}}catch(e){}})();
 </script>
