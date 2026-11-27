@@ -5,6 +5,14 @@
 <title>Planning de Equipo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#1a2d68">
+<meta name="description" content="Reparte a tu equipo en los puestos cada día.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Planning">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
@@ -338,7 +346,7 @@ return`<div class="in pg">${OPS().length?sec(`<label class="fl">Persona<select i
 if(MORE==="bk")return`<div class="in pg"><p class="hint">${CL.st==="ok"?"Tus datos se guardan también en la nube de esta app: si cierras o cambias de móvil, los recuperas al abrir.":CL.st==="err"?"No he podido guardar en la nube. De momento solo se guardan en este móvil.":"Tus datos se guardan en este móvil."} Conviene tener una copia por si acaso.</p>${sec(`<h4 class="sl" style="margin:0">Hacer copia</h4><button class="btn p full" data-a="bkCopy">${ic("save")} Copiar mi copia</button>${BK.tx?`<textarea readonly onfocus="this.select()">${esc(BK.tx)}</textarea>`:""}`)}${sec(`<h4 class="sl" style="margin:0">Restaurar</h4><textarea id="bkTx" placeholder="Pega aquí tu copia">${esc(BK.tx)}</textarea><button class="btn ${BK.cf?"dg":""} full" data-a="bkRestore">${BK.cf?"Pulsa otra vez: sustituye todo":"Restaurar copia"}</button>`)}</div>`;
 const nAp=OPS().reduce((a,o)=>a+S.ops[o].ap.filter(d=>d>=TODAY).length,0);
 const it=(i,a,t,s)=>`<button class="li" data-a="more" data-v="${a}">${ic(i)}<span class="lt"><b>${t}</b><small>${s}</small></span>${ic("chev","mu")}</button>`;
-return`<div class="in pg">${sec(`<h4 class="sl" style="margin:0">Mi área</h4><label class="fl">Área o departamento<input type="text" data-h="area" value="${esc(S.area)}" autocomplete="off"></label><label class="fl">Jefe de equipo<input type="text" data-h="lider" value="${esc(S.lider)}" placeholder="Nombre y apellido" autocomplete="off"></label>${tuSec()}`)}<section class="card">${it("photo","imp","Desde foto o lista","Sacar puestos o personas de una foto")}${it("team","posts","Puestos del área",P().length+" puestos")}${it("user","ap","Asuntos propios",nAp?nAp+" próximos":"Ninguno próximo")}${it("save","bk","Copia de seguridad","Guardar o restaurar tus datos")}</section><button class="btn dg full" data-a="reset">${BK.rs?"Pulsa otra vez: se borra todo":"Volver a empezar desde cero"}</button><p class="hint">Volver a empezar borra puestos, equipo, reglas y planning, y te lleva otra vez al asistente.</p></div>`}
+return`<div class="in pg">${sec(`<h4 class="sl" style="margin:0">Mi área</h4><label class="fl">Área o departamento<input type="text" data-h="area" value="${esc(S.area)}" autocomplete="off"></label><label class="fl">Jefe de equipo<input type="text" data-h="lider" value="${esc(S.lider)}" placeholder="Nombre y apellido" autocomplete="off"></label>${tuSec()}`)}<section class="card">${it("photo","imp","Desde foto o lista","Sacar puestos o personas de una foto")}${it("team","posts","Puestos del área",P().length+" puestos")}${it("user","ap","Asuntos propios",nAp?nAp+" próximos":"Ninguno próximo")}${it("save","bk","Copia de seguridad","Guardar o restaurar tus datos")}</section>${STANDALONE()?"":`<section class="card"><button class="li" data-a="install">${ic("down")}<span class="lt"><b>Instalar en el móvil</b><small>${INST?"Añade la app a tu pantalla de inicio":IOS?"En iPhone: Compartir → Añadir a pantalla de inicio":"Desde el menú del navegador: Instalar app"}</small></span>${ic("chev","mu")}</button></section>`}<button class="btn dg full" data-a="reset">${BK.rs?"Pulsa otra vez: se borra todo":"Volver a empezar desde cero"}</button><p class="hint">Volver a empezar borra puestos, equipo, reglas y planning, y te lleva otra vez al asistente.</p></div>`}
 /* ---------- hojas ---------- */
 function shPost(i){const p=P()[i],t=day(S.date),a=t[p],cur=a&&a.op;
 if(S.conf[S.date])return`<div class="note ok">${ic("lock")}<span>Día confirmado. Desbloquéalo para cambiar puestos.</span></div><button class="btn full" data-a="unconf">Desbloquear</button>`;
@@ -385,6 +393,10 @@ else return"";
 return`<div class="sh" data-a="closeBd"><div class="shp" id="shp" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="gr"></div><div class="in"><div class="shh"><h3 id="shT">${esc(title)}</h3><button class="ib" data-a="close" aria-label="Cerrar">${ic("x")}</button></div>${body}</div></div></div>`}
 /* ---------- pintar ---------- */
 let BK={tx:"",cf:false,rs:false};
+let INST=null;const STANDALONE=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const IOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();INST=e;if(TAB==="mas"&&!MORE)render()});
+window.addEventListener("appinstalled",()=>{INST=null;toast("App instalada");render()});
 const TOG=["wPost","fSepP","rlSplit","opPost","imTog","wBaja","rlNorep","rlRot","tuEq","tuM","tuW","bajaMode"];
 function a11y(fk,wasSheet){document.querySelectorAll("[data-a]").forEach(b=>{if(TOG.includes(b.dataset.a))b.setAttribute("aria-pressed",b.classList.contains("on"))});
 document.querySelectorAll(".dc").forEach(b=>{const d=b.dataset.v;b.setAttribute("aria-label",fl(d));if(d===S.date)b.setAttribute("aria-current","date")});
@@ -445,6 +457,7 @@ imTog:v=>{const x=IM.items[+v];if(x&&!x.dup)x.on=!x.on},
 imCancel:()=>{IM={k:"",mode:"",busy:false,items:[],err:"",tx:""}},
 imAdd:v=>{let n=0;IM.items.filter(x=>x.on&&!x.dup).forEach(x=>{if(v==="posts"){if(!P().some(p=>p.toLowerCase()===x.n.toLowerCase())){S.posts.push(x.n);n++}}else if(!OPS().some(o=>o.toLowerCase()===x.n.toLowerCase())){S.ops[x.n]={posts:x.posts.length?[...x.posts]:[...P()],bajas:[],ap:[],falta:[]};S.order.push(x.n);n++}});A.imCancel();toast(n===1?"Añadido 1":"Añadidos "+n)},
 tuEq:v=>{S.tu.eq=v},
+install:async()=>{if(INST){INST.prompt();try{await INST.userChoice}catch(e){}INST=null;render()}else toast(IOS?"Pulsa Compartir y luego «Añadir a pantalla de inicio»":"Abre el menú del navegador y elige «Instalar app»");return 1},
 tuM:v=>{S.tu.ref=addD(mon(TODAY),-(tuWeek()-1)*7);S.tu.m=v==="1"},
 tuW:v=>{const cm=S.tu.ref?isMan(TODAY):true;S.tu.ref=addD(mon(TODAY),-(+v-1)*7);S.tu.m=cm},
 /* asistente */
@@ -484,6 +497,7 @@ document.addEventListener("input",e=>{const el=e.target;if(el&&el.dataset&&el.da
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&SHEET){SHEET=null;render();return}if(e.key!=="Enter")return;const id=e.target&&e.target.id;const m={wp:S.done?"mAddPost":"wAddPost",wn:"wSave"}[id];if(!m)return;e.preventDefault();const r=A[m]();if(!r){save();render()}});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)return;const t=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);if(t!==TODAY){if(S.date===TODAY)S.date=t;TODAY=t;render()}});
 render();cloudInit();
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))navigator.serviceWorker.register("sw.js").catch(()=>{});
 (async()=>{try{if(!window.claude||!claude.use)return;const s=await claude.use("sample");if(s){SMP=true;render()}}catch(e){}})();
 </script>
 </body></html>
