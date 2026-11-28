@@ -1,6 +1,6 @@
 // Planning de Equipo: funcionamiento sin conexión.
 // Sube VERSION cada vez que cambies index.html para que los móviles cojan la nueva versión.
-const VERSION = "operarios-v9";
+const VERSION = "operarios-v10";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
