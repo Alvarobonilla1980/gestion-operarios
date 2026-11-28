@@ -195,7 +195,7 @@ if(!Array.isArray(S.team)){const old=Object.keys(S.ops||{}).length>0||Object.key
 if(!Array.isArray(S.posts))S.posts=[];if(!Array.isArray(S.short)||S.short.length!==S.posts.length)S.short=S.posts.map((p,i)=>(S.short&&S.short[i])||p);if(!Array.isArray(S.sepP))S.sepP=[];S.area=S.area||"";
 BASE=S.team;POSTS=S.posts;SHORT=S.short;
 if(S.ilu){ESP=[IP[9],IP[10]];WH=[IP[5],IP[6]];LAURA=[IP[11],IP[7],IP[0]];LIST=ILU_LIST}else{S.sepP=S.sepP.filter(p=>POSTS.includes(p));ESP=S.sepP;WH=[];LAURA=[];LIST={}}
-S.ren=S.ren||{};Object.entries(S.ren).forEach(([a,b])=>{const i=BASE.indexOf(a);if(i>=0)BASE[i]=b});if(!S.rules)S.rules=RULES0();["sep","fav","max","pref"].forEach(k=>{if(!Array.isArray(S.rules[k]))S.rules[k]=[]});if(![1,2,3].includes(S.rules.rot))S.rules.rot=2;S.ops=S.ops||{};S.days=S.days||{};S.conf=S.conf||{};S.extra=S.extra||[];S.ertes=S.ertes||{};S.cal=S.cal||{};S.sub=S.sub||"rot";S.shift=S.shift||"T";S.date=S.date||TODAY;S.rot=S.rot&&S.rot.length?S.rot:[];S.gd=S.gd||{};OPS=mkOPS();
+S.tasks=S.tasks&&typeof S.tasks==="object"?S.tasks:{};S.ren=S.ren||{};Object.entries(S.ren).forEach(([a,b])=>{const i=BASE.indexOf(a);if(i>=0)BASE[i]=b});if(!S.rules)S.rules=RULES0();["sep","fav","max","pref"].forEach(k=>{if(!Array.isArray(S.rules[k]))S.rules[k]=[]});if(![1,2,3].includes(S.rules.rot))S.rules.rot=2;S.ops=S.ops||{};S.days=S.days||{};S.conf=S.conf||{};S.extra=S.extra||[];S.ertes=S.ertes||{};S.cal=S.cal||{};S.sub=S.sub||"rot";S.shift=S.shift||"T";S.date=S.date||TODAY;S.rot=S.rot&&S.rot.length?S.rot:[];S.gd=S.gd||{};OPS=mkOPS();
 OPS.forEach(o=>{const c=S.ops[o]||(S.ops[o]={st:"ok",turno:S.ilu&&(o==="Alicia"||o==="Julia Neves")?"M":""});
 if(c.st==="erte"){if(c.since)for(let d=c.since,i=0;d<=TODAY&&i<120;d=addD(d,1),i++){const E=S.ertes[d]||(S.ertes[d]={n:[],v:[]});if(!E.n.includes(o))E.n.push(o)}c.st="ok"}
 if(!c.posts)c.posts=POSTS.filter(p=>defAllowed(o,p));c.ap=c.ap||[];c.falta=c.falta||[];c.base=c.base||0;c.basev=c.basev||0;c.bajas=c.bajas||[];if(c.st==="baja"){c.bajas.push({from:TODAY,to:null});c.st="ok"}})}normState();
@@ -270,7 +270,7 @@ const lst=a=>a.join(", ");
 /* ---------- mensaje e imagen del planning ---------- */
 function planData(){const t=day(S.date),H=HR(),rows=[],miss=[];
 POSTS.forEach(p=>{const a=t[p];if(!a){miss.push(p);return}if(a.partner){rows.push({n:a.op,p,h:H[0]+"–"+H[1]});rows.push({n:a.partner,p,h:H[1]+"–"+H[2]})}else rows.push({n:a.op,p})});
-const us0=usedSet(),apo=POSTS.some(p=>t[p])?OPS.filter(o=>avail(o)&&!us0.has(o)):[],E=S.ertes[S.date],ex=[];
+const us0=usedSet(),TK=tasksOf(S.date);Object.entries(TK).forEach(([o,x])=>rows.push({n:o,p:x,k:1}));const apo=POSTS.some(p=>t[p])?OPS.filter(o=>avail(o)&&!us0.has(o)&&!TK[o]):[],E=S.ertes[S.date],ex=[];
 if(E&&E.n.length)ex.push(["ERTE",E.n.map(o=>o+(E.v.includes(o)?" (voluntario)":"")).join(", ")]);
 const b=OPS.filter(o=>isBaja(o));if(b.length)ex.push(["Baja",lst(b)]);
 const ap=OPS.filter(o=>isAP(o));if(ap.length)ex.push(["Asuntos propios",lst(ap)]);
@@ -302,10 +302,10 @@ let y=HD+40;x.fillStyle="#fff";rr(P-16,y-16,W-2*P+32,d.rows.length*RH+32,28);x.f
 d.rows.forEach((r,i)=>{const cy=y+RH/2,hu=hue(r.n);
 if(i)(x.fillStyle="#dde3ee",x.fillRect(P+100,y,W-2*P-100,2));
 x.fillStyle=`hsl(${hu} 55% 90%)`;x.beginPath();x.arc(P+38,cy,38,0,7);x.fill();x.fillStyle=`hsl(${hu} 45% 28%)`;x.font=fnt(800,28);x.textAlign="center";x.textBaseline="middle";x.fillText(ini(r.n),P+38,cy+1);x.textAlign="left";
-x.font=fnt(800,26);const pw=Math.min(x.measureText(r.p).width+40,380);
+x.font=fnt(800,26);const pw=Math.min(x.measureText(r.p).width+40,520);
 x.fillStyle="#0e1a33";x.font=fnt(800,38);x.fillText(fit(r.n,W-2*P-110-pw-30),P+100,r.h?cy-16:cy);
 if(r.h){x.fillStyle="#5a6884";x.font=fnt(600,27);x.fillText(r.h+" h",P+100,cy+24)}
-x.fillStyle="#e2e8fb";rr(W-P-pw,cy-26,pw,52,26);x.fill();x.fillStyle="#24409a";x.font=fnt(800,26);x.fillText(fit(r.p,pw-40),W-P-pw+20,cy+1);y+=RH});
+x.fillStyle=r.k?"#dff2e6":"#e2e8fb";rr(W-P-pw,cy-26,pw,52,26);x.fill();x.fillStyle=r.k?"#146c38":"#24409a";x.font=fnt(800,26);x.fillText(fit(r.p,pw-40),W-P-pw+20,cy+1);y+=RH});
 y+=40;x.textBaseline="alphabetic";
 const sec=(lab,lines,col,bg)=>{if(!lines.length)return;const h=80+lines.length*42;x.fillStyle=bg;rr(P-16,y,W-2*P+32,h,24);x.fill();x.fillStyle=col;x.font=fnt(800,24);x.fillText(lab.toUpperCase(),P+14,y+44);x.fillStyle="#0e1a33";x.font=fnt(500,30);lines.forEach((l,i)=>x.fillText(l,P+14,y+92+i*42));y+=h+20};
 sec("Apoyo",apL,"#146c38","#dff2e6");sec("Sin cubrir",msL,"#b42318","#fde5e2");exL.forEach(([k,l])=>sec(k,l,"#9a4d00","#fff0d2"));
@@ -328,6 +328,7 @@ render()}
 function statusPill(o){const c=S.ops[o];if(isBaja(o))return'<span class="pill er">De baja</span>';if(isAP(o))return'<span class="pill wa">Asuntos propios</span>';if(inE(o))return'<span class="pill wa">ERTE</span>';const f=falt(o).reduce((a,x)=>a+x.h,0);if(f)return`<span class="pill wa">Faltan ${f} h</span>`;if(c.turno&&c.turno!==S.shift)return'<span class="pill">Otro turno</span>';return'<span class="pill ok">Disponible</span>'}
 const bkDays=()=>S.lastBk?Math.floor((Date.now()-S.lastBk)/864e5):null;
 const bkAgo=()=>{const n=bkDays();return n===null?"Todavía no has hecho ninguna copia":n===0?"Última copia: hoy":n===1?"Última copia: ayer":"Última copia: hace "+n+" días"};
+const tasksOf=d=>{const T=S.tasks[d]||{},t=day(d),us=new Set(POSTS.filter(p=>t[p]).flatMap(p=>[t[p].op,t[p].partner].filter(Boolean))),r={};Object.entries(T).forEach(([o,x])=>{if(x&&OPS.includes(o)&&avail(o)&&!us.has(o))r[o]=x});return r};
 const turnoTxt=c=>c.turno==="M"?"Solo mañana":c.turno==="T"?"Solo tarde":"Cualquier turno";
 function outGroups(){const g={erte:[],baja:[],ap:[],fal:[],turno:[]};OPS.forEach(o=>{const c=S.ops[o];if(isBaja(o))g.baja.push(o);else if(isAP(o))g.ap.push(o);else if(inE(o))g.erte.push(o);else if(c.turno&&c.turno!==S.shift)g.turno.push(o);if(!isBaja(o)&&falt(o).length)g.fal.push(o)});return g}
 function shiftSeg(){return`<div class="seg dk"><button class="${S.shift==="M"?"on":""}" data-a="sh" data-v="M">Mañana</button><button class="${S.shift==="T"?"on":""}" data-a="sh" data-v="T">Tarde</button></div>`}
@@ -359,7 +360,7 @@ if(wl.length)h+=`<button class="note wa" data-a="avisos">${ic("warn")}<span>${wl
 h+='<div class="grid">'+POSTS.map((p,i)=>{const a=t[p];const nm=a?esc(a.op)+(a.partner?" / "+esc(a.partner):""):"Sin asignar";
 return`<button class="st ${a?"":"nil"} ${wm[p]?"w":""}" data-a="post" data-v="${i}"><span class="h"><span class="cd">${String(i+1).padStart(2,"0")}</span><span>${a&&a.manual?ic("lock","mu"):""}${wm[p]?ic("warn","wi"):""}</span></span><span class="pn">${esc(SHORT[i])}</span><span class="who ${a?"":"nil"}">${a?av(a.op,"sm"):'<span class="av sm nil">'+ic("plus")+"</span>"}<span>${nm}</span></span>${a&&(a.partner||a.s)?`<span class="wt" style="color:var(--mu)!important">4 h + 4 h${a.partner?"":" · falta la otra persona"}</span>`:""}${wm[p]?`<span class="wt">${esc(wm[p][0])}</span>`:""}</button>`}).join("")+"</div>";
 h+='<p class="hint">Mantén pulsado un puesto para ver opciones rápidas, como 4 h + 4 h.</p>';
-h+=`<section class="card pad"><h4 class="sl">Apoyo · ${free.length} disponible${free.length===1?"":"s"} sin puesto</h4>${free.length?`<div class="chips">${free.map(o=>`<button class="chip" data-a="person" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`:'<span class="mu">Nadie de apoyo: todos tienen puesto</span>'}</section>${chips?`<div class="chips">${chips}</div>`:""}</div>`;return h}
+{const TK=tasksOf(S.date),nt=free.filter(o=>!TK[o]).length;h+=`<section class="card pad" style="display:flex;flex-direction:column;gap:10px"><h4 class="sl" style="margin:0">Apoyo · ${free.length} sin puesto${free.length-nt?" · "+(free.length-nt)+" con tarea":""}</h4>${free.length?`<div class="chips">${free.map(o=>TK[o]?`<button class="chip on" data-a="task" data-v="${esc(o)}">${esc(o)} · ${esc(TK[o])}</button>`:`<button class="chip" data-a="task" data-v="${esc(o)}">${ic("plus")} ${esc(o)}</button>`).join("")}</div><span class="hint" style="margin:0">Toca a alguien para darle una tarea (barrer, Trim 3, motores…). Sale en el WhatsApp.</span>`:'<span class="mu">Nadie de apoyo: todos tienen puesto</span>'}</section>${chips?`<div class="chips">${chips}</div>`:""}</div>`}return h}
 /* ---------- vista Equipo ---------- */
 function teamRows(){const q=QF.trim().toLowerCase(),r=OPS.filter(o=>!q||o.toLowerCase().includes(q));
 return r.length?r.map(o=>{const c=S.ops[o];return`<button class="li" data-a="person" data-v="${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b><small>${isBaja(o)?bajaTxt(o):(c.guest?"Refuerzo de hoy · "+c.posts.length+" puestos":c.posts.length+" puestos"+(c.turno?" · "+turnoTxt(c):""))+(c.solo8?" · solo 8 h":"")}</small></span>${statusPill(o)}${ic("chev","mu")}</button>`}).join(""):'<p class="hint pad">Nadie coincide con la búsqueda.</p>'}
@@ -504,6 +505,8 @@ let h=`<section class="card pad"><pre class="pre">${esc(m).replace(/\*([^*\n]+)\
 if(w.length)h+=`<button class="note wa" data-a="avisos">${ic("warn")}<span>${w.length} aviso${w.length>1?"s":""} sin resolver</span>${ic("chev")}</button>`;
 if(nf)h+=`<div class="note wa">${ic("warn")}<span>Faltan ${nf} puestos por cubrir</span></div>`;
 h+=cf?`<button class="btn wa full" data-a="sendImg">${ic("photo")} Enviar como imagen</button><a class="btn wa full" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(m)}">${ic("send")} Enviar como texto</a><button class="btn full" data-a="copy" data-v="p">Copiar mensaje</button><button class="btn full" data-a="dlImg">${ic("down")} Guardar imagen</button><button class="btn full" data-a="unconf">${ic("lock")} Desbloquear para editar</button>`:`<button class="btn p full" data-a="conf">${ic("check")} Confirmar planning</button><p class="hint">Al confirmar se bloquea el día y aparece el botón de WhatsApp.</p>`;return h}
+function shTask(o){const cur=(S.tasks[S.date]||{})[o]||"",rec=[...new Set(Object.values(S.tasks).flatMap(T=>Object.values(T||{})).filter(Boolean).reverse())].slice(0,8);
+return`<section class="card pad" style="display:flex;flex-direction:column;gap:12px"><label class="fl">Tarea para hoy<input type="text" id="tkx" value="${esc(cur)}" placeholder="Ej.: Barrer, Trim 3, Motores…" autocomplete="off" maxlength="40"></label>${rec.length?`<div class="chips">${rec.map(t=>`<button class="chip ${t===cur?"on":""}" data-a="tkPick" data-v="${esc(t)}">${esc(t)}</button>`).join("")}</div>`:""}<button class="btn p full" data-a="tkSave" data-v="${esc(o)}">${ic("check")} Guardar tarea</button>${cur?`<button class="btn full" data-a="tkDel" data-v="${esc(o)}">${ic("x")} Quitar tarea</button>`:""}</section><button class="btn full" data-a="person" data-v="${esc(o)}">${ic("user")} Ver ficha de ${esc(o)}</button>`}
 function shAdd(){if(!ADD.posts)ADD.posts=POSTS.filter(p=>!LIST[p]);
 return`<label class="fl">Nombre<input type="text" id="nn" value="${esc(ADD.name)}" placeholder="Nombre y apellido" autocomplete="off"></label>
 <section class="card pad"><h4 class="sl">Turno</h4><div class="seg">${[["","Cualquiera"],["M","Mañana"],["T","Tarde"]].map(([v,l])=>`<button class="${ADD.turno===v?"on":""}" data-a="addTurno" data-v="${v}">${l}</button>`).join("")}</div></section>
@@ -527,7 +530,7 @@ function shPq(o,p){const c=S.ops[o],m=!c.posts.includes(p)?0:p4(o,p)?4:8,n=esc(o
 const row=(v,i,t,sub)=>`<button class="li" data-a="pqSet" data-v="${n}|${q}|${v}"><span class="ico">${ic(i)}</span><span class="lt"><b>${t}</b><small>${sub}</small></span>${m===v?ic("check","okc"):""}</button>`;
 return`<p class="hint">${n} en ${q}:</p><section class="card">${row(8,"check","Puede hacerlo","Jornada completa, 8 horas")}${row(4,"clock","Solo 4 horas","Solo en un puesto compartido 4 h + 4 h")}${row(0,"x","No puede hacerlo","No se le asignará este puesto")}</section>`}
 function sheetHTML(){if(!SHEET)return"";const T=SHEET.t;let title="",body="";if(T==="pq"){title=SHEET.p;body=shPq(SHEET.o,SHEET.p)}else if(T==="quick"){title=POSTS[SHEET.i];body=shQuick(SHEET.i)}else
-if(T==="post"){title=POSTS[SHEET.i];body=shPost(SHEET.i)}else if(T==="partner"){title="4 h + 4 h";body=shPartner(SHEET.i)}else if(T==="person"){title=SHEET.o;body=shPerson(SHEET.o)}
+if(T==="post"){title=POSTS[SHEET.i];body=shPost(SHEET.i)}else if(T==="partner"){title="4 h + 4 h";body=shPartner(SHEET.i)}else if(T==="person"){title=SHEET.o;body=shPerson(SHEET.o)}else if(T==="task"){title=SHEET.o;body=shTask(SHEET.o)}
 else if(T==="avisos"){title="Avisos";body=shAvisos()}else if(T==="out"){title="No disponibles";body=shOut()}else if(T==="send"){title="Enviar planning";body=shSend()}else if(T==="addop"){title="Nuevo operario";body=shAdd()}else if(T==="refu"){title="Refuerzo de otro turno o sitio";body=shRefu()}else if(T==="posts"){title="Puestos de "+SHEET.o;body=shPosts(SHEET.o)}
 return`<div class="sh" data-a="closeBd"><div class="shp" id="shp" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="gr"></div><div class="in"><div class="shh"><h3 id="shT">${esc(title)}</h3><button class="ib" data-a="close" aria-label="Cerrar">${ic("x")}</button></div>${body}</div></div></div>`}
 /* ---------- pintar ---------- */
@@ -592,6 +595,10 @@ sendImg:async()=>{const bl=await planImg(),f=new File([bl],"planning-"+S.date+".
 try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Planning "+fl(S.date)});return 1}}catch(e){if(e&&e.name==="AbortError")return 1}
 A.dlImg(bl);toast("Imagen guardada. Envíala desde WhatsApp");return 1},
 dlImg:async bl=>{bl=bl instanceof Blob?bl:await planImg();const u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download="planning-"+S.date+".png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return 1},
+task:v=>{SHEET={t:"task",o:v}},
+tkPick:v=>{const o=SHEET&&SHEET.o;if(!o)return 1;(S.tasks[S.date]=S.tasks[S.date]||{})[o]=v;SHEET=null;toast(o+": "+v)},
+tkSave:v=>{const x=String(($("tkx")||{}).value||"").replace(/\s+/g," ").trim().slice(0,40);if(!x){toast("Escribe la tarea");return 1}(S.tasks[S.date]=S.tasks[S.date]||{})[v]=x;SHEET=null;toast(v+": "+x)},
+tkDel:v=>{if(S.tasks[S.date]){delete S.tasks[S.date][v];if(!Object.keys(S.tasks[S.date]).length)delete S.tasks[S.date]}SHEET=null;toast("Tarea quitada")},
 copy:async(v,b)=>{try{await navigator.clipboard.writeText(v==="l"?lmsg():msg());toast("Copiado")}catch(x){toast("No se pudo copiar")}return 1},
 opst:v=>{const[o,s]=sp(v);S.ops[o].st=s},opturno:v=>{const[o,s]=sp(v);S.ops[o].turno=s},
 opPost:v=>{const[o,p]=sp(v),c=S.ops[o];c.posts=c.posts.includes(p)?c.posts.filter(x=>x!==p):[...c.posts,p];if(!c.posts.includes(p))c.p4=(c.p4||[]).filter(x=>x!==p)},
@@ -676,7 +683,7 @@ document.addEventListener("contextmenu",e=>{if(!e.target.closest("input,textarea
 document.addEventListener("click",e=>{if(LPF){LPF=false;e.stopPropagation();e.preventDefault()}},true)})();
 document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b||!A[b.dataset.a])return;const r=A[b.dataset.a](b.dataset.v,b,e);if(!r){save();render()}});
 document.addEventListener("change",e=>{const el=e.target.closest("[data-h]");if(!el||!C[el.dataset.h])return;const r=C[el.dataset.h](el.value,el);if(!r){save();render()}});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&SHEET){SHEET=null;render();return}if(e.key!=="Enter"||!e.target)return;const m={wzp:"wzAddPost",nn:"addDo"}[e.target.id];if(!m)return;e.preventDefault();const r=A[m]();if(!r){save();render()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&SHEET){SHEET=null;render();return}if(e.key!=="Enter"||!e.target)return;const m={wzp:"wzAddPost",nn:"addDo",tkx:"tkSave"}[e.target.id];if(!m)return;e.preventDefault();const r=A[m](m==="tkSave"&&SHEET?SHEET.o:undefined);if(!r){save();render()}});
 document.addEventListener("input",e=>{const el=e.target;if(el&&el.dataset&&el.dataset.h==="q"){QF=el.value;$("tl").innerHTML=teamRows()}});
 render();cloudInit();
 
