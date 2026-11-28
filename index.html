@@ -267,13 +267,50 @@ const e=ESP.map(p=>t[p]&&t[p].op).filter(Boolean);
 S.rules.sep.forEach(r=>{if(e.includes(r.a)&&e.includes(r.b))add(null,"Preferible no juntar a "+r.a+" y "+r.b)});return w}
 const warns=()=>[...new Set(warnList().map(x=>x.m))];
 const lst=a=>a.join(", ");
-function msg(){const t=day(S.date),E=S.ertes[S.date];let s="*ILUNION · Planning "+fl(S.date)+" · "+(S.shift==="M"?"Mañana":"Tarde")+"*\n\n";
-POSTS.forEach(p=>{s+="• "+p+": "+(t[p]?(t[p].partner?t[p].op+" ("+HR()[0]+"–"+HR()[1]+") / "+t[p].partner+" ("+HR()[1]+"–"+HR()[2]+")":t[p].op):"—")+"\n"});
-const us0=usedSet(),ap0=OPS.filter(o=>avail(o)&&!us0.has(o));if(ap0.length&&POSTS.some(p=>t[p]))s+="• Apoyo: "+lst(ap0)+"\n";
-if(E&&E.n.length)s+="\nERTE: "+E.n.map(o=>o+(E.v.includes(o)?" (voluntario)":"")).join(", ");
-const b=OPS.filter(o=>isBaja(o));if(b.length)s+="\nBaja: "+lst(b);
-const ap=OPS.filter(o=>isAP(o));if(ap.length)s+="\nAsuntos propios: "+lst(ap);
-const fh=OPS.filter(o=>falt(o).length).map(o=>o+" ("+falt(o).map(f=>f.h+" h "+f.m.toLowerCase()).join(", ")+")");if(fh.length)s+="\nFaltan horas: "+fh.join(", ");return s}
+/* ---------- mensaje e imagen del planning ---------- */
+function planData(){const t=day(S.date),H=HR(),rows=[],miss=[];
+POSTS.forEach(p=>{const a=t[p];if(!a){miss.push(p);return}if(a.partner){rows.push({n:a.op,p,h:H[0]+"–"+H[1]});rows.push({n:a.partner,p,h:H[1]+"–"+H[2]})}else rows.push({n:a.op,p})});
+const us0=usedSet(),apo=POSTS.some(p=>t[p])?OPS.filter(o=>avail(o)&&!us0.has(o)):[],E=S.ertes[S.date],ex=[];
+if(E&&E.n.length)ex.push(["ERTE",E.n.map(o=>o+(E.v.includes(o)?" (voluntario)":"")).join(", ")]);
+const b=OPS.filter(o=>isBaja(o));if(b.length)ex.push(["Baja",lst(b)]);
+const ap=OPS.filter(o=>isAP(o));if(ap.length)ex.push(["Asuntos propios",lst(ap)]);
+const fh=OPS.filter(o=>falt(o).length).map(o=>o+" ("+falt(o).map(f=>f.h+" h "+f.m.toLowerCase()).join(", ")+")");if(fh.length)ex.push(["Faltan horas",fh.join(", ")]);
+return{title:S.ilu?"ILUNION":(S.area||"Mi equipo"),date:cap(fl(S.date)),turn:S.shift==="M"?"Turno de mañana":"Turno de tarde",H,rows,miss,apo,ex}}
+function msg(){const d=planData(),L="━━━━━━━━━━━━━━━";
+let s=`📋 *PLANNING · ${d.title.toUpperCase()}*\n🗓️ ${d.date}\n${S.shift==="M"?"☀️":"🌙"} ${d.turn} (${d.H[0]}–${d.H[2]})\n${L}\n`;
+d.rows.forEach(r=>{s+=`▪️ *${r.n}* → ${r.p}${r.h?` _(${r.h})_`:""}\n`});
+if(d.apo.length)s+=`\n🤝 *Apoyo:* ${lst(d.apo)}\n`;
+if(d.miss.length)s+=`\n⚠️ *Sin cubrir:* ${lst(d.miss)}\n`;
+if(d.ex.length){s+=`${L}\n`;const em={"ERTE":"🔄","Baja":"🏥","Asuntos propios":"📅","Faltan horas":"⏰"};d.ex.forEach(([k,v])=>{s+=`${em[k]||"•"} *${k}:* ${v}\n`})}
+return s.trim()}
+function planCanvas(){const d=planData(),W=1080,P=64,F='Manrope,-apple-system,"Segoe UI",Roboto,sans-serif',c=document.createElement("canvas"),x=c.getContext("2d");
+const fnt=(w,z)=>`${w} ${z}px ${F}`,fit=(t,mw)=>{if(x.measureText(t).width<=mw)return t;while(t.length>1&&x.measureText(t+"…").width>mw)t=t.slice(0,-1);return t+"…"};
+const wrap=(t,mw)=>{const ws=t.split(" "),out=[];let l="";ws.forEach(w=>{const k=l?l+" "+w:w;if(x.measureText(k).width>mw&&l){out.push(l);l=w}else l=k});if(l)out.push(l);return out};
+const RH=112,HD=330;x.font=fnt(500,30);const exL=d.ex.map(([k,v])=>[k,wrap(v,W-2*P-60)]),apL=d.apo.length?wrap(lst(d.apo),W-2*P-60):[],msL=d.miss.length?wrap(lst(d.miss),W-2*P-60):[];
+const blk=a=>a.length?100+a.length*42:0;let Hh=HD+40+d.rows.length*RH+40+blk(apL)+blk(msL)+exL.reduce((n,[,l])=>n+blk(l),0)+110;
+c.width=W;c.height=Hh;
+const rr=(X,Y,w,h,r)=>{x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()};
+x.fillStyle="#edf0f6";x.fillRect(0,0,W,Hh);
+const g=x.createLinearGradient(0,0,W,HD);g.addColorStop(0,"#1a2d68");g.addColorStop(1,"#2a47a0");x.fillStyle=g;rr(0,0,W,HD,0);x.fill();
+x.fillStyle="rgba(255,255,255,.07)";x.beginPath();x.arc(W-90,40,190,0,7);x.fill();
+x.fillStyle="#f0b72f";rr(P,P,72,72,20);x.fill();x.strokeStyle="#2a2000";x.lineWidth=4;x.lineCap="round";x.save();x.translate(P+12,P+12);x.scale(2,2);x.beginPath();x.arc(9,8,3.5,0,7);x.stroke();x.beginPath();x.moveTo(2.5,20);x.bezierCurveTo(3,16,5.5,14,9,14);x.bezierCurveTo(12.5,14,15,16,15.5,20);x.stroke();x.restore();
+x.fillStyle="#fff";x.font=fnt(800,34);x.textBaseline="middle";x.fillText(fit(d.title.toUpperCase(),W-2*P-110),P+96,P+36);
+x.font=fnt(800,58);x.textBaseline="alphabetic";x.fillText("Planning del día",P,P+170);
+x.font=fnt(600,32);x.fillStyle="rgba(255,255,255,.85)";x.fillText(d.date,P,P+222);
+const tt=`${d.turn} · ${d.H[0]}–${d.H[2]}`;x.font=fnt(800,28);const tw=x.measureText(tt).width+44;x.fillStyle="#f0b72f";rr(W-P-tw,P+14,tw,46,23);x.fill();x.fillStyle="#2a2000";x.textBaseline="middle";x.fillText(tt,W-P-tw+22,P+38);
+let y=HD+40;x.fillStyle="#fff";rr(P-16,y-16,W-2*P+32,d.rows.length*RH+32,28);x.fill();
+d.rows.forEach((r,i)=>{const cy=y+RH/2,hu=hue(r.n);
+if(i)(x.fillStyle="#dde3ee",x.fillRect(P+100,y,W-2*P-100,2));
+x.fillStyle=`hsl(${hu} 55% 90%)`;x.beginPath();x.arc(P+38,cy,38,0,7);x.fill();x.fillStyle=`hsl(${hu} 45% 28%)`;x.font=fnt(800,28);x.textAlign="center";x.textBaseline="middle";x.fillText(ini(r.n),P+38,cy+1);x.textAlign="left";
+x.font=fnt(800,26);const pw=Math.min(x.measureText(r.p).width+40,380);
+x.fillStyle="#0e1a33";x.font=fnt(800,38);x.fillText(fit(r.n,W-2*P-110-pw-30),P+100,r.h?cy-16:cy);
+if(r.h){x.fillStyle="#5a6884";x.font=fnt(600,27);x.fillText(r.h+" h",P+100,cy+24)}
+x.fillStyle="#e2e8fb";rr(W-P-pw,cy-26,pw,52,26);x.fill();x.fillStyle="#24409a";x.font=fnt(800,26);x.fillText(fit(r.p,pw-40),W-P-pw+20,cy+1);y+=RH});
+y+=40;x.textBaseline="alphabetic";
+const sec=(lab,lines,col,bg)=>{if(!lines.length)return;const h=80+lines.length*42;x.fillStyle=bg;rr(P-16,y,W-2*P+32,h,24);x.fill();x.fillStyle=col;x.font=fnt(800,24);x.fillText(lab.toUpperCase(),P+14,y+44);x.fillStyle="#0e1a33";x.font=fnt(500,30);lines.forEach((l,i)=>x.fillText(l,P+14,y+92+i*42));y+=h+20};
+sec("Apoyo",apL,"#146c38","#dff2e6");sec("Sin cubrir",msL,"#b42318","#fde5e2");exL.forEach(([k,l])=>sec(k,l,"#9a4d00","#fff0d2"));
+x.fillStyle="#5a6884";x.font=fnt(600,24);x.textAlign="center";x.fillText("Control de operarios",W/2,Hh-44);x.textAlign="left";return c}
+async function planImg(){try{await document.fonts.ready}catch(e){}const c=planCanvas();return await new Promise(r=>c.toBlob(r,"image/png"))}
 function lmsg(){const E=S.ertes[RF.d];let s="*ILUNION · Lista de ERTE*\n";if(E&&E.n.length)s+="\nERTE "+fl(RF.d)+": "+E.n.map(o=>o+(E.v.includes(o)?" (voluntario)":"")).join(", ")+"\n";s+="\nOrden de la lista:\n";S.rot.forEach((o,i)=>{s+=(i+1)+". "+o+"\n"});return s}
 function eligible(o,D){const c=S.ops[o];return !isBaja(o,D)&&!isAP(o,D)&&!inE(o,D)&&(!c.turno||c.turno===S.shift)}
 function propose(){const n=Math.max(RF.n,RF.vols.length),out=[...RF.vols],els=S.rot.filter(o=>!out.includes(o)&&eligible(o,RF.d));while(out.length<n&&els.length)out.push(els.shift());return out}
@@ -463,10 +500,10 @@ function shAvisos(){const w=warnList();return w.length?`<section class="card">${
 function shOut(){const g=outGroups(),L=[["erte","ERTE"],["baja","De baja"],["ap","Asuntos propios"],["fal","Faltan horas"],["turno","Otro turno"]].filter(([k])=>g[k].length);
 return L.length?L.map(([k,l])=>`<div><h4 class="sl">${l}</h4><section class="card">${g[k].map(o=>`<button class="li" data-a="person" data-v="${esc(o)}">${av(o)}<span class="lt"><b>${esc(o)}</b>${k==="fal"?`<small>${falt(o).map(f=>f.h+" h · "+esc(f.m)).join(", ")}</small>`:""}</span>${ic("chev","mu")}</button>`).join("")}</section></div>`).join(""):'<div class="note ok"><span>Todo el equipo está disponible.</span></div>'}
 function shSend(){const cf=!!S.conf[S.date],m=msg(),w=warns(),nf=POSTS.filter(p=>!day(S.date)[p]).length;
-let h=`<section class="card pad"><pre class="pre">${esc(m)}</pre></section>`;
+let h=`<section class="card pad"><pre class="pre">${esc(m).replace(/\*([^*\n]+)\*/g,"<b>$1</b>").replace(/_([^_\n]+)_/g,"<i>$1</i>")}</pre></section>`;
 if(w.length)h+=`<button class="note wa" data-a="avisos">${ic("warn")}<span>${w.length} aviso${w.length>1?"s":""} sin resolver</span>${ic("chev")}</button>`;
 if(nf)h+=`<div class="note wa">${ic("warn")}<span>Faltan ${nf} puestos por cubrir</span></div>`;
-h+=cf?`<a class="btn wa full" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(m)}">${ic("send")} Enviar por WhatsApp</a><button class="btn full" data-a="copy" data-v="p">Copiar mensaje</button><button class="btn full" data-a="unconf">${ic("lock")} Desbloquear para editar</button>`:`<button class="btn p full" data-a="conf">${ic("check")} Confirmar planning</button><p class="hint">Al confirmar se bloquea el día y aparece el botón de WhatsApp.</p>`;return h}
+h+=cf?`<button class="btn wa full" data-a="sendImg">${ic("photo")} Enviar como imagen</button><a class="btn wa full" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(m)}">${ic("send")} Enviar como texto</a><button class="btn full" data-a="copy" data-v="p">Copiar mensaje</button><button class="btn full" data-a="dlImg">${ic("down")} Guardar imagen</button><button class="btn full" data-a="unconf">${ic("lock")} Desbloquear para editar</button>`:`<button class="btn p full" data-a="conf">${ic("check")} Confirmar planning</button><p class="hint">Al confirmar se bloquea el día y aparece el botón de WhatsApp.</p>`;return h}
 function shAdd(){if(!ADD.posts)ADD.posts=POSTS.filter(p=>!LIST[p]);
 return`<label class="fl">Nombre<input type="text" id="nn" value="${esc(ADD.name)}" placeholder="Nombre y apellido" autocomplete="off"></label>
 <section class="card pad"><h4 class="sl">Turno</h4><div class="seg">${[["","Cualquiera"],["M","Mañana"],["T","Tarde"]].map(([v,l])=>`<button class="${ADD.turno===v?"on":""}" data-a="addTurno" data-v="${v}">${l}</button>`).join("")}</div></section>
@@ -551,6 +588,10 @@ pairSwap:v=>{const a=day(S.date)[POSTS[Number(v)]];if(a&&a.partner){snap();const
 solo8:v=>{const[o,x]=sp(v);if(x)S.ops[o].solo8=true;else delete S.ops[o].solo8},
 setPartner:v=>{const[i,o]=sp(v),a=day(S.date)[POSTS[Number(i)]];if(a){a.partner=o;a.manual=true}SHEET={t:"post",i:Number(i)}},
 clearPartner:v=>{const a=day(S.date)[POSTS[Number(v)]];if(a){delete a.partner;a.manual=true}SHEET={t:"post",i:Number(v)}},
+sendImg:async()=>{const bl=await planImg(),f=new File([bl],"planning-"+S.date+".png",{type:"image/png"});
+try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Planning "+fl(S.date)});return 1}}catch(e){if(e&&e.name==="AbortError")return 1}
+A.dlImg(bl);toast("Imagen guardada. Envíala desde WhatsApp");return 1},
+dlImg:async bl=>{bl=bl instanceof Blob?bl:await planImg();const u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download="planning-"+S.date+".png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return 1},
 copy:async(v,b)=>{try{await navigator.clipboard.writeText(v==="l"?lmsg():msg());toast("Copiado")}catch(x){toast("No se pudo copiar")}return 1},
 opst:v=>{const[o,s]=sp(v);S.ops[o].st=s},opturno:v=>{const[o,s]=sp(v);S.ops[o].turno=s},
 opPost:v=>{const[o,p]=sp(v),c=S.ops[o];c.posts=c.posts.includes(p)?c.posts.filter(x=>x!==p):[...c.posts,p];if(!c.posts.includes(p))c.p4=(c.p4||[]).filter(x=>x!==p)},
